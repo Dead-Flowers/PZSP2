@@ -1,0 +1,62 @@
+version: "3.9"
+
+services:
+  postgres:
+    image: "postgres:14.0-alpine"
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=pass
+      - POSTGRES_DB=test
+    ports:
+    - "5432:5432"
+    container_name: "postgres"
+    volumes:
+    - postgres:/var/lib/postgresql/data
+  
+  backend:
+    build: ./services/backend
+    links:
+      - "postgres:database"
+    environment:
+      - DB_HOST=database 
+      - DB_URL=postgres://user:pass@database:5432/test
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+    ports:
+      - "5000:5000"
+    container_name: "backend"
+    depends_on:
+      - postgres
+  
+  frontend:
+    build: ./services/frontend
+    environment:
+      - NODE_OPTIONS=--openssl-legacy-provider # some node fuckup this is work around 
+    volumes:
+      - './services/frontend:/app'
+      - '/app/node_modules'
+    ports:
+      - "8080:8080"
+  
+  worker:
+    build: ./services/celery
+    command: celery worker --app=worker.celery --loglevel=info
+    environment:
+      - CELERY_BROKER_URL=redis://redis:6379/0
+      - CELERY_RESULT_BACKEND=redis://redis:6379/0
+
+  redis:
+    image: "redis:alpine"
+    environment:
+      - REDIS_PASSWORD=test123
+    ports:
+      - "6379:6379"
+    volumes:
+      - "redis:/var/lib/redis/data"
+
+volumes:
+  postgres:
+    name: postgres
+  redis:
+    name: redis
+    
