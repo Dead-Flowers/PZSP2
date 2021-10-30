@@ -1,0 +1,199 @@
+*,
+*::before, 
+*::after {
+    box-sizing: border-box;
+}
+
+:root {
+    --color-bcg: #f4f6f8;
+    --color-navbar: #2c2b2b;
+    --color-sector: #dde2e7;
+    --color-accent:  #e7775a;
+    --color-search: #2c2b2b;
+    --color-table-header: #2c2b2b;
+    --color-table-record1: #3f3d3d;
+    --color-table-record2: #575353;
+    --color-text: #eff5f8;
+    --color-text-darker: #c1c8cc;
+}
+
+body {
+    margin: 0;
+    padding-block-start: 15vh;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--color-bcg);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    overflow-x: hidden;
+}
+
+.navbar {
+    top: 0;
+    position: fixed;
+    z-index: 10;
+    background-color: var(--color-navbar);
+    width: 100vw;
+    margin: 0;
+    padding-block: 15px;
+    padding-inline: 40px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.new-analysis-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: left;
+    align-items: center; 
+    font-weight: bold;
+    font-size: 2rem;
+    font-family: "Balsamiq Sans", cursive;
+    color: var(--color-text);
+}
+
+.inputElementStandard, .inputFileField::-webkit-file-upload-button {
+    background-color: var(--color-accent);
+    border: 0;
+    border-radius: 10px;
+    padding: 20px;
+    font-size: 1rem;
+    font-family: "Balsamiq Sans", cursive;
+    color: var(--color-text);
+}
+
+.inputElementStandard:hover, .inputFileField::-webkit-file-upload-button:hover{
+    filter: brightness(85%);
+} 
+
+.inputElementStandard {
+    margin-inline-end: 60px;
+}
+
+.keyboardInput:focus {
+    outline: none;
+}
+
+.keyboardInput::placeholder {
+    color: var(--color-text-darker);
+    opacity: 1; 
+}
+
+.keyboardInput:-ms-input-placeholder {
+    color: var(--color-text-darker);
+}
+
+.keyboardInput::-webkit-inner-spin-button, 
+.keyboardInput::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+.dataTerminal {
+    background-color: var(--color-sector);
+    width: 90vw;
+    min-height: 180vh;
+    border-radius: 10px;
+    padding-block: 2%;
+    padding-inline: 5%;
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: flex-start;
+}
+
+.searchIcon {
+    background-color: var(--color-search);
+    border: 0;
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 1rem;
+    font-family: "Balsamiq Sans", cursive;
+    color: var(--color-text);
+}
+
+
+
+.searchBar {
+    position: absolute;
+    z-index: 5;
+    background-color: var(--color-search);
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+    border-top-right-radius: 10px;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    font-weight: bold;
+    font-size: 1rem;
+    font-family: "Balsamiq Sans", cursive;
+    color: var(--color-text);
+    overflow: hidden;
+    visibility: hidden;
+}
+
+.searchArea:hover .searchBar {
+    visibility: visible !important;
+}
+
+.searchArea:hover .searchIcon {
+    border-bottom-left-radius: 0px;
+    border-bottom-right-radius: 0px;
+}
+.searchOption {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+label {
+    margin-block-end: 20px !important;
+}
+
+.inputElementSmall {
+    padding: 8px !important;
+    font-size: 0.8rem;
+}
+
+table {
+    width: 100%;
+    min-width: 400px;
+    margin: 30px auto 0 auto;
+}
+
+th {
+    border: none;
+    background-color: var(--color-table-header);
+    color: white;
+    text-transform: uppercase;
+    padding: 10px;
+}
+  
+tr, td {
+    border: none;
+    padding: 5px;
+    color: var(--color-text);
+}
+
+.tableRecordEven {
+    background-color: var(--color-table-record1);
+}
+
+.tableRecordOdd {
+    background-color: var(--color-table-record2);
+}
+
+.link {
+    background-color: transparent !important;
+    text-decoration: none;
+    color: var(--color-text);
+}
+
+.link:hover {
+    filter: brightness(85%);
+}
