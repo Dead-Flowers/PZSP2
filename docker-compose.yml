@@ -31,7 +31,7 @@ services:
   frontend:
     build: ./services/frontend
     environment:
-      - NODE_OPTIONS=--openssl-legacy-provider # some node fuckup this is work around 
+      - NODE_OPTIONS=--openssl-legacy-provider # required for node to start, bug with current version of node 
     volumes:
       - './services/frontend:/app'
       - '/app/node_modules'
