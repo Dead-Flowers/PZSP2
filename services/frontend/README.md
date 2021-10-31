@@ -1,4 +1,4 @@
-# bowel_lab
+# frontend
 
 ## Project setup
 ```
