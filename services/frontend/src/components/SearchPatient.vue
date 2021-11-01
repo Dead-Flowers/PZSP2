@@ -1,5 +1,5 @@
 <template>
-  <div >
+  <div>
   
   </div>
 </template>
@@ -7,10 +7,11 @@
 <script>
 
 export default {
-  name: "AnalysisInitWindow"
+  name: 'SearchPatient',
+  
 }
 </script>
 
-<style>
+<style scoped>
 
 </style>

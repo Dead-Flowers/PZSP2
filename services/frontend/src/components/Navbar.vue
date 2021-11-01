@@ -38,7 +38,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .navbar {
   top: 0;
   left: 0;
@@ -59,13 +59,13 @@ export default {
 .page-name {
   font-size: 1.5rem;
   margin-inline: 15px;
-  margin-block-end: 40px;
 }
 
 .tab-space {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  margin-block-start: 40px;
 }
 
 .tab {
@@ -90,6 +90,6 @@ export default {
 }
 
 .input-element-standard:hover{
-  filter: brightness(85%);
+  filter: brightness(95%);
 } 
 </style>

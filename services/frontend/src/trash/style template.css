@@ -54,7 +54,7 @@ body {
     color: var(--color-text);
 }
 
-.inputElementStandard, .inputFileField::-webkit-file-upload-button {
+.input-element-standard, .input-file-field::-webkit-file-upload-button {
     background-color: var(--color-accent);
     border: 0;
     border-radius: 10px;
@@ -64,29 +64,29 @@ body {
     color: var(--color-text);
 }
 
-.inputElementStandard:hover, .inputFileField::-webkit-file-upload-button:hover{
-    filter: brightness(85%);
+.input-element-standard:hover, .input-file-field::-webkit-file-upload-button:hover{
+    filter: brightness(95%);
 } 
 
-.inputElementStandard {
+.input-element-standard {
     margin-inline-end: 60px;
 }
 
-.keyboardInput:focus {
+.keyboard-input:focus {
     outline: none;
 }
 
-.keyboardInput::placeholder {
+.keyboard-input::placeholder {
     color: var(--color-text-darker);
     opacity: 1; 
 }
 
-.keyboardInput:-ms-input-placeholder {
+.keyboard-input:-ms-input-placeholder {
     color: var(--color-text-darker);
 }
 
-.keyboardInput::-webkit-inner-spin-button, 
-.keyboardInput::-webkit-outer-spin-button { 
+.keyboard-input::-webkit-inner-spin-button, 
+.keyboard-input::-webkit-outer-spin-button { 
   -webkit-appearance: none; 
   margin: 0; 
 }
@@ -155,7 +155,7 @@ label {
     margin-block-end: 20px !important;
 }
 
-.inputElementSmall {
+.input-element-small {
     padding: 8px !important;
     font-size: 0.8rem;
 }
@@ -180,11 +180,11 @@ tr, td {
     color: var(--color-text);
 }
 
-.tableRecordEven {
+.table-record-even {
     background-color: var(--color-table-record1);
 }
 
-.tableRecordOdd {
+.table-record-odd {
     background-color: var(--color-table-record2);
 }
 
@@ -195,5 +195,5 @@ tr, td {
 }
 
 .link:hover {
-    filter: brightness(85%);
+    filter: brightness(95%);
 }

@@ -1,5 +1,5 @@
 <template>
-  <div >
+  <div>
   
   </div>
 </template>
@@ -7,11 +7,11 @@
 <script>
 
 export default {
-  name: 'SearchWindow',
+  name: 'PatientTable',
   
 }
 </script>
 
-<style>
+<style scoped>
 
 </style>

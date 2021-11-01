@@ -1,49 +1,48 @@
 <template>
-  <div class="sign-up-container">
-    <form class="sign-up-box">
-      Zarejestruj się poniżej!
+  <form class="signUpBox">
+    Zarejestruj się
+    <input
+      class="input-element-standard keyboard-input"
+      type="text"
+      name="email"
+      placeholder="Email..."
+      autocomplete="off"
+    />
+    <input
+      class="input-element-standard keyboard-input"
+      type="text"
+      name="login"
+      placeholder="Login..."
+      autocomplete="off"
+    />
+    <input
+      class="input-element-standard keyboard-input"
+      type="password"
+      name="password"
+      placeholder="Hasło..."
+      autocomplete="off"
+    />
+    <input
+      class="input-element-standard keyboard-input"
+      type="password"
+      name="password-confirm"
+      placeholder="Powtórz Hasło..."
+      autocomplete="off"
+    />
+    <div>
       <input
-        class="inputElementStandard keyboardInput"
-        type="text"
-        name="email"
-        placeholder="Email..."
-        autocomplete="off"
+        class="input-element-standard button"
+        style="margin-inline-end: 20px"
+        type="submit"
+        value="Zaloguj się"
       />
       <input
-        class="inputElementStandard keyboardInput"
-        type="text"
-        name="login"
-        placeholder="Login..."
-        autocomplete="off"
+        class="input-element-standard button"
+        type="button"
+        value="Zarejestruj się"
       />
-      <input
-        class="inputElementStandard keyboardInput"
-        type="password"
-        name="password"
-        placeholder="Hasło..."
-        autocomplete="off"
-      />
-      <input
-        class="inputElementStandard keyboardInput"
-        type="password"
-        name="passwordConfirm"
-        placeholder="Powtórz Hasło..."
-        autocomplete="off"
-      />
-      <div>
-        <input
-          class="inputElementStandard button"
-          type="submit"
-          value="Masz konto? Zaloguj się"
-        />
-        <input
-          class="inputElementStandard button"
-          type="button"
-          value="Zarejestruj"
-        />
-      </div>
-    </form>
-  </div>
+    </div>
+  </form>
 </template>
 
 <script>
@@ -52,10 +51,8 @@ export default {
 }
 </script>
 
-<style>
-.sign-in-box {
-  background-color: var(--color-sector);
-  border-radius: 3px;
+<style scoped>
+.signUpBox {
   padding-block: 40px;
   padding-inline: 50px;
   width: -webkit-fit-content;
@@ -73,7 +70,7 @@ export default {
 }
 
 
-.input-element-standard {
+.input-element-standard, .input-file-field::-webkit-file-upload-button {
   background-color: var(--color-accent);
   margin-block-start: 20px;
   border: none;
@@ -82,6 +79,15 @@ export default {
   padding-inline: 15px;
   font-family: "Balsamiq Sans", cursive;
   color: var(--color-text);
+}
+
+.input-element-standard:hover, .input-file-field::-webkit-file-upload-button:hover {
+    filter: brightness(95%);
+}
+
+.input-element-small {
+    padding: 8px !important;
+    font-size: 0.8rem;
 }
 
 .keyboard-input:focus {
@@ -102,10 +108,6 @@ export default {
   font-size: 1rem;  
 }
 
-.button:hover {
-  filter: brightness(85%);
-}
-
 .link {
   background-color: transparent !important;
   text-decoration: none;
@@ -113,7 +115,6 @@ export default {
 }
 
 .link:hover {
-  filter: brightness(85%);
+  filter: brightness(95%);
 }
-
 </style>

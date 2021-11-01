@@ -1,41 +1,39 @@
 <template>
-  <div class="sign-in-container">
-    <form class="sign-in-box">
-      Witaj, zaloguj się!
+  <form class="sign-in-box">
+    Witaj, zaloguj się
+    <input
+      class="input-element-standard keyboard-input"
+      type="text"
+      name="login"
+      placeholder="Login..."
+      autocomplete="off"
+    />
+    <input
+      class="input-element-standard keyboard-input"
+      type="password"
+      name="password"
+      placeholder="Hasło..."
+    />
+    <a  
+      class="input-element-standard button link"
+      href="https://www.google.com"
+    >
+      Zapomniałeś hasła?
+    </a>
+    <div >
       <input
-        class="input-element-standard keyboard-input"
-        type="text"
-        name="login"
-        placeholder="Login..."
-        autocomplete="off"
+        class="input-element-standard button"
+        type="submit"
+        value="Zaloguj się"
+        style="margin-inline-end: 20px"
       />
       <input
-        class="input-element-standard keyboard-input"
-        type="password"
-        name="password"
-        placeholder="Hasło..."
+        class="input-element-standard button"
+        type="button"
+        value="Załóż konto"
       />
-      <a  
-        class="input-element-standard button link"
-        href="https://www.google.com"
-      >
-        Zapomniałeś hasła?
-      </a>
-      <div >
-        <input
-          class="input-element-standard button"
-          type="submit"
-          value="Zaloguj się"
-          style="margin-inline-end: 20px"
-        />
-        <input
-          class="input-element-standard button"
-          type="button"
-          value="Załóż konto"
-        />
-      </div>
-    </form>
-  </div>
+    </div>
+  </form>
 </template>
 
 <script>
@@ -44,10 +42,8 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 .sign-in-box {
-  background-color: var(--color-sector);
-  border-radius: 3px;
   padding-block: 40px;
   padding-inline: 50px;
   width: -webkit-fit-content;
@@ -76,6 +72,10 @@ export default {
   color: var(--color-text);
 }
 
+.input-element-standard:hover {
+    filter: brightness(95%);
+} 
+
 .keyboard-input:focus {
   outline: none;
 }
@@ -94,10 +94,6 @@ export default {
   font-size: 1rem;  
 }
 
-.button:hover {
-  filter: brightness(85%);
-}
-
 .link {
   background-color: transparent !important;
   text-decoration: none;
@@ -105,7 +101,7 @@ export default {
 }
 
 .link:hover {
-  filter: brightness(85%);
+  filter: brightness(95%);
 }
 
 </style>
