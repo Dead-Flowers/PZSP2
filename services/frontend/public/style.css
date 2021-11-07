@@ -17,6 +17,6 @@ body {
   margin: 0;
   padding: 0;
   background-color: var(--color-bcg);
-  font-family: "Balsamiq Sans", cursive;
+  font-family:  "Roboto", sans-serif;
   color: var(--color-text);
 }

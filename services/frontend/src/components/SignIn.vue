@@ -54,9 +54,9 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-weight: bold;
+  
   font-size: 2rem;
-  font-family: "Balsamiq Sans", cursive;
+  font-family:  "Roboto", sans-serif;
   color: var(--color-text);
 }
 
@@ -68,7 +68,7 @@ export default {
   border-radius: 3px;
   padding-block: 10px;
   padding-inline: 15px;
-  font-family: "Balsamiq Sans", cursive;
+  font-family:  "Roboto", sans-serif;
   color: var(--color-text);
 }
 

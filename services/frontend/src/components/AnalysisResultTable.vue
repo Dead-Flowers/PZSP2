@@ -50,8 +50,6 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  font-weight: bold;
-  font-family: "Balsamiq Sans", cursive;
   color: var(--color-text);
 }
 table {

@@ -76,7 +76,7 @@ export default {
   border-radius: 0 !important;
   padding-block: 15px;
   width: 10vw;
-  font-family: "Balsamiq Sans", cursive;
+  font-family:  "Roboto", sans-serif;
   color: var(--color-text);
 }
 

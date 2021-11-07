@@ -36,7 +36,7 @@ export default {
   border-radius: 3px;
   padding-block: 10px;
   padding-inline: 15px;
-  font-family: "Balsamiq Sans", cursive;
+  font-family:  "Roboto", sans-serif;
   color: var(--color-text);
 }
 
