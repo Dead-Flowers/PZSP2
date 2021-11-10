@@ -1,5 +1,5 @@
 <template>
-  <div id="home">
+  <div id="analysis-data">
     <Navbar />
     <div class="container">
     <AnalysisResultTable v-bind:analysisData="analysisData" />
@@ -13,7 +13,7 @@ import Navbar from '../components/Navbar.vue'
 
 
 export default {
-  name: 'Home',
+  name: 'AnalysisData',
   components: {
   AnalysisResultTable,
   Navbar,
@@ -76,7 +76,7 @@ export default {
 </script>
 
 <style>
-#home {
+#analysis-data {
   width: 100vw;
   height: 100vh;
   display: flex;
