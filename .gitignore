@@ -133,3 +133,9 @@ dmypy.json
 
 # nmp lock
 **/package-lock.json
+
+#vscode
+.vscode/
+
+# Local History for Visual Studio Code
+.history/

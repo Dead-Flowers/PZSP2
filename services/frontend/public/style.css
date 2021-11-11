@@ -1,0 +1,137 @@
+:root {
+  --color-bcg: #d7ccc8;
+  --color-navbar: #5d4037;
+  --color-tab-bookmark: #795548;
+  --color-sector: #bdbdbd;
+  --color-accent:  #607d8b;
+  --color-table-header: #2c2b2b;
+  --color-table-record1: #3f3d3d;
+  --color-table-record2: #575353;
+  --color-text: #ffffff;
+  --color-text-darker: #c1c8cc;
+  --width-navbar: 10vw;
+}
+
+body {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-bcg);
+  font-family:  "Roboto", sans-serif;
+  color: var(--color-text);
+}
+
+.max-screen-space-container {
+  width: 100vw;
+  height: 100vh;
+}
+
+.flex-column-items-centered {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-row-items-centered {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-column-items-start {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.flex-row-items-start {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.input-element-standard, .input-file-field::-webkit-file-upload-button {
+  background-color: var(--color-accent);
+  margin-block-start: 20px;
+  border: none;
+  border-radius: 3px;
+  padding-block: 10px;
+  padding-inline: 15px;
+  font-family:  "Roboto", sans-serif;
+  color: var(--color-text);
+}
+
+.input-element-standard:hover, .input-file-field::-webkit-file-upload-button:hover {
+  filter: brightness(90%);
+}
+
+.input-element-small {
+  padding: 8px !important;
+  font-size: 0.8rem;
+}
+
+.keyboard-input:focus {
+  outline: none;
+}
+
+.keyboard-input::placeholder {
+  color: var(--color-text-darker);
+  opacity: 1; 
+}
+
+.keyboard-input:-ms-input-placeholder {
+  color: var(--color-text-darker);
+}
+
+.keyboard-input::-webkit-inner-spin-button, 
+.keyboard-input::-webkit-outer-spin-button { 
+  -webkit-appearance: none; 
+  margin: 0; 
+}
+
+.button {
+  margin-block-start: 10px !important;
+  font-size: 1rem;  
+}
+.link {
+  background-color: transparent !important;
+  text-decoration: none;
+  font-size: 1rem;
+  color: var(--color-text);
+}
+
+.link:hover {
+  filter: brightness(90%);
+}
+
+table {
+  width: 100%;
+  min-width: 400px;
+  margin: 30px auto 0 auto;
+}
+
+th {
+  border: none;
+  background-color: var(--color-table-header);
+  color: white;
+  text-transform: uppercase;
+  padding: 10px;
+}
+  
+tr, td {
+  border: none;
+  padding: 5px;
+  color: var(--color-text);
+}
+
+tr:nth-child(odd) {
+  background-color: var(--color-table-record2);
+}
+tr:nth-child(even) {
+  background-color: var(--color-table-record1);
+}
