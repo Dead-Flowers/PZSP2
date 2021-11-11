@@ -4,17 +4,17 @@
       <label class="page-name">Bowel Lab</label>
       <div class="tab-space">
         <input 
-        class="tab input-element-standard"
+        class="tab-bookmark tab"
         type="button"
         value="Nowa Analiza"
         />
         <input 
-        class="tab input-element-standard"
+        class="tab-bookmark tab"
         type="button"
         value="Pacjenci"
         />
         <input 
-        class="tab input-element-standard"
+        class="tab-bookmark tab"
         type="button"
         value="Wyniki"
         />
@@ -24,7 +24,7 @@
     
     <div class="navbar-end">
       <input 
-        class="input-element-standard"
+        class="tab"
         type="button"
         value="Wyloguj"
       />
@@ -48,12 +48,16 @@ export default {
   margin: 0;
   padding-block-start: 40px;
   height: 100vh;
-  width: 10vw;
+  width: --width-navbar;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
   overflow-x: hidden;
+}
+
+.navbar-end {
+  margin-block-end: 60px;
 }
 
 .page-name {
@@ -65,31 +69,25 @@ export default {
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  margin-block-start: 40px;
+}
+
+.tab-bookmark {
+  opacity: 0.8;
+  margin-block-start: 3px;
+  padding-block: 15px;
+  width: var(--width-navbar);
 }
 
 .tab {
-  background-color: #444444 !important;
-  opacity: 0.8;
-  margin-block-end: 3px !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  padding-block: 15px;
-  width: 10vw;
+  background-color: var(--color-accent);
+  border: 0;
+  padding: 20px;
+  font-size: 1rem;
   font-family:  "Roboto", sans-serif;
   color: var(--color-text);
 }
 
-.input-element-standard {
-  background-color: var(--color-accent);
-  border: 0;
-  border-radius: 3px;
-  padding: 20px;
-  font-size: 1rem;
-  margin-block-end: 60px;
-}
-
-.input-element-standard:hover{
+.tab:hover {
   filter: brightness(90%);
-} 
+}
 </style>

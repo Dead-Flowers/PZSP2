@@ -1,5 +1,5 @@
 <template>
-  <div id="page-not-found">
+  <div id="page-not-found" class="max-screen-space-container flex-column-items-centered">
     Nie znaleziono strony
   </div>
 </template>
@@ -14,12 +14,6 @@ export default {
 
 <style>
 #page-not-found {
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
   background-color: red;
   font-size: 4rem;
 }

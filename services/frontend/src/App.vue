@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="max-screen-space-container flex-column-items-centered">
     <router-view>
     </router-view>
   </div>
@@ -14,12 +14,4 @@ export default {
 </script>
 
 <style>
-#app {
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-}
 </style>

@@ -1,5 +1,5 @@
 <template>
-  <div id="admin">
+  <div class="max-screen-space-container flex-column-items-centered">
   </div>
 </template>
 
@@ -12,12 +12,4 @@ export default {
 </script>
 
 <style>
-#admin {
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-}
 </style>

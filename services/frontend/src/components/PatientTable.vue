@@ -7,7 +7,7 @@
       </tr>
       <tr>
         <th>Imię</th>
-        <td class="table-record-odd">{{'' + patientData.firstName + ' ' + patientData.secondName}}</td>
+        <td class="table-record-odd">{{`${patientData.firstName} ${patientData.secondName}`}}</td>
       </tr>
       <tr>  
         <th>Nazwisko</th>
@@ -29,42 +29,5 @@ export default {
 </script>
 
 <style scoped>
-table {
-  width: 100%;
-  min-width: 400px;
-  margin: 30px auto 0 auto;
-}
 
-th {
-  border: none;
-  background-color: var(--color-table-header);
-  color: white;
-  text-transform: uppercase;
-  padding: 10px;
-}
-  
-tr, td {
-  border: none;
-  padding: 5px;
-  color: var(--color-text);
-}
-
-.table-record-even {
-  background-color: var(--color-table-record1);
-}
-
-.table-record-odd {
-  background-color: var(--color-table-record2);
-}
-
-.link {
-  background-color: transparent !important;
-  text-decoration: none;
-  font-size: 0.8rem !important;
-  color: var(--color-text);
-}
-
-.link:hover {
-  filter: brightness(90%);
-}
 </style>

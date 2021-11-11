@@ -1,9 +1,7 @@
 <template>
-  <div id="analysis-data">
+  <div class="max-screen-space-container flex-column-items-centered">
     <Navbar />
-    <div class="container">
     <AnalysisResultTable v-bind:analysisData="analysisData" />
-    </div>
   </div>
 </template>
 
@@ -75,12 +73,4 @@ export default {
 </script>
 
 <style>
-#analysis-data {
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-}
 </style>

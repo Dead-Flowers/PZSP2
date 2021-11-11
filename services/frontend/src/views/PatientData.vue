@@ -1,5 +1,5 @@
 <template>
-  <div id="patient-data">
+  <div class="max-screen-space-container flex-column-items-centered">
     <Navbar />
     <SearchPatient v-if="!showSearchBox" v-bind:searchPatient="searchPatient"/>
     <PatientTable v-else v-bind:patientData="patientData"/>
@@ -44,12 +44,5 @@ export default {
 </script>
 
 <style>
-#patient-data {
-  width: 100vw;
-  height: 100vh;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-}
+
 </style>

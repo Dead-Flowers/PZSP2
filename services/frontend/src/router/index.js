@@ -7,7 +7,7 @@ import NewAnalysis from '../views/NewAnalysis.vue'
 import PageNotFound from '../views/PageNotFound.vue'
 import PatientData from '../views/PatientData.vue'
 import Profile from '../views/Profile.vue'
-import RegisterPatient from '../views/RegisterPatient.vue'
+import NewPatient from '../views/NewPatient.vue'
 
 
 export default new Router({
@@ -46,8 +46,8 @@ export default new Router({
     },
     {
       path: '/register-patient',
-      name: 'RegisterPatient',
-      component: RegisterPatient
+      name: 'nEWPatient',
+      component: NewPatient
     },
     {
       path: '/newuserfirstsetupofpasswd',
