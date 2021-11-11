@@ -76,7 +76,7 @@ export default {
 
 <style scoped>
 .search-bar {
-  background-color: var(--color-search);
+  background-color: var(--color-sector);
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
   border-top-right-radius: 3px;

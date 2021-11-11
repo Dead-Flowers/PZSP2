@@ -79,7 +79,7 @@ export default {
 }
 
 .tab {
-  background-color: var(--color-accent);
+  background-color: var(--color-tab-bookmark);
   border: 0;
   padding: 20px;
   font-size: 1rem;
