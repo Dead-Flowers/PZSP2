@@ -19,8 +19,7 @@ export default {
   Navbar,
   },
   data() {
-    // change the code of this method to get data from backend
-
+    // TODO: change the code of this method to get data from backend
     // this is a mock to test UI
     return {
       analysisData: [
@@ -31,7 +30,7 @@ export default {
           patientName: "Robert",
           patientSurname: "Kowalski",
           date: "02-01-2020",
-          analysisHyperlink: "google.com"
+          analysisHyperlink: "https://www.google.com"
         },
         {
           analysisId: 2,
@@ -40,7 +39,7 @@ export default {
           patientName: "Robert",
           patientSurname: "Kowalski",
           date: "02-01-2020",
-          analysisHyperlink: "google.com"
+          analysisHyperlink: "https://www.google.com"
         },
         {
           analysisId: 3,
@@ -49,7 +48,7 @@ export default {
           patientName: "Andrzej",
           patientSurname: "Nowicki",
           date: "02-01-2020",
-          analysisHyperlink: "google.com"
+          analysisHyperlink: "https://www.google.com"
         },
         {
           analysisId: 4,
@@ -58,7 +57,7 @@ export default {
           patientName: "Daniel",
           patientSurname: "Darko",
           date: "02-01-2020",
-          analysisHyperlink: "google.com"
+          analysisHyperlink: "https://www.google.com"
         },
         {
           analysisId: 5,
@@ -67,7 +66,7 @@ export default {
           patientName: "Hubert",
           patientSurname: "Oklejka",
           date: "02-01-2020",
-          analysisHyperlink: "google.com"
+          analysisHyperlink: "https://www.google.com"
         },
       ]
     }

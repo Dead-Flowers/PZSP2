@@ -44,8 +44,16 @@
           name="surname"
           placeholder="Nazwisko..."
           autocomplete="off"
-        /> 
+        />
+         
       </div>
+      <input
+        class="input-element-standard keyboard-input"
+        type="button"
+        name="submit"
+        value="Wyszukaj"
+        v-on:click="searchPatient(1)"
+      />
     </div>  
   </div>
 </template>
@@ -54,6 +62,7 @@
 
 export default {
   name: 'SearchPatient',
+  props: ['searchPatient'],
   data() {
     return {
       patientIdType: 'pesel',
@@ -127,7 +136,7 @@ export default {
 }
 
 .input-element-standard:hover {
-    filter: brightness(95%);
+    filter: brightness(90%);
 }
 
 .input-element-small {
@@ -166,6 +175,6 @@ export default {
 }
 
 .link:hover {
-  filter: brightness(95%);
+  filter: brightness(90%);
 }
 </style>

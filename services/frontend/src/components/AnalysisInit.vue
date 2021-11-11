@@ -41,7 +41,7 @@ export default {
 }
 
 .input-element-standard:hover, .input-file-field::-webkit-file-upload-button:hover {
-    filter: brightness(95%);
+    filter: brightness(90%);
 }
 
 .keyboard-input:focus {
@@ -75,6 +75,6 @@ export default {
 }
 
 .link:hover {
-  filter: brightness(95%);
+  filter: brightness(90%);
 }
 </style>

@@ -95,12 +95,12 @@ export default {
 }
 
 .input-element-standard:hover {
-    filter: brightness(95%);
+  filter: brightness(90%);
 }
 
 .input-element-small {
-    padding: 8px !important;
-    font-size: 0.8rem;
+  padding: 8px !important;
+  font-size: 0.8rem;
 }
 
 .keyboard-input:focus {
@@ -134,6 +134,6 @@ export default {
 }
 
 .link:hover {
-  filter: brightness(95%);
+  filter: brightness(90%);
 }
 </style>

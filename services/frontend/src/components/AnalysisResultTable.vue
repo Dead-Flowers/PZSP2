@@ -88,6 +88,6 @@ tr, td {
 }
 
 .link:hover {
-  filter: brightness(95%);
+  filter: brightness(90%);
 }
 </style>
