@@ -6,7 +6,7 @@ authors = ["noFrostoo <nofrost1a@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-fastapi = "^0.63.0"
+fastapi = "^0.65.2"
 pydantic = "^1.8.1"
 SQLAlchemy = "^1.4.11"
 requests = "^2.25.1"
