@@ -48,7 +48,7 @@ export default {
   margin: 0;
   padding-block-start: 40px;
   height: 100vh;
-  width: --width-navbar;
+  width: var(--width-navbar);
   display: flex;
   flex-direction: column;
   align-items: center;
