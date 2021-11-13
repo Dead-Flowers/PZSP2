@@ -1,5 +1,5 @@
 <template>
-  <div class="search-bar flex-column-items-start">
+  <div class="sector flex-column-items-start">
     <label> Wyszukaj pacjenta po peselu lub numerze paszportu </label> 
     <div class="flex-row-items-start">
       <select 
@@ -50,7 +50,7 @@
       type="button"
       name="submit"
       value="Wyszukaj"
-      v-on:click="searchPatient(1)"
+      @click="searchPatient(1)"
     />
   </div>  
 </template>
@@ -75,16 +75,6 @@ export default {
 </script>
 
 <style scoped>
-.search-bar {
-  background-color: var(--color-sector);
-  border-bottom-left-radius: 3px;
-  border-bottom-right-radius: 3px;
-  border-top-right-radius: 3px;
-  padding: 25px;
-  font-size: 1rem;
-  overflow: hidden;
-}
-
 .input-element-addon {
   margin-inline-start: 20px;
 }

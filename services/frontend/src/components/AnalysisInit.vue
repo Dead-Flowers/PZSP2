@@ -1,5 +1,5 @@
 <template>
-  <form class="flex-column-items-start">
+  <form class="sector flex-column-items-start">
     <input
       class="input-element-standard"
       type="button"

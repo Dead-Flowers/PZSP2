@@ -1,6 +1,5 @@
 import Router from 'vue-router'
 import Admin from '../views/Admin.vue'
-import AnalysisData from '../views/AnalysisData.vue'
 import FirstLogin from '../views/FirstLogin.vue'
 import Login from '../views/Login.vue'
 import NewAnalysis from '../views/NewAnalysis.vue' 
@@ -19,23 +18,17 @@ export default new Router({
       component: Admin
     },
     {
-      path: '/',
-      name: 'Analysis Data',
-      component: AnalysisData
-    },
-    {
       path: '/login',
       name: 'Login',
       component: Login
     },
-    
     {
       path: '/new-analysis',
       name: 'New Analysis',
       component: NewAnalysis
     },
     {
-      path: '/patient-data',
+      path: '/',
       name: 'Patient Data',
       component: PatientData
     },
@@ -46,12 +39,12 @@ export default new Router({
     },
     {
       path: '/register-patient',
-      name: 'nEWPatient',
+      name: 'NewPatient',
       component: NewPatient
     },
     {
       path: '/newuserfirstsetupofpasswd',
-      name: 'Ustaw Hasło',
+      name: 'SetPassword',
       component: FirstLogin
     },
     {

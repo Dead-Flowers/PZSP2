@@ -3,30 +3,37 @@
     <div class="navbar-start">
       <label class="page-name">Bowel Lab</label>
       <div class="tab-space">
+        <router-link to="/new-analysis">
+          <input 
+          class="tab-bookmark tab"
+          type="button"
+          value="Nowa Analiza"
+          />
+        </router-link>
+        <router-link to="/">
         <input 
-        class="tab-bookmark tab"
-        type="button"
-        value="Nowa Analiza"
-        />
-        <input 
-        class="tab-bookmark tab"
+        class="tab"
         type="button"
         value="Pacjenci"
         />
-        <input 
-        class="tab-bookmark tab"
-        type="button"
-        value="Wyniki"
-        />
+        </router-link>
         <!-- future tabs-->
       </div>
     </div>
     
-    <div class="navbar-end">
+    <div class="navbar-end flex-column-items-centered">
+      <router-link to="/profile">
+        <input 
+          class="tab"
+          type="button"
+          value="Profil"
+        />
+      </router-link>
       <input 
         class="tab"
         type="button"
         value="Wyloguj"
+        @click="logout"
       />
     </div>
   </div>
@@ -34,7 +41,12 @@
 
 <script>
 export default {
-  name: 'Navbar'
+  name: 'Navbar',
+  methods: {
+    logout: function (event) {
+      console.log("Logged out", event);
+    },
+  }
 }
 </script>
 
@@ -71,16 +83,12 @@ export default {
   justify-content: space-between;
 }
 
-.tab-bookmark {
-  opacity: 0.8;
-  margin-block-start: 3px;
-  padding-block: 15px;
-  width: var(--width-navbar);
-}
-
 .tab {
   background-color: var(--color-tab-bookmark);
   border: 0;
+  margin-block-start: 3px;
+  padding-block: 15px;
+  width: var(--width-navbar);
   padding: 20px;
   font-size: 1rem;
   font-family:  "Roboto", sans-serif;
