@@ -57,10 +57,7 @@ body {
 
 .sector {
   background-color: var(--color-sector);
-  border-bottom-left-radius: 3px;
-  border-bottom-right-radius: 3px;
-  border-top-right-radius: 3px;
-  padding: 25px;
+  padding: 15px;
   font-size: 1rem;
   overflow: hidden;
 }

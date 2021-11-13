@@ -3,6 +3,13 @@
     <div class="navbar-start">
       <label class="page-name">Bowel Lab</label>
       <div class="tab-space">
+        <router-link to="/profile">
+          <input 
+            class="tab"
+            type="button"
+            value="Profil"
+          />
+        </router-link>
         <router-link to="/new-analysis">
           <input 
           class="tab-bookmark tab"
@@ -11,24 +18,26 @@
           />
         </router-link>
         <router-link to="/">
-        <input 
-        class="tab"
-        type="button"
-        value="Pacjenci"
-        />
+          <input 
+          class="tab"
+          type="button"
+          value="Pacjenci"
+          />
         </router-link>
-        <!-- future tabs-->
+        <!-- future tabs
+        template 
+        <router-link to="    ">
+          <input 
+          class="tab"
+          type="button"
+          value="      "
+          />
+        </router-link>
+        -->
       </div>
     </div>
     
     <div class="navbar-end flex-column-items-centered">
-      <router-link to="/profile">
-        <input 
-          class="tab"
-          type="button"
-          value="Profil"
-        />
-      </router-link>
       <input 
         class="tab"
         type="button"

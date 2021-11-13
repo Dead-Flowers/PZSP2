@@ -1,5 +1,5 @@
 <template>
-  <form class="sign-in-box flex-column-items-centered">
+  <form class="sign-in-box sector flex-column-items-centered">
     Witaj, zaloguj się
     <input
       class="input-element-standard keyboard-input"

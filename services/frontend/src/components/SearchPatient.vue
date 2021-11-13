@@ -42,8 +42,7 @@
         name="surname"
         placeholder="Nazwisko..."
         autocomplete="off"
-      />
-       
+      />   
     </div>
     <input
       class="input-element-standard input-element-addon keyboard-input"
