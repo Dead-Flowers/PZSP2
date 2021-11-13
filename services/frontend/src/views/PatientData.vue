@@ -4,7 +4,7 @@
     <SearchPatient v-if="!showSearchBox" v-bind:searchPatient="searchPatient"/>
     <div v-else>
       <PatientTable v-bind:patientData="patientData"/>
-      <AnalysisResultTable v-bind:analysisData="analysisData" />
+      <AnalysisResultTable v-bind:analyses="analyses" />
     </div>
   </div>
 </template>
@@ -27,7 +27,7 @@ export default {
     return {
       showSearchBox: false,
       patientData: {},
-      analysisData: []
+      analyses: []
     }
   },
   methods: {
@@ -44,7 +44,7 @@ export default {
         surname: "Gąska",
         lastLab: "10-11-2021"
       }
-      this.analysisData = [{
+      this.analyses = [{
           analysisId: 1,
           patientId: 1,
           patientIdType: 'pesel',

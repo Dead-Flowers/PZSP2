@@ -1,5 +1,6 @@
 import Router from 'vue-router'
 import Admin from '../views/Admin.vue'
+import AnalysisView from '../views/AnalysisView.vue'
 import FirstLogin from '../views/FirstLogin.vue'
 import Login from '../views/Login.vue'
 import NewAnalysis from '../views/NewAnalysis.vue' 
@@ -16,6 +17,11 @@ export default new Router({
       path: '/admin',
       name: 'Admin',
       component: Admin
+    },
+    {
+      path: '/analysis-view',
+      name: 'AnalysisView',
+      component: AnalysisView
     },
     {
       path: '/login',
@@ -50,6 +56,7 @@ export default new Router({
     {
       path: "*", 
       name: 'PageNotFound',
-      component: PageNotFound }
+      component: PageNotFound 
+    }
   ]
 })
