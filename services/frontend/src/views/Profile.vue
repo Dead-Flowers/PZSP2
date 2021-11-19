@@ -1,6 +1,7 @@
 <template>
   <div class="max-screen-space-container flex-column-items-centered">
     <Navbar />
+    <label>Witaj {{username}}!</label>
   </div>
 </template>
 
@@ -12,9 +13,17 @@ export default {
   components: {
     Navbar,
   },
+  data() {
+    return {
+      username: 'Test',
+    }
+  },
+
 }
 </script>
 
-<style>
-
+<style scoped>
+label {
+  font-size: 4rem;
+}
 </style>

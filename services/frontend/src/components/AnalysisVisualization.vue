@@ -1,6 +1,7 @@
 <template>
   <div>
     <!-- create graphs here -->
+    <img src="mock_files/mock_analysis_graph.png"/>
   </div>
 </template>
 
@@ -13,4 +14,6 @@ export default {
 </script>
 
 <style scoped>
+
+
 </style>

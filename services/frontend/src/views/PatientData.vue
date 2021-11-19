@@ -37,6 +37,7 @@ export default {
     },
     getPatientData(id) {
       // TODO: this is a mock, we need to get data from backend 
+      id = 11111;
       this.patientData = {
         patientId: id,
         firstName:"Bonifacy",
@@ -45,26 +46,8 @@ export default {
         lastLab: "10-11-2021"
       }
       this.analyses = [{
-          analysisId: 1,
-          patientId: 1,
-          patientIdType: 'pesel',
-          patientName: "Bonifacy Rupert",
-          patientSurname: "Gąska",
-          date: "02-01-2020",
-          analysisHyperlink: "https://www.google.com"
-        },
-        {
-          analysisId: 2,
-          patientId: 1,
-          patientIdType: 'pesel',
-          patientName: "Bonifacy Rupert",
-          patientSurname: "Gąska",
-          date: "02-01-2020",
-          analysisHyperlink: "https://www.google.com"
-        },
-        {
-          analysisId: 3,
-          patientId: 1,
+          analysisId: 5,
+          patientId: 11111,
           patientIdType: 'pesel',
           patientName: "Bonifacy Rupert",
           patientSurname: "Gąska",
@@ -73,7 +56,7 @@ export default {
         },
         {
           analysisId: 4,
-          patientId: 1,
+          patientId: 11111,
           patientIdType: 'pesel',
           patientName: "Bonifacy Rupert",
           patientSurname: "Gąska",
@@ -81,8 +64,26 @@ export default {
           analysisHyperlink: "https://www.google.com"
         },
         {
-          analysisId: 5,
-          patientId: 1,
+          analysisId: 3,
+          patientId: 11111,
+          patientIdType: 'pesel',
+          patientName: "Bonifacy Rupert",
+          patientSurname: "Gąska",
+          date: "02-01-2020",
+          analysisHyperlink: "https://www.google.com"
+        },
+        {
+          analysisId: 2,
+          patientId: 11111,
+          patientIdType: 'pesel',
+          patientName: "Bonifacy Rupert",
+          patientSurname: "Gąska",
+          date: "02-01-2020",
+          analysisHyperlink: "https://www.google.com"
+        },
+        {
+          analysisId: 1,
+          patientId: 11111,
           patientIdType: 'pesel',
           patientName: "Bonifacy Rupert",
           patientSurname: "Gąska",

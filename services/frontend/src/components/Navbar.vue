@@ -1,9 +1,9 @@
 <template>
   <div class="navbar">
     <div class="navbar-start">
-      <label class="page-name">Bowel Lab</label>
+      <router-link class="page-name link" to="/home">Bowel Lab</router-link>
       <div class="tab-space">
-        <router-link to="/profile">
+        <router-link to="/home">
           <input 
             class="tab"
             type="button"
@@ -12,12 +12,12 @@
         </router-link>
         <router-link to="/new-analysis">
           <input 
-          class="tab-bookmark tab"
+          class="tab"
           type="button"
           value="Nowa Analiza"
           />
         </router-link>
-        <router-link to="/">
+        <router-link to="/patient-data">
           <input 
           class="tab"
           type="button"
@@ -49,11 +49,15 @@
 </template>
 
 <script>
+import router from '../router'
+
 export default {
   name: 'Navbar',
   methods: {
     logout: function (event) {
       console.log("Logged out", event);
+      router.push('/');
+      
     },
   }
 }

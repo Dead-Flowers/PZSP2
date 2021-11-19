@@ -17,6 +17,7 @@
         v-bind:type="[patientIdType=='pesel' ? 'number': 'text']"
         v-bind:name="patientIdType"
         v-bind:placeholder="[patientIdType=='pesel' ? 'Pesel...': 'Nr paszportu...']"
+        v-model="patientId"
         autocomplete="off"
       />
     </div>
@@ -27,6 +28,7 @@
         type="text"
         name="first-name"
         placeholder="Pierwsze Imię..."
+        v-model="firstName"
         autocomplete="off"
       />
       <input
@@ -34,6 +36,7 @@
         type="text"
         name="second-name"
         placeholder="Drugie Imię (opcjonalnie)..."
+        v-model="secondName"
         autocomplete="off"
       />
       <input
@@ -41,15 +44,16 @@
         type="text"
         name="surname"
         placeholder="Nazwisko..."
+        v-model="surname"
         autocomplete="off"
       />   
     </div>
     <input
-      class="input-element-standard input-element-addon keyboard-input"
+      class="input-element-standard input-element-addon"
       type="button"
-      name="submit"
+      name="button"
       value="Wyszukaj"
-      @click="searchPatient(1)"
+      @click="searchForPatient"
     />
   </div>  
 </template>
@@ -62,14 +66,34 @@ export default {
   data() {
     return {
       patientIdType: 'pesel',
+      patientId: null,
+      firstName: null,
+      secondName: null,
+      surname: null,
     }
   },
   methods: {
     changePatientIdType(event) {
       this.patientIdType = event.target.value;
-    }
+    },
+    searchForPatient() {
+      if (this.verifyPatient()) {
+        this.patientFound();
+      }
+      else {
+        this.patientNotFound();
+      }
+    },
+    verifyPatient () {
+      return this.patientId=='11111' || `${this.firstName} ${this.secondName} ${this.surname}`=="Bonifacy Rupert Gąska";
+    },
+    patientFound() {
+      this.searchPatient();
+    },
+    patientNotFound() {
+      alert('Nie znaleziono pacjenta');
+    },
   }
-  
 }
 </script>
 
