@@ -55,6 +55,13 @@ body {
   align-items: flex-start;
 }
 
+.sector {
+  background-color: var(--color-sector);
+  padding: 15px;
+  font-size: 1rem;
+  overflow: hidden;
+}
+
 .input-element-standard, .input-file-field::-webkit-file-upload-button {
   background-color: var(--color-accent);
   margin-block-start: 20px;

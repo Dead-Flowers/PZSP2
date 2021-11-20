@@ -11,7 +11,7 @@
       </tr>  
       <tr 
         v-bind:key="record.analysisId" 
-        v-for="record in analysisData"
+        v-for="record in analyses"
       >
         <td>{{record.analysisId}}</td>
         <td>{{ `${record.patientId} ${record.patientIdType}` }}</td>
@@ -19,9 +19,9 @@
         <td>{{record.patientSurname}}</td>
         <td>{{record.date}}</td>
         <td>
-          <a class="link" v-bind:href="record.analysisHyperlink">
+          <router-link to="/analysis-view" v-bind:href="record.analysisHyperlink">
             Kliknij by pobrać wynik 🗃️
-          </a>
+          </router-link>
         </td>
       </tr>
     </table>
@@ -31,7 +31,7 @@
 <script>
 export default {
   name: 'AnalysisResultTable',
-  props: ['analysisData']
+  props: ['analyses']
 }
 </script>
 

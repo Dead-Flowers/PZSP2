@@ -1,40 +1,55 @@
 <template>
   <div class="navbar">
     <div class="navbar-start">
-      <label class="page-name">Bowel Lab</label>
+      <router-link class="page-name link" to="/home">Bowel Lab</router-link>
       <div class="tab-space">
-        <input 
-        class="tab-bookmark tab"
-        type="button"
-        value="Nowa Analiza"
-        />
-        <input 
-        class="tab-bookmark tab"
-        type="button"
-        value="Pacjenci"
-        />
-        <input 
-        class="tab-bookmark tab"
-        type="button"
-        value="Wyniki"
-        />
-        <!-- future tabs-->
+        <router-link to="/home">
+          <input 
+            class="tab"
+            type="button"
+            value="Profil"
+          />
+        </router-link>
+        <router-link to="/new-analysis">
+          <input 
+          class="tab"
+          type="button"
+          value="Nowa Analiza"
+          />
+        </router-link>
+        <router-link to="/patient-data">
+          <input 
+          class="tab"
+          type="button"
+          value="Pacjenci"
+          />
+        </router-link>
       </div>
     </div>
     
-    <div class="navbar-end">
+    <div class="navbar-end flex-column-items-centered">
       <input 
         class="tab"
         type="button"
         value="Wyloguj"
+        @click="logout"
       />
     </div>
   </div>
 </template>
 
 <script>
+import router from '../router'
+
 export default {
-  name: 'Navbar'
+  name: 'Navbar',
+  methods: {
+    logout: function (event) {
+      console.log("Logged out", event);
+      router.push('/');
+      
+    },
+  }
 }
 </script>
 
@@ -71,16 +86,12 @@ export default {
   justify-content: space-between;
 }
 
-.tab-bookmark {
-  opacity: 0.8;
-  margin-block-start: 3px;
-  padding-block: 15px;
-  width: var(--width-navbar);
-}
-
 .tab {
   background-color: var(--color-tab-bookmark);
   border: 0;
+  margin-block-start: 3px;
+  padding-block: 15px;
+  width: var(--width-navbar);
   padding: 20px;
   font-size: 1rem;
   font-family:  "Roboto", sans-serif;

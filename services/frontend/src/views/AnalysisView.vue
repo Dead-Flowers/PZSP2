@@ -1,29 +1,31 @@
 <template>
   <div class="max-screen-space-container flex-column-items-centered">
     <Navbar />
-    <label>Witaj {{username}}!</label>
+    <AnalysisVisualization v-bind:analysisData="analysisData"/>
   </div>
 </template>
 
 <script>
 import Navbar from '../components/Navbar.vue'
+import AnalysisVisualization from '../components/AnalysisVisualization.vue'
 
 export default {
-  name: 'Profile',
+  name: 'AnalysisView',
   components: {
     Navbar,
+    AnalysisVisualization,
   },
   data() {
     return {
-      username: 'Test',
+      analysisData: {
+        graphData: [
+        ]
+      }
     }
-  },
-
+  }
 }
 </script>
 
-<style scoped>
-label {
-  font-size: 4rem;
-}
+<style>
+
 </style>

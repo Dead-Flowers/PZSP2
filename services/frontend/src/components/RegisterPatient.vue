@@ -1,5 +1,5 @@
 <template>
-  <form class="register-patient-box flex-column-items-centered">
+  <form class="register-patient-box sector flex-column-items-centered">
     Zarejestruj pacjenta
     <select 
       id="patient-id-type-selector"
