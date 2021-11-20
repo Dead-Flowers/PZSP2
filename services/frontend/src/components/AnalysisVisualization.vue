@@ -1,6 +1,7 @@
 <template>
   <div>
     <!-- create graphs here -->
+    <!-- this is a mock -->
     <img src="mock_files/mock_analysis_graph.png"/>
   </div>
 </template>

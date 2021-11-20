@@ -17,10 +17,8 @@ export default {
   },
   data() {
     return {
-      // this is a mock
       analysisData: {
         graphData: [
-          
         ]
       }
     }

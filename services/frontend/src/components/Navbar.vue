@@ -24,16 +24,6 @@
           value="Pacjenci"
           />
         </router-link>
-        <!-- future tabs
-        template 
-        <router-link to="    ">
-          <input 
-          class="tab"
-          type="button"
-          value="      "
-          />
-        </router-link>
-        -->
       </div>
     </div>
     

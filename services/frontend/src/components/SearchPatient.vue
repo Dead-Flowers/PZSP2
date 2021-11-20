@@ -85,6 +85,7 @@ export default {
       }
     },
     verifyPatient () {
+      // this is a mock
       return this.patientId=='11111' || `${this.firstName} ${this.secondName} ${this.surname}`=="Bonifacy Rupert Gąska";
     },
     patientFound() {
