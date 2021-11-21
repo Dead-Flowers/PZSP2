@@ -47,18 +47,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: lint backend
-        uses: psf/black@stable
-        if: always()
-        with:
-          options: "--check --verbose --diff"
-          src: "./services/backend/src"
-      - name: lint celery
-        uses: psf/black@stable
-        if: always()
-        with:
-          options: "--check --verbose --diff"
-          src: "./services/celery/src"
       - name: cache node 
         id: cache-node
         if: always()
@@ -80,4 +68,16 @@ jobs:
         run: |
           cd services/frontend
           npm run lint
+      - name: lint backend
+        uses: psf/black@stable
+        if: always()
+        with:
+          options: "--check --verbose --diff"
+          src: "./services/backend/src"
+      - name: lint celery
+        uses: psf/black@stable
+        if: always()
+        with:
+          options: "--check --verbose --diff"
+          src: "./services/celery/src"
       
