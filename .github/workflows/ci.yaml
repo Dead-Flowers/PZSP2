@@ -37,6 +37,14 @@ jobs:
       - name: Test frontend running
         run: timeout 300s bash -c "while !(curl localhost:8080); do sleep 1; done"
       - name: Run backend unit test
+        env: 
+          PROJECT_NAME: Dead-Flowers
+          FIRST_SUPERUSER: admin@example.com
+          FIRST_SUPERUSER_PASSWORD: admin
+          POSTGRES_SERVER: localhost:5432
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: pass
+          POSTGRES_DB: test
         run: |
           cd services/backend/
           ~/.poetry/bin/poetry run pytest

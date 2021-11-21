@@ -18,7 +18,7 @@ services:
     links:
       - "postgres:database"
     environment:
-      - PROJECT_NAME=RecipeMountain
+      - PROJECT_NAME=Dead-Flowers
       - FIRST_SUPERUSER=admin@example.com
       - FIRST_SUPERUSER_PASSWORD=admin
       - POSTGRES_SERVER=database:5432
