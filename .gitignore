@@ -128,12 +128,6 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
-# petry lock files
-**/poetry.lock
-
-# nmp lock
-**/package-lock.json
-
 #vscode
 .vscode/
 
