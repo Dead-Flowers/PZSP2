@@ -8,14 +8,13 @@ on:
     branches:
       - '*' 
 
-jobs:
-  permissions:
-      # required for all workflows
-      security-events: write
-  
+jobs:  
   snyk-python:
     name: snyk
     runs-on: ubuntu-latest
+    permissions:
+      # required for all workflows
+      security-events: write
     outputs:
       status: ${{ job.status }}
     steps:
@@ -40,6 +39,9 @@ jobs:
   snyk-python:
     name: snyk
     runs-on: ubuntu-latest
+    permissions:
+      # required for all workflows
+      security-events: write
     outputs:
       status: ${{ job.status }}
     steps:
