@@ -80,7 +80,7 @@ jobs:
         if: always()
         with:
           options: "--check --verbose --diff"
-          src: "./services/backend/src"
+          src: "./services/backend/app"
       - name: lint celery
         uses: psf/black@stable
         if: always()
