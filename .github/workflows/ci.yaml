@@ -18,14 +18,14 @@ jobs:
           python-version: 3.9
       - name: Install Poetry
         run: curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
-      - name: Move to backend folder
+      - name: Install packages
         run: |
           cd services/backend/
-          ls
-      - name: Install packages
-        run: ~/.poetry/bin/poetry install
+          ~/.poetry/bin/poetry install
       - name: Run test
-        run: ~/.poetry/bin/poetry run pytest
+        run: |
+          cd services/backend/
+          ~/.poetry/bin/poetry run pytest
   
   TestIntegration:
     runs-on: ubuntu-latest
@@ -59,11 +59,9 @@ jobs:
         with:
           options: "--check --verbose --diff"
           src: "./services/celery/src"
-      - name: Move to frontend
-        if: always()
-        run: cd services/frontend
       - name: cache node 
         id: cache-node
+        if: always()
         uses: actions/cache@v2
         with:
           path: |
@@ -73,9 +71,11 @@ jobs:
             ${{ runner.os }}-node
       - name: Install node node_modules
         if: steps.cache-node.outputs.cache-hit != 'true'
-        run: npm install
+        run: |
+          cd services/frontend
+          npm install
       - name: Run JS Lint
-
+        if: always()
         run: |
           cd services/frontend
           npm run lint
