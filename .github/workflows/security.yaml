@@ -36,7 +36,7 @@ jobs:
           name: python snyk
           path: snyk.json
 
-  snyk-python:
+  snyk-node:
     name: snyk
     runs-on: ubuntu-latest
     permissions:
