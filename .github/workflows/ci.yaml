@@ -2,14 +2,14 @@ name: CI
 
 on: 
   push:
-    branches:
-      - '!main' 
+    branches-ignore:
+      - main 
   pull_request:
     branches:
       - main
 
 jobs:
-  TestBackend:
+  Test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -18,19 +18,14 @@ jobs:
           python-version: 3.9
       - name: Install Poetry
         run: curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
-      - name: Install packages
+      - name: Install packages backend
         run: |
           cd services/backend/
           ~/.poetry/bin/poetry install
-      - name: Run test
+      - name: Install packages backend
         run: |
-          cd services/backend/
-          ~/.poetry/bin/poetry run pytest
-  
-  TestIntegration:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
+          cd services/celery/
+          ~/.poetry/bin/poetry install
       - name: Start dockers
         run: docker-compose up -d
       - name: Test backend running
@@ -41,8 +36,15 @@ jobs:
         run: timeout 90s bash -c "until docker exec $DOCKER_CONTAINER_NAME pg_isready ; do sleep 5 ; done"
       - name: Test frontend running
         run: timeout 300s bash -c "while !(curl localhost:8080); do sleep 1; done"
-    # test redis and celery running
-  
+      - name: Run backend unit test
+        run: |
+          cd services/backend/
+          ~/.poetry/bin/poetry run pytest
+      - name: Run celery unit test
+        run: |
+          cd services/celery/
+          ~/.poetry/bin/poetry run pytest
+
   Lint:
     runs-on: ubuntu-latest
     steps:
