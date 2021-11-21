@@ -56,7 +56,7 @@ jobs:
         if: always()
         uses: actions/cache@v2
         with:
-          path: |node_modules
+          path: |
             **/node_modules
             **/.eslintcache
             ~/.npm
