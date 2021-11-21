@@ -19,7 +19,9 @@ jobs:
       - name: Install Poetry
         run: curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
       - name: Move to backend folder
-        run: cd services/backend/
+        run: |
+          cd services/backend/
+          ls
       - name: Install packages
         run: ~/.poetry/bin/poetry install
       - name: Run test
@@ -34,7 +36,7 @@ jobs:
       - name: Test backend running
         run: curl localhost:5000
       - name: Test frontend running
-        run: curl localhost:8000
+        run: curl localhost:8080
       - name: Test DB running
         env: 
           DOCKER_CONTAINER_NAME: "postgres"
@@ -57,8 +59,23 @@ jobs:
         with:
           options: "--check --verbose --diff"
           src: "./services/celery/src"
-      - name: Run JS Lint
+      - name: Move to frontend
         if: always()
+        run: cd services/frontend
+      - name: cache node 
+        id: cache-node
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~services/frontend/node_modules
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node
+      - name: Install node node_modules
+        if: steps.cache-node.outputs.cache-hit != 'true'
+        run: npm install
+      - name: Run JS Lint
+
         run: |
           cd services/frontend
           npm run lint
