@@ -32,11 +32,19 @@ jobs:
         run: curl localhost:5000
       - name: Test DB running
         env: 
-          DOCKER_CONTAINER_NAME: "postgres"
+          DOCKER_CONTAINER_NAME: "postgres-deadflowers"
         run: timeout 90s bash -c "until docker exec $DOCKER_CONTAINER_NAME pg_isready ; do sleep 5 ; done"
       - name: Test frontend running
         run: timeout 300s bash -c "while !(curl localhost:8080); do sleep 1; done"
       - name: Run backend unit test
+        env: 
+          PROJECT_NAME: Dead-Flowers
+          FIRST_SUPERUSER: admin@example.com
+          FIRST_SUPERUSER_PASSWORD: admin
+          POSTGRES_SERVER: localhost:5432
+          POSTGRES_USER: user
+          POSTGRES_PASSWORD: pass
+          POSTGRES_DB: test
         run: |
           cd services/backend/
           ~/.poetry/bin/poetry run pytest
@@ -80,7 +88,7 @@ jobs:
         if: always()
         with:
           options: "--check --verbose --diff"
-          src: "./services/backend/src"
+          src: "./services/backend/app"
       - name: lint celery
         uses: psf/black@stable
         if: always()
