@@ -1,0 +1,59 @@
+name: CI
+  push:
+    branches:
+      - '*' 
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  TestBackend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.9
+      - name: Install Poetry
+        run: curl -sSL https://raw.githubusercontent.com/python-poetry/poetry/master/get-poetry.py | python -
+      - name: Move to backend folder
+        run: cd services/backend/
+      - name: Install packages
+        run: poetry install
+      - name: Run test
+        run: poetry run pytest
+  
+  TestIntegration:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Start dockers
+        run: docker-compose up -d
+      - name: Test backend running
+        run: curl localhost:5000
+      - name: Test frontend running
+        run: curl localhost:8000
+      - name: Test DB running
+        env: DOCKER_CONTAINER_NAME="postgres"
+        run: timeout 90s bash -c "until docker exec $DOCKER_CONTAINER_NAME pg_isready ; do sleep 5 ; done"
+    # test redis and celery running
+  
+  Lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: lint backend
+        uses: psf/black@stable
+        with:
+          options: "--check --verbose --diff"
+          src: "./services/backend/src"
+      - name: lint celery
+        uses: psf/black@stable
+        with:
+          options: "--check --verbose --diff"
+          src: "./services/celery/src"
+      - name: Run JS Lint
+        run: |
+          cd services/frontend
+          npm run lint
+      
