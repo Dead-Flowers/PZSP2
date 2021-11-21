@@ -35,29 +35,34 @@ jobs:
         run: docker-compose up -d
       - name: Test backend running
         run: curl localhost:5000
-      - name: Test frontend running
-        run: curl localhost:8080
       - name: Test DB running
         env: 
           DOCKER_CONTAINER_NAME: "postgres"
         run: timeout 90s bash -c "until docker exec $DOCKER_CONTAINER_NAME pg_isready ; do sleep 5 ; done"
+      - name: Test frontend running
+        run: curl localhost:8080
     # test redis and celery running
   
   Lint:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 16.0
       - name: cache node 
         id: cache-node
         if: always()
         uses: actions/cache@v2
         with:
           path: |node_modules
-            ~/PZSP2/PZSP2/services/frontend/node_modules
+            **/node_modules
+            **/.eslintcache
             ~/.npm
-          key: ${{ runner.os }}-node3-${{ hashFiles('**/package-lock.json') }}
+          key: ${{ runner.os }}-node4-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            ${{ runner.os }}-node3
+            ${{ runner.os }}-node4
       - name: Install node node_modules
         if: steps.cache-node.outputs.cache-hit != 'true'
         run: |
