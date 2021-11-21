@@ -36,7 +36,8 @@ jobs:
       - name: Test frontend running
         run: curl localhost:8000
       - name: Test DB running
-        env: DOCKER_CONTAINER_NAME="postgres"
+        env: 
+          DOCKER_CONTAINER_NAME: "postgres"
         run: timeout 90s bash -c "until docker exec $DOCKER_CONTAINER_NAME pg_isready ; do sleep 5 ; done"
     # test redis and celery running
   
