@@ -7,7 +7,7 @@ import store from './store'
 Vue.config.productionTip = false
 Vue.use(VueRouter);
 
-
+axios.defaults.baseURL = 'http://'+ window.location.hostname +':5000/';  // the FastAPI backend
 
 new Vue({
   render: h => h(App),

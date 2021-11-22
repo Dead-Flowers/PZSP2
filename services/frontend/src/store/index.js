@@ -1,7 +1,13 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
+import axios from 'axios'
 
 Vue.use(Vuex)
+
+// tutorial for what i know
+// commit is for mutations, mutations are synchronous
+// dispatch is for actions, actions are asynchronous
+// don't know much about modules
 
 export default new Vuex.Store({
   state: {
@@ -15,7 +21,8 @@ export default new Vuex.Store({
     analysis: {
       file: null,
       result: null
-    }
+    },
+    patient: []
   },
   mutations: {
     setPatient(state, patient) {
@@ -26,14 +33,26 @@ export default new Vuex.Store({
     },
     setAnalysisResult(state, result) {
       state.analysis.result = result
+    },
+    setPatients(state, patients) {
+      state.patients = patients
     }
   },
   actions: {
     //TODO: change email if needed
     getPatient(state, email) {
-
-      
+      let patient = await axios.get('user/${email}') // yeah this doesn't work rn 
+      state.commit("setPatient", patient)
+    },
+    createPatient(state, patient) {
+      await axios.post('user', patient)
+      await dispatch('getPatient', patient.email) // is this needed ?
+    },
+    getPatients(state) {
+      let patients = await axios.get("users")
+      commit('setPatients', patients)
     }
+
 
   },
   modules: {
