@@ -40,17 +40,17 @@ export default new Vuex.Store({
   },
   actions: {
     //TODO: change email if needed
-    getPatient(state, email) {
-      let patient = await axios.get('user/${email}') // yeah this doesn't work rn 
+    async getPatient(state, email) {
+      let patient = await axios.get('user/'+email) // yeah this doesn't work rn 
       state.commit("setPatient", patient)
     },
-    createPatient(state, patient) {
+    async createPatient(state, patient) {
       await axios.post('user', patient)
-      await dispatch('getPatient', patient.email) // is this needed ?
+      await state.dispatch('getPatient', patient.email) // is this needed ?
     },
-    getPatients() {
+    async getPatients(state) {
       let patients = await axios.get("users")
-      commit('setPatients', patients)
+      state.commit('setPatients', patients)
     }
   },
   modules: {
