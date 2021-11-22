@@ -22,7 +22,7 @@ export default new Vuex.Store({
       file: null,
       result: null
     },
-    patient: []
+    patients: []
   },
   mutations: {
     setPatient(state, patient) {
@@ -48,18 +48,17 @@ export default new Vuex.Store({
       await axios.post('user', patient)
       await dispatch('getPatient', patient.email) // is this needed ?
     },
-    getPatients(state) {
+    getPatients() {
       let patients = await axios.get("users")
       commit('setPatients', patients)
     }
-
-
   },
   modules: {
   },
   getters: {
     getCurrentPatient: state => state.currentPatient,
     getAnalysisFile: state => state.analysis.file,
-    getAnalysisResult: state => state.result,s
+    getAnalysisResult: state => state.result,
+    getPatients: state => state.getPatients,
   }
 })
