@@ -1,4 +1,4 @@
-version: "3.9"
+version: "3"
 
 services:
   postgres:
@@ -8,11 +8,11 @@ services:
       - POSTGRES_PASSWORD=pass
       - POSTGRES_DB=test
     ports:
-    - "5432:5432"
+      - "5432:5432"
     container_name: "postgres-deadflowers"
     volumes:
-    - postgres:/var/lib/postgresql/data
-  
+      - postgres:/var/lib/postgresql/data
+
   backend:
     build: ./services/backend
     links:
@@ -32,7 +32,7 @@ services:
     container_name: "backend-deadflowers"
     depends_on:
       - postgres
-  
+
   frontend:
     build: ./services/frontend
     environment:
@@ -43,10 +43,10 @@ services:
     ports:
       - "8080:8080"
     container_name: "frontend-deadflowers"
-  
+
   worker:
-    build: ./services/celery
-    command: celery worker --app=worker.celery --loglevel=info
+    build: ./services/backend
+    command: celery worker --app=worker.app.celery --loglevel=info
     environment:
       - CELERY_BROKER_URL=redis://redis:6379/0
       - CELERY_RESULT_BACKEND=redis://redis:6379/0
@@ -63,8 +63,5 @@ services:
     container_name: "redis-deadflowers"
 
 volumes:
-  postgres:
-    name: postgres
-  redis:
-    name: redis
-    
+  postgres: null
+  redis: null

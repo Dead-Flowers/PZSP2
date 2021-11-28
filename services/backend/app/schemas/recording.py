@@ -10,4 +10,5 @@ class RecordingBase(BaseModel):
 
 
 class RecordingCreate(RecordingBase):
-    blob: UploadFile
+    blob: bytes
+    filename: str
