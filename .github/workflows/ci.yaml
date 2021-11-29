@@ -22,10 +22,6 @@ jobs:
         run: |
           cd services/backend/
           ~/.poetry/bin/poetry install
-      - name: Install packages backend
-        run: |
-          cd services/celery/
-          ~/.poetry/bin/poetry install
       - name: Start dockers
         run: docker-compose up -d
       - name: Test backend running
@@ -50,7 +46,7 @@ jobs:
           ~/.poetry/bin/poetry run pytest
       - name: Run celery unit test
         run: |
-          cd services/celery/
+          cd services/backend/worker/
           ~/.poetry/bin/poetry run pytest
 
   Lint:
@@ -94,5 +90,5 @@ jobs:
         if: always()
         with:
           options: "--check --verbose --diff"
-          src: "./services/celery/src"
+          src: "./services/backend/worker"
       
