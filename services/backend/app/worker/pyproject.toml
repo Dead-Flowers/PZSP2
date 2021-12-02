@@ -18,7 +18,6 @@ psycopg2-binary = "^2.9.2"
 celery = "4.4.6"
 redis = "3.5.3"
 python-multipart = "^0.0.5"
-sqlalchemy-json = "^0.4.0"
 
 [tool.poetry.dev-dependencies]
 mypy = "^0.901"

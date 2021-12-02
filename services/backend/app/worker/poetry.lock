@@ -637,18 +637,6 @@ pymysql = ["pymysql (<1)", "pymysql"]
 sqlcipher = ["sqlcipher3-binary"]
 
 [[package]]
-name = "sqlalchemy-json"
-version = "0.4.0"
-description = "JSON type with nested change tracking for SQLAlchemy"
-category = "main"
-optional = false
-python-versions = "*"
-
-[package.dependencies]
-six = "*"
-sqlalchemy = ">=0.7"
-
-[[package]]
 name = "starlette"
 version = "0.14.2"
 description = "The little ASGI library that shines."
@@ -730,7 +718,7 @@ python-versions = "*"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.9"
-content-hash = "a3f7f08d04dcca77a3f56b0cd057167821bedbeef2f66e2ec50daf843db7ea4e"
+content-hash = "549497f430ca350cd015c718633213ec1cffb5fc4b1cc6443af3d1e79f23f982"
 
 [metadata.files]
 alembic = [
@@ -1295,10 +1283,6 @@ sqlalchemy = [
     {file = "SQLAlchemy-1.4.27-cp39-cp39-win32.whl", hash = "sha256:5beeff18b4e894f6cb73c8daf2c0d8768844ef40d97032bb187d75b1ec8de24b"},
     {file = "SQLAlchemy-1.4.27-cp39-cp39-win_amd64.whl", hash = "sha256:8dbe5f639e6d035778ebf700be6d573f82a13662c3c2c3aa0f1dba303b942806"},
     {file = "SQLAlchemy-1.4.27.tar.gz", hash = "sha256:d768359daeb3a86644f3854c6659e4496a3e6bba2b4651ecc87ce7ad415b320c"},
-]
-sqlalchemy-json = [
-    {file = "sqlalchemy-json-0.4.0.tar.gz", hash = "sha256:d8e72cac50724a17cc137c98bec5cb5990e9f1e8fc3eb30dd225fb47c087ea27"},
-    {file = "sqlalchemy_json-0.4.0-py2.py3-none-any.whl", hash = "sha256:0f52f24301aa3b5ea240b622facc489eff2e7bfddde931ba988bfabc306b1778"},
 ]
 starlette = [
     {file = "starlette-0.14.2-py3-none-any.whl", hash = "sha256:3c8e48e52736b3161e34c9f0e8153b4f32ec5d8995a3ee1d59410d92f75162ed"},
