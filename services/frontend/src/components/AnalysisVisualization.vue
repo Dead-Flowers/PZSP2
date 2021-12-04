@@ -53,6 +53,7 @@ import {
 } from "echarts/components";
 import VChart, { THEME_KEY } from "vue-echarts";
 
+
 use([
   CanvasRenderer,
   BarChart,
