@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { api } from '@/api';
 
 const defaultState = {
     isLoggedIn: null,
@@ -34,7 +35,7 @@ const defaultState = {
     actions: {
         async actionLogIn(state, payload) {
             try {
-                const response = await axios.post("login", payload, authHeaders(token));
+                const response = await api.LogIn(payload)
                 const token = response.data.access_token;
                 if (token) {
                     saveLocalToken(token);
@@ -52,7 +53,7 @@ const defaultState = {
         },
         async actionGetUser(state) {
             try {
-                const response = await axios.post("user"+state.state.userID);
+                const response = await api.getUser(state.state.token, state.state.userID)
                 if (response.data) {
                     //TODO: SET USER DATA
                 }

@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 import { userModule } from './user';
+import { api } from '@/api';
 
 Vue.use(Vuex)
 
@@ -51,36 +52,30 @@ export default new Vuex.Store({
     //! those are initial implementation, change when implementing real feature
     //TODO: change email if needed
     async getPatient(state, email) {
-      let patient = await axios.get('user/'+email) // yeah this doesn't work rn 
+      let patient = await api.getPatient(state.state.user.token, email) // yeah this doesn't work rn 
       state.commit("setPatient", patient)
     },
     async createPatient(state, patient) {
-      await axios.post('user', patient)
+      await api.createPatient(state.state.user.token, patient)
       await state.dispatch('getPatient', patient.email) // is this needed ?
     },
     async getPatients(state) {
-      let patients = await axios.get("users/")
+      let patients = await api.getUsers()
       state.commit('setPatients', patients.data)
     },
     async startAnalysis(state){
-      let analysisID = await axios.post("recordings/"+state.recordingID+"/analyze")
+      let analysisID = await api.startAnalysis(state.state.user.token ,state.recordingID)
       state.commit("setAnalysisID", analysisID)
     },
     async getAnalysisResults(state) {
-      let results = await axios.get("results/"+state.analysisID)
+      let results = await api.getAnalysisResults(state.state.user.token, state.state.analysisID)
       //TODO: process frames to required format
       state.commit("setAnalysisResult", results)
     },
     async uploadFile (state) {
       let formData = new FormData();
-      formData.append('file', state.analysis.file);
-      let recordingID =  await axios.post("recordings/upload",
-      formData,
-      {
-        headers: {
-            'Content-Type': 'multipart/form-data'
-        }
-      })
+      formData.append('file', state.state.analysis.file);
+      let recordingID = await api.uploadFile(state.state.user.token, formData)
       state.commit("setRecodingID", recordingID)
     } 
   },
