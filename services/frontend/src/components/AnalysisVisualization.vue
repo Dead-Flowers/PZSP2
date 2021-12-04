@@ -70,12 +70,11 @@ export default {
       len: 0,
       average: 0,
       counts: 0, 
-      median: 0,
       option: {
         tooltip: {},
         legend: {},
         xAxis: {
-          data: Array.from({length: this.len}, (_, i) => (i + 1)/100.0)
+          data: 0
         },
         yAxis: {},
         series: [{
@@ -104,7 +103,6 @@ export default {
     this.len = this.results.length;
     this.average = Math.round(this.getAverage() * 100) / 100;
     this.counts = this.getCounts();
-    console.log(this.results)
     this.option.series[0].data = this.results;
     this.option.xAxis.data = Array.from({length: this.len}, (_, i) => (i + 1)/100.0);
   }
@@ -118,20 +116,9 @@ export default {
   height: 500px;
 }
 
-.rounded {
-  border-top: 8px solid #bbb;
-  border-radius: 5px;
-}
-
-.vl {
-  border-left: 6px solid rgb(28, 163, 28);
-  height: 500px;
-}
-
 .card {
-  margin: 15px;
+  margin: 50px;
   width: 75%;
-  align-items: center
 }
 
 
