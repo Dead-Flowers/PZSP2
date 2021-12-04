@@ -16,8 +16,10 @@ class AnalysisResultBase(BaseModel):
 class AnalysisResultCreate(AnalysisResultBase):
     status: str
 
+
 class AnalysisResultStatusUpdate(AnalysisResultBase):
     status: str
+
 
 class AnalysisResultUpdate(AnalysisResultBase):
     status: str
@@ -25,11 +27,10 @@ class AnalysisResultUpdate(AnalysisResultBase):
     result: int
     frames: list
     statistics: dict
-    
+
     class Config:
         arbitrary_types_allowed = True
 
     @validator("frames")
     def status_return_validator(cls, v, values, **kwargs):
         return v
-

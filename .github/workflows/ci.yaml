@@ -88,5 +88,5 @@ jobs:
         if: always()
         with:
           options: "--check --verbose --diff"
-          src: "./services/backend/worker"
+          src: "./services/backend/app/worker"
       
