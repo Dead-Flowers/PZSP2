@@ -30,10 +30,15 @@ export default {
   },
   methods: {
     startAnalysis() {
+      this.$store.dispatch("uploadFile");
+      this.$store.dispatch("startAnalysis");
       router.push('analysis-view');
     },
     fileChange(event) {
       this.noFiles = !event.target.files.length;
+      if (!this.noFiles) {
+        this.$store.commit("setAnalysisFile", event.target.files[0])
+      }
     }
   }
 }

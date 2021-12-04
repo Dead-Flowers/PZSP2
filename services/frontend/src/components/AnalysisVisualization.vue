@@ -99,6 +99,7 @@ export default {
     },
   },
   mounted() {
+    // await this.$store.dispatch("getAnalysisResults")
     this.results = this.$store.getters.getAnalysisResult;
     this.len = this.results.length;
     this.average = Math.round(this.getAverage() * 100) / 100;

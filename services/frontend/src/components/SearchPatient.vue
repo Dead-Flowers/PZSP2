@@ -55,6 +55,23 @@
       value="Wyszukaj"
       @click="searchForPatient"
     />
+
+    <table> 
+      <tr>
+        <th>Pesel</th>
+        <th>Imię Pacjenta</th>
+        <th>Email</th>
+      </tr>  
+      <tr 
+        v-bind:key="patient.id" 
+        v-for="patient in patientList"
+      >
+        <td>11111</td>
+        <td>{{patient.full_name}}</td>
+        <td>{{patient.email}}</td>
+      </tr>
+    </table>
+
   </div>  
 </template>
 
@@ -70,6 +87,7 @@ export default {
       firstName: null,
       secondName: null,
       surname: null,
+      patientList: []
     }
   },
   methods: {
@@ -94,6 +112,9 @@ export default {
     patientNotFound() {
       alert('Nie znaleziono pacjenta');
     },
+  },
+  mounted() {
+    this.patientList = this.$store.getters.getPatients
   }
 }
 </script>

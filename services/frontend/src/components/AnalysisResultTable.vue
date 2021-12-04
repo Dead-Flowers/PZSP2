@@ -19,7 +19,7 @@
         <td>{{record.patientSurname}}</td>
         <td>{{record.date}}</td>
         <td>
-          <router-link to="/analysis-view" v-bind:href="record.analysisHyperlink">
+          <router-link to="/analysis-view">
             Kliknij by pobrać wynik 🗃️
           </router-link>
         </td>
