@@ -42,12 +42,10 @@ jobs:
           POSTGRES_PASSWORD: pass
           POSTGRES_DB: test
         run: |
-          cd services/backend/
-          ~/.poetry/bin/poetry run pytest
+          ~/.poetry/bin/poetry run pytest services/backend/
       - name: Run celery unit test
         run: |
-          cd services/backend/worker/
-          ~/.poetry/bin/poetry run pytest
+          ~/.poetry/bin/poetry run pytest services/backend/worker
 
   Lint:
     runs-on: ubuntu-latest
