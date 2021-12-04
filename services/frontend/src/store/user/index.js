@@ -1,3 +1,5 @@
+import axios from 'axios'
+
 const defaultState = {
     isLoggedIn: null,
     token: '',
@@ -7,7 +9,7 @@ const defaultState = {
     dashboardMiniDrawer: false,
   };
   
-  export const mainModule = {
+  export const userModule = {
     state: defaultState,
     mutations: {
         setToken(state, payload) {
@@ -32,7 +34,7 @@ const defaultState = {
     actions: {
         async actionLogIn(state, payload) {
             try {
-                const response = await axios.post("login", payload);
+                const response = await axios.post("login", payload, authHeaders(token));
                 const token = response.data.access_token;
                 if (token) {
                     saveLocalToken(token);
