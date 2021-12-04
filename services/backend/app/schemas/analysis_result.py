@@ -1,5 +1,8 @@
-from typing import Optional
+from typing import Dict, Optional
 from uuid import UUID
+
+from sqlalchemy.sql.sqltypes import String, Integer
+from sqlalchemy_json import NestedMutableJson
 from app.services.bowel_service import BowelAnalysisResult
 
 from fastapi import UploadFile
@@ -11,11 +14,22 @@ class AnalysisResultBase(BaseModel):
 
 
 class AnalysisResultCreate(AnalysisResultBase):
-    get_status_return_value: BowelAnalysisResult
+    status: str
 
+class AnalysisResultStatusUpdate(AnalysisResultBase):
+    status: str
+
+class AnalysisResultUpdate(AnalysisResultBase):
+    status: str
+    error: str
+    result: int
+    frames: list
+    statistics: dict
+    
     class Config:
         arbitrary_types_allowed = True
 
-    @validator("get_status_return_value")
+    @validator("frames")
     def status_return_validator(cls, v, values, **kwargs):
         return v
+

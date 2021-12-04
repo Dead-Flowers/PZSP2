@@ -47,10 +47,40 @@ def get_recording(
 
 @router.post("/recordings/{recording_id}/analyze", status_code=status.HTTP_202_ACCEPTED)
 def perform_analysis(*, db: Session = Depends(deps.get_db), recording_id: UUID):
-    celery_ref.send_file.delay(recording_id)
+    db: Session
+    for db in deps.get_db():
+        analysis_create = AnalysisResultCreate(status="CREATED")
+        result = crud.analysis_result.create(db, obj_in=analysis_create)
+        celery_ref.send_file.delay(recording_id, result.id)
+        return result.id
 
 
 @router.get("/results/{analysis_id}")
 def get_results(*, db: Session = Depends(deps.get_db), analysis_id: UUID):
     result = crud.analysis_result.get(db, analysis_id)
+    return dict(id=result.id, status=result.status)
+
+@router.get("/results/{analysis_id}/frames")
+def get_results(*, db: Session = Depends(deps.get_db), analysis_id: UUID):
+    result = crud.analysis_result.get(db, analysis_id)
+    if result.status != "COMPLETED":
+        raise HTTPException(
+            status_code=404,
+            detail="The analysis with given ID has not been finished yet"
+        ) 
     return result.frames
+
+@router.get("/results/{analysis_id}/statistics")
+def get_results(*, db: Session = Depends(deps.get_db), analysis_id: UUID):
+    result = crud.analysis_result.get(db, analysis_id)
+    if result.status != "COMPLETED":
+        raise HTTPException(
+            status_code=404,
+            detail="The analysis with given ID has not been finished yet"
+        ) 
+    return result.statistics
+
+@router.get("/results/{analysis_id}/status")
+def get_results(*, db: Session = Depends(deps.get_db), analysis_id: UUID):
+    result = crud.analysis_result.get(db, analysis_id)
+    return result.status
