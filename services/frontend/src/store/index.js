@@ -106,7 +106,8 @@ export default new Vuex.Store({
     getAnalysisFile: state => state.analysis.file,
     getAnalysisResult: state => state.analysis.result,
     getPatients: state => state.patients,
-    getAnalysisID: state => state.analysis.analysisID
+    getAnalysisID: state => state.analysis.analysisID,
+    analysisStared: state => state.analysis.analysisID == null ? true : false,
   }
 })
 

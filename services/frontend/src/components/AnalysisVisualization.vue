@@ -1,5 +1,7 @@
 <template>
-  <div class="sector flex-column-items-centered card">
+  <div v-if="analisStared" class="sector flex-column-items-centered card"> Start Analysis before starting </div>
+
+  <div v-else class="sector flex-column-items-centered card">
 
     <div class="flex-row-items-centered" style="margin-block-end: 30px">
 
@@ -67,6 +69,7 @@ export default {
   },
   data() {
     return {
+      analisStared: false,
       results: [],
       len: 0,
       average: 0,
@@ -87,7 +90,7 @@ export default {
     }
   },
   beforeMount(){
-    
+    this.analisStared = this.$store.getters.analysisStared
   },
   methods: {
     getAverage() {
