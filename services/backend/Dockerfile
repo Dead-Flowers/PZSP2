@@ -6,7 +6,7 @@ ENV PYTHONFAULTHANDLER=1 \
 
 FROM base as builder
 
-WORKDIR /app
+WORKDIR /
 
 ENV PIP_DEFAULT_TIMEOUT=100 \
     PIP_DISABLE_PIP_VERSION_CHECK=1 \
@@ -28,7 +28,8 @@ FROM base as final
 RUN apk add --no-cache libffi libpq
 COPY --from=builder /venv /venv
 ENV PATH=/venv/bin:$PATH
+COPY . .
 EXPOSE 8080
 EXPOSE 5000
-CMD ["uvicorn", "app:app", "--host", "0.0.0.0", "--port", "5000"]
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "5000"]
 #CMD ["sh"]

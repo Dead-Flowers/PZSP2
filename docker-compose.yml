@@ -1,4 +1,4 @@
-version: "3.9"
+version: "3"
 
 services:
   postgres:
@@ -8,31 +8,23 @@ services:
       - POSTGRES_PASSWORD=pass
       - POSTGRES_DB=test
     ports:
-    - "5432:5432"
+      - "5432:5432"
     container_name: "postgres-deadflowers"
     volumes:
-    - postgres:/var/lib/postgresql/data
-  
+      - postgres:/var/lib/postgresql/data
+
   backend:
     build: ./services/backend
+    env_file:
+      - backend.env
     links:
       - "postgres:database"
-    environment:
-      - PROJECT_NAME=Dead-Flowers
-      - FIRST_SUPERUSER=admin@example.com
-      - FIRST_SUPERUSER_PASSWORD=admin
-      - POSTGRES_SERVER=database:5432
-      - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=pass
-      - POSTGRES_DB=test
-      - CELERY_BROKER_URL=redis://redis:6379/0
-      - CELERY_RESULT_BACKEND=redis://redis:6379/0
     ports:
       - "5000:5000"
     container_name: "backend-deadflowers"
     depends_on:
       - postgres
-  
+
   frontend:
     build: ./services/frontend
     environment:
@@ -43,14 +35,6 @@ services:
     ports:
       - "8080:8080"
     container_name: "frontend-deadflowers"
-  
-  worker:
-    build: ./services/celery
-    command: celery worker --app=worker.celery --loglevel=info
-    environment:
-      - CELERY_BROKER_URL=redis://redis:6379/0
-      - CELERY_RESULT_BACKEND=redis://redis:6379/0
-    container_name: "worker-deadflowers"
 
   redis:
     image: "redis:alpine"
@@ -62,9 +46,17 @@ services:
       - "redis:/var/lib/redis/data"
     container_name: "redis-deadflowers"
 
+  worker:
+    build: ./services/backend
+    command: celery worker --app=app.worker.app.celery --loglevel=info
+    env_file:
+      - backend.env
+    container_name: "worker-deadflowers"
+    links:
+      - "postgres:database"
+    depends_on:
+      - postgres
+
 volumes:
-  postgres:
-    name: postgres
-  redis:
-    name: redis
-    
+  postgres: null
+  redis: null

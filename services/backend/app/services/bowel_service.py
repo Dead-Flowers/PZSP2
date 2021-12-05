@@ -1,5 +1,7 @@
+from os import error
+from pydantic.typing import resolve_annotations
 import requests
-from typing import Optional
+from typing import Dict, Optional
 from urllib.parse import urljoin
 from io import BufferedReader
 import re
@@ -41,6 +43,13 @@ class BowelAnalysisStatistics:
     def plots(self) -> dict:
         return self._plots
 
+    def as_dict(self):
+        return dict(
+            basic_informations=self.basic_informations,
+            main_results=self.main_results,
+            plots=self.plots,
+        )
+
 
 class BowelAnalysisResult:
     def __init__(
@@ -75,6 +84,14 @@ class BowelAnalysisResult:
                 self._statistics
             )
         return self._cached_statistics_obj
+
+    def as_dict(self) -> dict:
+        return dict(
+            error=self.error,
+            result=self._result,
+            frames=self.frames,
+            statistics=self.statistics.as_dict(),
+        )
 
 
 class BowelAnalysisService:
