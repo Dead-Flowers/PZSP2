@@ -26,17 +26,21 @@ def send_file(recording_id: str, analysis_id: str):
     for db in deps.get_db():
         analysis = crud.analysis_result.get(db, id=analysis_id)
         analysis_update_status = AnalysisResultStatusUpdate(status="PENDING")
-        ret = crud.analysis_result.update_status(
+        analysis_obj = crud.analysis_result.update_status(
             db, db_obj=analysis, obj_in=analysis_update_status
         )
         recording = crud.recording.get(db, recording_id)
         service = BowelAnalysisService("http://bowelsound.ii.pw.edu.pl")
         imageBytes = io.BytesIO(recording.blob)
         service.upload_file(imageBytes.read())
-        ret_val = service.get_status()
-        ret_value = AnalysisResultUpdate(status="COMPLETED", **ret_val.as_dict())
+        bowel_ret_val = service.get_status()
+        analysis_res_obj = AnalysisResultUpdate(
+            status="COMPLETED", **bowel_ret_val.as_dict()
+        )
         analysis = crud.analysis_result.get(db, id=analysis_id)
-        result = crud.analysis_result.update(db, db_obj=analysis, obj_in=ret_value)
+        result = crud.analysis_result.update(
+            db, db_obj=analysis, obj_in=analysis_res_obj
+        )
         return result.id
 
 
