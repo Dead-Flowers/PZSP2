@@ -45,6 +45,10 @@ jobs:
           cd services/backend/
 
           ~/.poetry/bin/poetry run pytest 
+      - name: Install celery dependecys 
+        run: |
+          cd services/backend/app/worker
+          ~/.poetry/bin/poetry install
       - name: Run celery unit test
         run: |
           cd services/backend/app/worker
