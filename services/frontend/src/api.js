@@ -26,31 +26,32 @@ export const api = {
     return axios.get(`${APISUFFIX}/users`, authHeaders(token));
   },
 
-  async getPatient(token, email) {
+  // async getPatient(token, email) {
 
-  },
+  // },
 
-  async createPatient(token, patient) {
+  // async createPatient(token, patient) {
 
-  },
+  // },
 
   async uploadFile(token, file) {
-    return axios.post("recordings/upload",
+    let headers = authHeaders(token);
+    headers.headers ['Content-Type'] = 'multipart/form-data';
+    return axios.post(`${APISUFFIX}/analysis/recordings/upload`,
     file,
-    {
-      headers: {
-          'Content-Type': 'multipart/form-data',
-          authHeaders(token)
-      }
-    })
+    headers)
   },
 
   async startAnalysis(token, recordingID) {
-      return axios.post(`${APISUFFIX}/recordings/${recordingID}/analyze`, authHeaders(token))
+      return axios.post(`${APISUFFIX}/analysis/recordings/${recordingID}/analyze`, authHeaders(token))
   },
 
   async getAnalysisResults(token, analysisID) {
-      return axios.get(`${APISUFFIX}/results/${analysisID}`, authHeaders(token))
+      return axios.get(`${APISUFFIX}/analysis/results/${analysisID}`, authHeaders(token))
+  },
+
+  async getFrames(token, analysisID) {
+    return axios.get(`${APISUFFIX}/analysis/results/${analysisID}/frames`, authHeaders(token))
   }
 
 };

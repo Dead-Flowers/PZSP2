@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { api } from '@/api';
 
 const defaultState = {
@@ -108,11 +107,3 @@ const getLocalToken = () => localStorage.getItem('token');
 const saveLocalToken = (token) => localStorage.setItem('token', token);
 
 const removeLocalToken = () => localStorage.removeItem('token');
-
-function authHeaders(token) {
-    return {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    };
-  }

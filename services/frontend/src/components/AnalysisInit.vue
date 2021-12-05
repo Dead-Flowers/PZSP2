@@ -12,7 +12,7 @@
       class="input-file-field"
       type="file"
       name="bowel-sound-file"
-      accept=".mp3"
+      accept=".mp3,.wav"
       @change="fileChange"
     />
   </form>
@@ -29,9 +29,9 @@ export default {
     }
   },
   methods: {
-    startAnalysis() {
-      this.$store.dispatch("uploadFile");
-      this.$store.dispatch("startAnalysis");
+    async startAnalysis() {
+      await this.$store.dispatch("uploadFile");
+      //this.$store.dispatch("startAnalysis");
       router.push('analysis-view');
     },
     fileChange(event) {

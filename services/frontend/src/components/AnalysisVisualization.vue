@@ -75,7 +75,7 @@ export default {
         tooltip: {},
         legend: {},
         xAxis: {
-          data: 0
+          data: []
         },
         yAxis: {},
         series: [{
@@ -87,7 +87,7 @@ export default {
     }
   },
   beforeMount(){
-    // await this.$store.dispatch("getAnalysisResults")
+    
   },
   methods: {
     getAverage() {
@@ -101,14 +101,18 @@ export default {
         return s;
       }, { above: 0, below: 0 });
     },
+    setData() {
+      this.results = this.$store.getters.getAnalysisResult;
+      this.len = this.results.length;
+      this.average = Math.round(this.getAverage() * 100) / 100;
+      this.counts = this.getCounts();
+      this.option.series[0].data = this.results;
+      this.option.xAxis.data = Array.from({length: this.len}, (_, i) => (i + 1)/100.0);
+    }
   },
-  mounted() {
-    this.results = this.$store.getters.getAnalysisResult;
-    this.len = this.results.length;
-    this.average = Math.round(this.getAverage() * 100) / 100;
-    this.counts = this.getCounts();
-    this.option.series[0].data = this.results;
-    this.option.xAxis.data = Array.from({length: this.len}, (_, i) => (i + 1)/100.0);
+  async mounted() {
+    await this.$store.dispatch("getAnalysisResults")
+    this.setData()
   }
 }
 </script>
