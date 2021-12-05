@@ -47,8 +47,8 @@ jobs:
           ~/.poetry/bin/poetry run pytest 
       - name: Run celery unit test
         run: |
-          cd services/backend/worker
-          
+          cd services/backend/app/worker
+
           ~/.poetry/bin/poetry run pytest 
 
   Lint:
