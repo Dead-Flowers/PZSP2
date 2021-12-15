@@ -31,7 +31,6 @@ export default {
   methods: {
     async startAnalysis() {
       await this.$store.dispatch("uploadFile");
-      //this.$store.dispatch("startAnalysis");
       router.push('analysis-view');
     },
     fileChange(event) {

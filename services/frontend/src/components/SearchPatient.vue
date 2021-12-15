@@ -66,7 +66,7 @@
         v-bind:key="patient.id" 
         v-for="patient in patientList"
       >
-        <td>11111</td>
+        <td>01234567890</td>
         <td>{{patient.full_name}}</td>
         <td>{{patient.email}}</td>
       </tr>

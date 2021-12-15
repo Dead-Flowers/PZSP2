@@ -1,5 +1,5 @@
 <template>
-  <div v-if="analisStared" class="sector flex-column-items-centered card"> Start Analysis before starting </div>
+  <div v-if="analysisStared" class="sector flex-column-items-centered card"> Rozpocznij analizę </div>
 
   <div v-else class="sector flex-column-items-centered card">
 
@@ -8,7 +8,7 @@
       <table style="margin-inline-end: 30px">
         <tr>
           <td>Pesel </td>
-          <td>2137 </td>
+          <td>01234567890 </td>
         </tr>
         <tr>
       <td>Imie</td>
@@ -22,7 +22,7 @@
       <table>
         <tr>
           <td>Średni %</td>
-          <td>{{ average }}</td>
+          <td>{{ average }}%</td>
         </tr>
         <tr>
             <td>Powyżej 80%</td>
@@ -65,11 +65,11 @@ export default {
     VChart
   },
   provide: {
-    [THEME_KEY]: "dark"
+    [THEME_KEY]: "light"
   },
   data() {
     return {
-      analisStared: false,
+      analysisStared: false,
       results: [],
       len: 0,
       average: 0,
@@ -90,7 +90,7 @@ export default {
     }
   },
   beforeMount(){
-    this.analisStared = this.$store.getters.analysisStared
+    this.analysisStared = this.$store.getters.analysisStared
   },
   methods: {
     getAverage() {
@@ -107,7 +107,7 @@ export default {
     setData() {
       this.results = this.$store.getters.getAnalysisResult;
       this.len = this.results.length;
-      this.average = Math.round(this.getAverage() * 100) / 100;
+      this.average = Math.round(this.getAverage() * 100);
       this.counts = this.getCounts();
       this.option.series[0].data = this.results;
       this.option.xAxis.data = Array.from({length: this.len}, (_, i) => (i + 1)/100.0);

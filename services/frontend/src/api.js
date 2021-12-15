@@ -26,14 +26,6 @@ export const api = {
     return axios.get(`${APISUFFIX}/users`, authHeaders(token));
   },
 
-  // async getPatient(token, email) {
-
-  // },
-
-  // async createPatient(token, patient) {
-
-  // },
-
   async uploadFile(token, file) {
     let headers = authHeaders(token);
     headers.headers ['Content-Type'] = 'multipart/form-data';
