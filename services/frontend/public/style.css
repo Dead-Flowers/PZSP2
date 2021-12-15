@@ -1,14 +1,13 @@
 :root {
   --color-bcg: #d7ccc8;
-  --color-navbar: #5d4037;
-  --color-tab-bookmark: #795548;
-  --color-sector: #bdbdbd;
-  --color-accent:  #607d8b;
+  --color-sector: #5d4037;
+  --color-accent:  #795548;
+  --color-text: #ffffff;
+  --color-text-darker: #c1c8cc;
+  
   --color-table-header: #2c2b2b;
   --color-table-record1: #3f3d3d;
   --color-table-record2: #575353;
-  --color-text: #ffffff;
-  --color-text-darker: #c1c8cc;
   --width-navbar: 12vw;
 }
 

@@ -96,7 +96,7 @@ export default {
   left: 0;
   position: fixed;
   z-index: 10;
-  background-color: var(--color-navbar);
+  background-color: var(--color-sector);
   margin: 0;
   padding-block-start: 40px;
   height: 100vh;
@@ -124,7 +124,7 @@ export default {
 }
 
 .tab {
-  background-color: var(--color-tab-bookmark);
+  background-color: var(--color-accent);
   border: 0;
   margin-block-start: 3px;
   padding-block: 15px;
