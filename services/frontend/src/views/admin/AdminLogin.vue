@@ -1,6 +1,6 @@
 <template>
   <div class="max-screen-space-container flex-column-items-centered">
-    <Login v-bind:pageType="'admin'" />
+    <Login v-bind:usertype="'admin'" />
   </div>
 </template>
 
@@ -10,7 +10,7 @@ import Login from '../../components/Login.vue'
 
 export default {
   name: 'AdminLogin',
-  props: ["pageType"],
+  props: ["usertype"],
   components: {
   Login
   }

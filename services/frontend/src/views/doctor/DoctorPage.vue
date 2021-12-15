@@ -1,6 +1,6 @@
 <template>
   <div class="max-screen-space-container flex-column-items-centered">
-    <Navbar v-bind:pageType="'doctor'" />
+    <Navbar v-bind:usertype="'doctor'" />
     <label>Witaj {{username}}!</label>
   </div>
 </template>

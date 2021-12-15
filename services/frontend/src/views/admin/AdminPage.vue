@@ -1,6 +1,6 @@
 <template>
   <div class="max-screen-space-container flex-column-items-centered">
-    <Navbar v-bind:pageType="'admin'" />
+    <Navbar v-bind:usertype="'admin'" />
   </div>
 </template>
 

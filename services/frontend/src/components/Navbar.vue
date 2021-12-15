@@ -3,7 +3,7 @@
     <div class="navbar-start">
       <router-link class="page-name link" to='/' >Bowel Lab</router-link>
       <!-- zakładki lekarza -->
-      <div v-if="(pageType == 'doctor')" class="tab-space">
+      <div v-if="(usertype == 'doctor')" class="tab-space">
         <router-link to='/doctor/home'>
           <input 
             class="tab"
@@ -27,7 +27,7 @@
         </router-link>
       </div>
       <!-- zakładki admina -->
-      <div v-if="(pageType == 'admin')" class="tab-space">
+      <div v-if="(usertype == 'admin')" class="tab-space">
         <router-link to='/admin/home'>
           <input 
             class="tab"
@@ -51,7 +51,7 @@
         </router-link>
       </div>
       <!-- zakładki pacjenta -->
-      <div v-if="(pageType == 'patient')" class="tab-space">
+      <div v-if="(usertype == 'patient')" class="tab-space">
         <router-link to='/patient/home'>
           <input 
             class="tab"
@@ -79,11 +79,11 @@ import router from '../router'
 
 export default {
   name: 'Navbar',
-  props: ['pageType'],
+  props: ['usertype'],
   methods: {
     logout: function (event) {
       console.log("Logged out", event);
-      router.push(`/${this.pageType}/login`);
+      router.push(`/${this.usertype}/login`);
       
     },
   }

@@ -6,6 +6,8 @@
 </template>
 
 <script>
+
+import '../public/style.css'
 export default {
   name: 'App',
   components: {
