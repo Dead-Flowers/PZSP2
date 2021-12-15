@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import SetupPasswd from '../components/SetupPasswd.vue'
+import SetupPasswd from '../../components/SetupPasswd.vue'
 
 export default {
   name: 'FirstLogin',

@@ -9,7 +9,7 @@
   --color-table-record2: #575353;
   --color-text: #ffffff;
   --color-text-darker: #c1c8cc;
-  --width-navbar: 10vw;
+  --width-navbar: 12vw;
 }
 
 body {
@@ -62,7 +62,7 @@ body {
   overflow: hidden;
 }
 
-.input-element-standard, .input-file-field::-webkit-file-upload-button {
+.input-element-standard, .input-file-field::-webkit-file-upload-button, .input-file-field::file-selector-button {
   background-color: var(--color-accent);
   margin-block-start: 20px;
   border: none;
@@ -73,7 +73,7 @@ body {
   color: var(--color-text);
 }
 
-.input-element-standard:hover, .input-file-field::-webkit-file-upload-button:hover {
+.input-element-standard:hover, .input-file-field::-webkit-file-upload-button:hover,  .input-file-field::file-selector-button:hover {
   filter: brightness(90%);
 }
 
@@ -141,4 +141,15 @@ tr:nth-child(odd) {
 }
 tr:nth-child(even) {
   background-color: var(--color-table-record1);
+}
+
+.go-home {
+  margin-block-start: 20px;
+  text-decoration: none;
+  font-size: 1rem;
+  color: white;
+}
+
+.go-home:hover {
+  filter: brightness(80%);
 }

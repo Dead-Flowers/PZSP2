@@ -31,7 +31,7 @@ export default {
   methods: {
     async startAnalysis() {
       await this.$store.dispatch("uploadFile");
-      router.push('analysis-view');
+      router.push('/doctor/analysis-view');
     },
     fileChange(event) {
       this.noFiles = !event.target.files.length;

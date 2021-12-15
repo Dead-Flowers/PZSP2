@@ -1,6 +1,13 @@
 <template>
   <form class="register-patient-box sector flex-column-items-centered">
     Zarejestruj pacjenta
+    <input
+      class="input-element-standard keyboard-input"
+      type="text"
+      name="email"
+      placeholder="Email..."
+      autocomplete="off"
+    />
     <select 
       id="patient-id-type-selector"
       class="input-element-standard keyboard-input input-element-small"
@@ -50,7 +57,7 @@
 <script>
 
 export default {
-  name: "RegisterPatient",
+  name: "RegisterPatientForm",
   data() {
     return {
       patientIdType: 'pesel',

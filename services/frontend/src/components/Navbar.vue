@@ -1,31 +1,67 @@
 <template>
   <div class="navbar">
     <div class="navbar-start">
-      <router-link class="page-name link" to="/home">Bowel Lab</router-link>
-      <div class="tab-space">
-        <router-link to="/home">
+      <router-link class="page-name link" to='/' >Bowel Lab</router-link>
+      <!-- zakładki lekarza -->
+      <div v-if="(pageType == 'doctor')" class="tab-space">
+        <router-link to='/doctor/home'>
           <input 
             class="tab"
             type="button"
             value="Profil"
           />
         </router-link>
-        <router-link to="/new-analysis">
+        <router-link to='/doctor/new-analysis' >
           <input 
-          class="tab"
-          type="button"
-          value="Nowa Analiza"
+            class="tab"
+            type="button"
+            value="Nowa Analiza"
           />
         </router-link>
-        <router-link to="/patient-data">
+        <router-link to='/doctor/patient-data'>          
           <input 
-          class="tab"
-          type="button"
-          value="Pacjenci"
+            class="tab"
+            type="button"
+            value="Pacjenci"
+          />
+        </router-link>
+      </div>
+      <!-- zakładki admina -->
+      <div v-if="(pageType == 'admin')" class="tab-space">
+        <router-link to='/admin/home'>
+          <input 
+            class="tab"
+            type="button"
+            value="Profil"
+          />
+        </router-link>
+        <router-link to='/admin/register-patient' >
+          <input 
+            class="tab"
+            type="button"
+            value="Zarejestruj Pacjenta"
+          />
+        </router-link>
+        <router-link to='/admin/register-doctor' >
+          <input 
+            class="tab"
+            type="button"
+            value="Zarejestruj Doktora"
+          />
+        </router-link>
+      </div>
+      <!-- zakładki pacjenta -->
+      <div v-if="(pageType == 'patient')" class="tab-space">
+        <router-link to='/patient/home'>
+          <input 
+            class="tab"
+            type="button"
+            value="Profil"
           />
         </router-link>
       </div>
     </div>
+    
     
     <div class="navbar-end flex-column-items-centered">
       <input 
@@ -43,10 +79,11 @@ import router from '../router'
 
 export default {
   name: 'Navbar',
+  props: ['pageType'],
   methods: {
     logout: function (event) {
       console.log("Logged out", event);
-      router.push('/');
+      router.push(`/${this.pageType}/login`);
       
     },
   }
@@ -96,6 +133,7 @@ export default {
   font-size: 1rem;
   font-family:  "Roboto", sans-serif;
   color: var(--color-text);
+  overflow-wrap: break-word;
 }
 
 .tab:hover {

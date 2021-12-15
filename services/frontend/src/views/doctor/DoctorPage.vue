@@ -1,15 +1,15 @@
 <template>
   <div class="max-screen-space-container flex-column-items-centered">
-    <Navbar />
+    <Navbar v-bind:pageType="'doctor'" />
     <label>Witaj {{username}}!</label>
   </div>
 </template>
 
 <script>
-import Navbar from '../components/Navbar.vue'
+import Navbar from '../../components/Navbar.vue'
 
 export default {
-  name: 'Profile',
+  name: 'DoctorPage',
   components: {
     Navbar,
   },

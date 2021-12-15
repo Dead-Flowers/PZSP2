@@ -1,17 +1,18 @@
 <template>
   <div class="max-screen-space-container flex-column-items-centered">
-    <SignIn />
+    <Login v-bind:pageType="'patient'" />
   </div>
 </template>
 
 <script>
-import SignIn from '../components/SignIn.vue'
+import Login from '../../components/Login.vue'
 
 
 export default {
-  name: 'Login',
+  name: 'PatientLogin',
+  props: ["pageType"],
   components: {
-  SignIn
+  Login
   }
 }
 </script>
@@ -19,3 +20,4 @@ export default {
 <style>
 
 </style>
+ś

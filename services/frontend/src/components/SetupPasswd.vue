@@ -28,7 +28,7 @@
 <script>
 export default {
   name: 'SetupPasswd',
-  props: ['userName'],
+  props: ['userName', 'pageType'],
   methods: {
     setPasswd: function (msg) {
       console.log('Setup password', msg)
