@@ -65,7 +65,7 @@ export default {
     VChart
   },
   provide: {
-    [THEME_KEY]: "light"
+    [THEME_KEY]: "vintage"
   },
   data() {
     return {
