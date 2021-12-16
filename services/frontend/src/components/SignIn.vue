@@ -19,7 +19,7 @@
     />
     <a  
       class="input-element-standard button link"
-      href="https://www.google.com"
+      href="https://www.w3schools.com"
     >
       Zapomniałeś hasła?
     </a>
@@ -30,11 +30,6 @@
         value="Zaloguj się"
         style="margin-inline-end: 20px"
         @click="checkLogin"
-      />
-      <input
-        class="input-element-standard button"
-        type="button"
-        value="Załóż konto"
       />
     </div>
   </form>

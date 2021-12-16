@@ -23,6 +23,7 @@ export default new Vuex.Store({
       recordingID: null,
       analysisID: null,
       file: null,
+      result: null,
     },
     patients: []
   },
@@ -49,29 +50,29 @@ export default new Vuex.Store({
   actions: {
     //! those are initial implementation, change when implementing real feature
     //TODO: change email if needed
-    async getPatient(state, email) {
-      let patient = await api.getPatient(state.state.user.token, email) // yeah this doesn't work rn 
-      state.commit("setPatient", patient)
+    async getPatient(context, email) {
+      let patient = await api.getPatient(context.state.user.token, email) // yeah this doesn't work rn 
+      context.commit("setPatient", patient)
     },
-    async createPatient(state, patient) {
-      await api.createPatient(state.state.user.token, patient)
-      await state.dispatch('getPatient', patient.email) // is this needed ?
+    async createPatient(context, patient) {
+      await api.createPatient(context.state.user.token, patient)
+      await context.dispatch('getPatient', patient.email) // is this needed ?
     },
-    async getPatients(state) {
+    async getPatients(context) {
       let patients = await api.getUsers()
-      state.commit('setPatients', patients.data)
+      context.commit('setPatients', patients.data)
     },
-    async startAnalysis(state){
-      let response = await api.startAnalysis(state.state.user.token ,state.state.analysis.recordingID)
-      state.commit("setAnalysisID", response.data)
+    async startAnalysis(context){
+      let response = await api.startAnalysis(context.state.user.token ,context.state.analysis.recordingID)
+      context.commit("setAnalysisID", response.data)
     },
-    async getAnalysisResults(state) {
+    async getAnalysisResults(context) {
       let statusCode = 404;
       let data = [];
       let response;
       while (statusCode != 200)
       {
-        response = await api.getFrames(state.state.user.token, state.state.analysis.analysisID).catch(e => {
+        response = await api.getFrames(context.state.user.token, context.state.analysis.analysisID).catch(e => {
           statusCode = e.status
         })
         if (response !== undefined) {
@@ -84,17 +85,17 @@ export default new Vuex.Store({
       {
         data.push(element.probability)
       }
-      state.commit("setAnalysisResult", data)
+      context.commit("setAnalysisResult", data)
     },
-    async uploadFile (state) {
+    async uploadFile (context) {
       let formData = new FormData();
-      formData.append('file_in', state.state.analysis.file);
+      formData.append('file_in', context.state.analysis.file);
       console.log('hui')
-      let response = await api.uploadFile(state.state.user.token, formData)
-      state.commit("setRecordingID", response.data)
+      let response = await api.uploadFile(context.state.user.token, formData)
+      context.commit("setRecordingID", response.data)
       
-      response = await api.startAnalysis(state.state.user.token ,state.state.analysis.recordingID)
-      state.commit("setAnalysisID", response.data)
+      response = await api.startAnalysis(context.state.user.token ,context.state.analysis.recordingID)
+      context.commit("setAnalysisID", response.data)
     } 
   },
   modules: {

@@ -18,12 +18,28 @@ export const api = {
 
     return axios.post(`${APISUFFIX}/login/`, params);
   },
-  async getUser(token, userID) {
-    return axios.get(`${APISUFFIX}/user/${userID}`, authHeaders(token));
+
+  async getMe(token) {
+    return axios.get(`${APISUFFIX}/api/users/me`, authHeaders(token));
+  },
+
+  async updateMe(token, data) {
+    return axios.put(`${APISUFFIX}/api/users/me`, data, authHeaders(token));
   },
 
   async getUsers(token) {
-    return axios.get(`${APISUFFIX}/users`, authHeaders(token));
+    return axios.get(`${APISUFFIX}/api/users/`, authHeaders(token));
+  },
+  async updateUser(token, userId, data) {
+    return axios.put(`${APISUFFIX}/api/users/${userId}`, data, authHeaders(token));
+  },
+
+  async createUser(token, data) {
+    return axios.post(`${APISUFFIX}/api/users/`, data, authHeaders(token));
+  },
+
+  async createUserOpen(data) {
+    return axios.post(`${APISUFFIX}/api/users/open`, data);
   },
 
   async uploadFile(token, file) {

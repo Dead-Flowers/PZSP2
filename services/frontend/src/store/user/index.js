@@ -2,11 +2,14 @@ import { api } from '@/api';
 
 const defaultState = {
     isLoggedIn: null,
+    logInError: false,
+    registrationError: false,
+    registrationSuccess: false, 
     token: '',
     userID: null,
     username: null,
-    logInError: false,
-    dashboardMiniDrawer: false,
+    isSuperUser: false,
+    fullName: null,
   };
   
   export const userModule = {
@@ -27,77 +30,119 @@ const defaultState = {
         setLogInError(state, payload) {
             state.logInError = payload;
         },
-        setDashboardMiniDrawer(state, payload) {
-            state.dashboardMiniDrawer = payload;
+        setFullName(state, payload) {
+            state.fullName = payload;
         },
+        setSuperUser(state, payload) {
+            state.isSuperUser = payload
+        },
+        setRegistrationError(state, payload) {
+            state.registrationError = payload;
+        },
+        setRegistrationSuccess(state, payload) {
+            state.registrationSuccess = payload;
+        },
+
     },
     actions: {
-        async actionLogIn(state, payload) {
+        async actionLogIn(context, payload) {
             try {
-                const response = await api.LogIn(payload)
+                const response = await api.logIn(payload.username, payload.password)
                 const token = response.data.access_token;
                 if (token) {
                     saveLocalToken(token);
-                    state.commit("setToken", token);
-                    state.commit("setLoggedIn", true)
-                    state.commit("setLoggedIn", false)
-                    await state.dispatch("actionGetUser"); //! this can not work, got to check this
+                    context.commit("setToken", token);
+                    context.commit("setLoggedIn", true)
+                    context.commit("setLogInError", false)
+                    await context.dispatch("actionGetMe"); //! this can not work, got to check this
                 } else {
-                    await state.dispatch("actionLogOut");
+                    await context.dispatch("actionLogOut");
                 }
             } catch (err) {
-                state.commit("setLoggedIn", true)
-                await state.dispatch("actionLogOut");
+                context.commit("setLoggedIn", false)
+                context.commit("setLogInError", true)
+                console.log(err);
+                await context.dispatch("actionLogOut");
             }
         },
-        async actionGetUser(state) {
+
+        async actionGetMe(context) {
             try {
-                const response = await api.getUser(state.state.token, state.state.userID)
+                const response = await api.getMe(context.state.token, context.state.userID)
                 if (response.data) {
-                    //TODO: SET USER DATA
+                    context.commit("setUserID", response.data.id);
+                    context.commit("setUsername", response.data.email);
+                    context.commit("setFullName", response.data.full_name);
+                    context.commit("setSuperUser", response.data.is_superuser);
                 }
             } catch (error) {
-                await state.dispatch("actionCheckApiError", error);
+                await context.dispatch("actionCheckApiError", error);
             }
         },
-        async actionCheckLoggedIn(state) {
-            if (!state.state.isLoggedIn) {
-                let token = state.state.token;
+
+        async actionCheckLoggedIn(context) {
+            if (!context.state.isLoggedIn) {
+                let token = context.state.token;
                 if (!token) {
                     const localToken = getLocalToken();
                     if (localToken) {
-                        state.commit("setToken", localToken);
+                        context.commit("setToken", localToken);
                         token = localToken;
                     }
                 }
                 if (token) {
                     try {
-                        state.dispatch("actionGetUser");
-                        state.commit("setLoggedIn", true)
+                        context.dispatch("actionGetMe");
+                        context.commit("setLoggedIn", true)
                     } catch (error) {
-                        await state.dispatch("actionLogOut");
+                        await context.dispatch("actionLogOut");
                     }
                 } else {
-                    await state.dispatch("actionLogOut");
+                    await context.dispatch("actionLogOut");
                 }
             }
         },
-        async actionLogOut(state) {
+
+        async actionLogOut(context) {
             removeLocalToken();
-            state.commit("setToken", '');
-            state.commit("setLoggedIn", false);
+            context.commit("setToken", '');
+            context.commit("setLoggedIn", false);
         },
-        async actionCheckApiError(state, payload) {
+
+        async actionCheckApiError(context, payload) {
             if (payload.response.status === 401) {
-                await state.dispatch("actionLogOut");
+                await context.dispatch("actionLogOut");
             }
         },
+
+        async actionRegister(context, payload) {
+            try {
+                const response = await api.createUserOpen(payload)
+                if (response.status == 200) {
+                    context.commit("setRegistrationError", false)
+                    context.commit("setRegistrationSuccess", true)
+                    console.log(response);
+                } else {
+                    context.commit("setRegistrationError", true)
+                    context.commit("setRegistrationSuccess", false)
+                    console.log(response);
+                }
+            } catch (err) {
+                context.commit("setRegistrationError", true)
+                context.commit("setRegistrationSuccess", false)
+                console.log(err);
+            }
+        }
     },
+
     getters: {
         loginError: (state) => state.logInError,
         dashboardMiniDrawer: (state) => state.dashboardMiniDrawer,
         token: (state) => state.token,
         isLoggedIn: (state) => state.isLoggedIn,
+        username: (state) => state.username,
+        email: (state) => state.username,
+        fullName: (state) => state.fullName,
     },
   };
 
