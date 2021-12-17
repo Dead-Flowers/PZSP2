@@ -47,6 +47,8 @@ jobs:
           cd services/backend/
 
           ~/.poetry/bin/poetry run pytest 
+      - name: remove volumes
+        run: docker-compose down -v
 
   Lint:
     runs-on: ubuntu-latest
