@@ -19,15 +19,15 @@ jobs:
         run: |
           cd services/backend/
           ~/.poetry/bin/poetry install
+          rm -f /var/lib/postgresql/data
       - name: Start dockers
         run: docker-compose up -d
       - name: show docker status
         run: |
           docker container ls
           docker container logs backend-deadflowers
-          docker container logs frontend-deadflowers
       - name: Test backend running
-        run: timeout 300s bash -c "while !(curl localhost:5000); do sleep 1; docker container ls; docker container logs backend-deadflowers ; docker container logs frontend-deadflowers; done"
+        run: timeout 300s bash -c "while !(curl localhost:5000); do sleep 1; docker container ls; docker container logs backend-deadflowers; done"
       - name: Test DB running
         env: 
           DOCKER_CONTAINER_NAME: "postgres-deadflowers"
