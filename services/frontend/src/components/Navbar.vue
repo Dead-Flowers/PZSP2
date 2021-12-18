@@ -2,7 +2,7 @@
   <div class="navbar">
     <div class="navbar-start">
       <router-link class="page-name link" to='/' >Bowel Lab</router-link>
-      <!-- zakładki lekarza -->
+      <!-- doctor tabs -->
       <div v-if="(usertype == 'doctor')" class="tab-space">
         <router-link to='/doctor/home'>
           <input 
@@ -26,7 +26,7 @@
           />
         </router-link>
       </div>
-      <!-- zakładki admina -->
+      <!-- admin tabs -->
       <div v-if="(usertype == 'admin')" class="tab-space">
         <router-link to='/admin/home'>
           <input 
@@ -50,7 +50,7 @@
           />
         </router-link>
       </div>
-      <!-- zakładki pacjenta -->
+      <!-- patient tabs -->
       <div v-if="(usertype == 'patient')" class="tab-space">
         <router-link to='/patient/home'>
           <input 
