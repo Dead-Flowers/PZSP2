@@ -18,7 +18,7 @@ def read_users(
     db: Session = Depends(deps.get_db),
     skip: int = 0,
     limit: int = 100,
-    current_user: models.User = Depends(deps.get_current_superuser),
+    current_user: models.User = Depends(deps.user_with_roles(models.UserRole.Admin)),
 ) -> Any:
     """
     Retrieve users.
@@ -32,7 +32,7 @@ def create_user(
     *,
     db: Session = Depends(deps.get_db),
     user_in: schemas.UserCreate,
-    current_user: models.User = Depends(deps.get_current_superuser),
+    current_user: models.User = Depends(deps.get_current_user),
 ) -> Any:
     """
     Create new user.
@@ -43,6 +43,18 @@ def create_user(
             status_code=400,
             detail="The user with this username already exists in the system.",
         )
+
+    if (
+        user_in.role in (models.UserRole.Admin, models.UserRole.Doctor)
+        and current_user.role != models.UserRole.Admin
+        or user_in.role == models.UserRole.Patient
+        and current_user.role not in (models.UserRole.Admin, models.UserRole.Doctor)
+    ):
+        raise HTTPException(
+            status_code=403,
+            detail="Insufficient privileges to create a user with such a role.",
+        )
+
     user = crud.user.create(db, obj_in=user_in)
     return user
 
@@ -51,9 +63,11 @@ def create_user(
 def update_user_me(
     *,
     db: Session = Depends(deps.get_db),
-    password: str = Body(None),
-    full_name: str = Body(None),
     email: EmailStr = Body(None),
+    password: str = Body(None),
+    first_name: str = Body(None),
+    second_name: str = Body(None),
+    last_name: str = Body(None),
     current_user: models.User = Depends(deps.get_current_user),
 ) -> Any:
     """
@@ -63,8 +77,12 @@ def update_user_me(
     user_in = schemas.UserUpdate(**current_user_data)
     if password is not None:
         user_in.password = password
-    if full_name is not None:
-        user_in.full_name = full_name
+    if first_name is not None:
+        user_in.first_name = first_name
+    if second_name is not None:
+        user_in.second_name = second_name
+    if last_name is not None:
+        user_in.last_name = last_name
     if email is not None:
         user_in.email = email
     user = crud.user.update(db, db_obj=current_user, obj_in=user_in)
@@ -121,7 +139,7 @@ def read_user_by_id(
     user = crud.user.get(db, id=user_id)
     if user == current_user:
         return user
-    if not crud.user.is_superuser(current_user):
+    if not crud.user.has_roles(current_user, models.UserRole.Admin):
         raise HTTPException(
             status_code=400, detail="The user doesn't have enough privileges"
         )
@@ -134,7 +152,7 @@ def update_user(
     db: Session = Depends(deps.get_db),
     user_id: UUID,
     user_in: schemas.UserUpdate,
-    current_user: models.User = Depends(deps.get_current_superuser),
+    current_user: models.User = Depends(deps.user_with_roles(models.UserRole.Admin)),
 ) -> Any:
     """
     Update a user.
