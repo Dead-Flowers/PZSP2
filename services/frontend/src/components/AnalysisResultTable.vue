@@ -5,7 +5,7 @@
         <th @click="sortBy('analysisId')">Numer id analizy</th>
         <th @click="sortByMultiple(['patientIdType', 'patientId'])">Pesel/Nr Paszportu</th>
         <th @click="sortByMultiple(['patientFirstName', 'patientSecondName'])">Imię</th>
-        <th @click="sortBy('surname')">Nazwisko</th>
+        <th @click="sortBy('patientSurname')">Nazwisko</th>
         <th @click="sortBy('date')">Data badania</th>
         <th>Wynik analizy</th>
       </tr>  
@@ -32,13 +32,25 @@
 export default {
   name: 'AnalysisResultTable',
   props: ['analysis'],
+  data() {
+    return {
+      lastSortingCriteria: null,
+    }
+  },
   methods: {
     sortBy(criteria) {
-      console.log("test")
-      this.analysis.sort((a, b) => (a[criteria] > b[criteria]) ? 1 : -1);
+      let direction = (criteria == this.lastSortingCriteria)? -1 : 1;
+      this.analysis.sort((a, b) => (a[criteria] >= b[criteria]) ? direction *  1 : direction * -1);
+      if (direction == 1) this.lastSortingCriteria = criteria;
+      else this.lastSortingCriteria = null;
     },
+
     sortByMultiple(criteria) {
-      this.analysis.sort((a, b) => (this.combineRecords(a, criteria) > this.combineRecords(b, criteria)) ? 1 : -1);
+      let criteria_cmpr = criteria.toString();
+      let direction = (criteria_cmpr == this.lastSortingCriteria)? -1 : 1;
+      this.analysis.sort((a, b) => (this.combineRecords(a, criteria) >= this.combineRecords(b, criteria)) ? direction * 1 :  direction * -1);
+      if (direction == 1) this.lastSortingCriteria = criteria_cmpr;
+      else this.lastSortingCriteria = null;
     },
     combineRecords(d, criteria) {
       let s = "";
@@ -66,7 +78,7 @@ export default {
         patientId: "01234567891",
         patientFirstName: "Jan",
         patientSecondName: "B",
-        patientSurname: "Kowal",
+        patientSurname: "Kowales",
         date: "2021-12-21"
       },
       {
