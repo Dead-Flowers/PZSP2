@@ -7,6 +7,7 @@
       name="email"
       placeholder="Email..."
       autocomplete="off"
+      v-model="email"
     />
     <input
       class="input-element-standard keyboard-input"
@@ -14,6 +15,7 @@
       name="first-name"
       placeholder="Pierwsze Imię..."
       autocomplete="off"
+      v-model="firstName"
     />
     <input
       class="input-element-standard keyboard-input"
@@ -21,6 +23,7 @@
       name="second-name"
       placeholder="Drugie Imię (opcjonalnie)..."
       autocomplete="off"
+      v-model="secondName"
     />
     <input
       class="input-element-standard keyboard-input"
@@ -28,11 +31,13 @@
       name="surname"
       placeholder="Nazwisko..."
       autocomplete="off"
+      v-model="surname"
     />
     <input
       class="input-element-standard button"
       type="button"
       value="Zarejestruj doktora"
+      @click="registerDoc"
     />
   </form>
 </template>
@@ -43,13 +48,23 @@ export default {
   name: "RegisterDoctorForm",
   data() {
     return {
-      patientIdType: 'pesel',
+      firstName: null,
+      secondName: null,
+      surname: null,
+      email: null,
     }
   },
   methods: {
-    changePatientIdType(event) {
-      this.patientIdType = event.target.value;
-    }
+    registerDoc() {
+      let data_packet = {
+        "firstName": this.firstName,
+        "secondName": this.secondName,
+        "surname": this.surname,
+        "email": this.email,
+      }
+      console.log(data_packet)
+      // backend connection here
+    },
   }
 }
 </script>

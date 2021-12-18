@@ -50,6 +50,7 @@
       class="input-element-standard button"
       type="button"
       value="Zarejestruj pacjenta"
+      @click="registerPatient"
     />
   </form>
 </template>
@@ -61,12 +62,29 @@ export default {
   data() {
     return {
       patientIdType: 'pesel',
+      patientId: null,
+      firstName: null,
+      secondName: null,
+      surname: null,
+      mail: null,
     }
   },
   methods: {
     changePatientIdType(event) {
       this.patientIdType = event.target.value;
-    }
+    },
+    registerPatient() {
+      let data_packet = {
+        "idType": this.patientIdType,
+        "id": this.patientId,
+        "firstName": this.firstName,
+        "secondName": this.secondName,
+        "surname": this.surname,
+        "email": this.email,
+      }
+      console.log(data_packet)
+      // backend connection here
+    },
   }
 }
 </script>
