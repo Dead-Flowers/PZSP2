@@ -56,15 +56,25 @@ export default {
   },
   methods: {
     registerDoc() {
-      let data_packet = {
+      let data_packet = this.parsedata();
+      console.log(data_packet); //this is here only so vue does not cry
+      // backend connection here
+      this.resetForm();
+    },
+    parsedata() {
+      return {
         "firstName": this.firstName,
         "secondName": this.secondName,
         "surname": this.surname,
         "email": this.email,
       }
-      console.log(data_packet)
-      // backend connection here
     },
+    resetForm() {
+      this.firstName =  null;
+      this.secondName = null;
+      this.surname = null;
+      this.email = null;
+    }
   }
 }
 </script>

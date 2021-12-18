@@ -7,6 +7,7 @@
       name="email"
       placeholder="Email..."
       autocomplete="off"
+      v-model="email"
     />
     <select 
       id="patient-id-type-selector"
@@ -24,6 +25,7 @@
       v-bind:name="patientIdType"
       v-bind:placeholder="[patientIdType=='pesel' ? 'Pesel...': 'Nr paszportu...']"
       autocomplete="off"
+      v-model="patientId"
     />
     <input
       class="input-element-standard keyboard-input"
@@ -31,6 +33,7 @@
       name="first-name"
       placeholder="Pierwsze Imię..."
       autocomplete="off"
+      v-model="firstName"
     />
     <input
       class="input-element-standard keyboard-input"
@@ -38,6 +41,7 @@
       name="second-name"
       placeholder="Drugie Imię (opcjonalnie)..."
       autocomplete="off"
+      v-model="secondName"
     />
     <input
       class="input-element-standard keyboard-input"
@@ -45,6 +49,7 @@
       name="surname"
       placeholder="Nazwisko..."
       autocomplete="off"
+      v-model="surname"
     />
     <input
       class="input-element-standard button"
@@ -74,7 +79,13 @@ export default {
       this.patientIdType = event.target.value;
     },
     registerPatient() {
-      let data_packet = {
+      let data_packet = this.parsedata()
+      console.log(data_packet);  //this is here only so vue does not cry
+      // backend connection here
+      this.resetForm();
+    },
+    parsedata() {
+      return {
         "idType": this.patientIdType,
         "id": this.patientId,
         "firstName": this.firstName,
@@ -82,9 +93,14 @@ export default {
         "surname": this.surname,
         "email": this.email,
       }
-      console.log(data_packet)
-      // backend connection here
     },
+    resetForm() {
+      this.patientId = null;
+      this.firstName =  null;
+      this.secondName = null;
+      this.surname = null;
+      this.email = null;
+    }
   }
 }
 </script>
