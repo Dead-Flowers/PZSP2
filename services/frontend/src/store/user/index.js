@@ -10,6 +10,7 @@ const defaultState = {
     username: null,
     isSuperUser: false,
     fullName: null,
+    userType: null,
   };
   
   export const actions = {
@@ -111,6 +112,15 @@ const defaultState = {
     username: (state) => state.username,
     email: (state) => state.username,
     fullName: (state) => state.fullName,
+    userType: (state) => state.userType,
+    user: (state) => { return {
+        userID: null,
+        username: state.username,
+        isSuperUser: state.isSuperUser,
+        fullName: state.fullName,
+        userType: state.userType,
+        }
+    }
     }
  
   export const mutations = {
@@ -141,6 +151,9 @@ const defaultState = {
     setRegistrationSuccess(state, payload) {
         state.registrationSuccess = payload;
     },
+    setUserType(state, payload) {
+        state.userType = payload
+    }
 
   }
 

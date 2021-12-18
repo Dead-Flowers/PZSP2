@@ -13,10 +13,10 @@ Vue.use(Vuex)
 const state = {
   currentPatient: {
     patientIdType: 'pesel',
-    patientId: null,
-    firstName: null,
-    secondName: null,
-    surname: null,
+    patientId: "0123456789",
+    firstName: "wait for fetch",
+    secondName: "wait for fetch",
+    surName: "wait fo fetch",
   },
   analysis: {
     recordingID: null,
@@ -91,7 +91,7 @@ export const actions = {
   async uploadFile (context) {
     let formData = new FormData();
     formData.append('file_in', context.state.analysis.file);
-    console.log('hui')
+
     let response = await api.uploadFile(context.state.user.token, formData)
     context.commit("setRecordingID", response.data)
     
@@ -106,7 +106,7 @@ export const getters =  {
   getAnalysisResult: state => state.analysis.result,
   getPatients: state => state.patients,
   getAnalysisID: state => state.analysis.analysisID,
-  analysisStared: state => state.analysis.analysisID == null ? true : false,
+  analysisStarted: state => state.analysis.analysisID == null ? true : false,
 }
 
 export default new Vuex.Store({

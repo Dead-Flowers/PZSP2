@@ -1,5 +1,5 @@
 <template>
-  <div v-if="analysisStared" class="sector flex-column-items-centered card"> Rozpocznij analizę </div>
+  <div v-if="analysisStarted" class="sector flex-column-items-centered card"> Rozpocznij analizę </div>
 
   <div v-else class="sector flex-column-items-centered card">
 
@@ -8,15 +8,19 @@
       <table style="margin-inline-end: 30px">
         <tr>
           <td>Pesel </td>
-          <td>01234567890 </td>
+          <td>{{ currentPatient.patientId }} </td>
         </tr>
         <tr>
-      <td>Imie</td>
-      <td>Daniel</td>
+      <td>Drugie imie</td>
+      <td>{{ currentPatient.firstName }}</td>
+        </tr>
+         <tr v-if="currentPatient.secondName != null">
+      <td v-if="currentPatient.secondName != null" >Imie</td>
+      <td v-if="currentPatient.secondName != null">{{ currentPatient.firstName }}</td>
         </tr>
         <tr>
             <td>Nazwisko</td>
-      <td>Lipniacki </td>
+      <td>{{ currentPatient.surName }} </td>
         </tr>
       </table>
       <table>
@@ -69,7 +73,8 @@ export default {
   },
   data() {
     return {
-      analysisStared: false,
+      analysisStarted: false,
+      currentPatient: {},
       results: [],
       len: 0,
       average: 0,
@@ -89,10 +94,14 @@ export default {
       },
     }
   },
-  beforeMount(){
-    this.analysisStared = this.$store.getters.analysisStared
+  beforMount() {
+    this.analysisStarted = this.$store.getters.analysisStarted;
   },
   methods: {
+    getUser() {
+      console.log("patien")
+      this.currentPatient = this.$store.getters.getCurrentPatient
+    },
     getAverage() {
       let sum = this.results.reduce((a, b) => a + b, 0);
       let avg = (sum / this.results.length) || 0;
@@ -116,6 +125,7 @@ export default {
   async mounted() {
     await this.$store.dispatch("getAnalysisResults")
     this.setData()
+    this.getUser()
   }
 }
 </script>
