@@ -9,10 +9,10 @@
       <div class="flex-column-items-start">
         <label> Aktualności </label>  
         <ul>
-        <li> Aktualność 1 </li>
-        <li> Aktualność 2 </li>
-        <li> Aktualność 3 </li>
-        <li> Aktualność 4 </li>
+        <li> <a href="https://www.w3schools.com"> Nowa aktualizacja 03.12.2021 </a>   </li>
+        <li> <a href="https://www.w3schools.com"> Od teraz kontakt z administratorem jeszcze łatwiejszy </a> </li>
+        <li> <a href="https://www.w3schools.com"> Zapraszamy wszystkich do wypełniania ankiety </a> </li>
+        <li> <a href="https://www.w3schools.com"> Została wprowadzona nowa szata graficzna </a> </li>
         </ul>
       </div>
     </div>
