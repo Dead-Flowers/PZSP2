@@ -1,5 +1,5 @@
 <template>
-  <form class="sign-in-box sector flex-column-items-centered">
+  <form class="login-box sector flex-column-items-centered">
     Witaj, zaloguj się
     <input
       class="input-element-standard keyboard-input"
@@ -23,15 +23,14 @@
     >
       Zapomniałeś hasła?
     </a>
-    <div >
-      <input
-        class="input-element-standard button"
-        type="button"
-        value="Zaloguj się"
-        style="margin-inline-end: 20px"
-        @click="checkLogin"
-      />
-    </div>
+    <input
+      class="input-element-standard button"
+      type="button"
+      value="Zaloguj się"
+      style="margin-inline-end: 20px"
+      @click="checkLogin"
+    />
+    <router-link to="/" class="go-home" > Powróć do strony głównej </router-link>
   </form>
 </template>
 
@@ -40,6 +39,7 @@ import router from '../router'
 
 export default {
   name: 'Login',
+  props: ["usertype"],
   data() {
     return {
       username: null,
@@ -58,7 +58,7 @@ export default {
     },
     acceptLogin() {
       console.log('Logowanie powiodło się');
-      router.push('home')
+      router.push(`/${this.usertype}/home`)
     },
     rejectLogin() {
       this.username=null;
@@ -71,7 +71,7 @@ export default {
 </script>
 
 <style scoped>
-.sign-in-box {
+.login-box {
   padding-block: 40px;
   padding-inline: 50px;
   font-size: 2rem;

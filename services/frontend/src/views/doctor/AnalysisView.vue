@@ -1,13 +1,13 @@
 <template>
   <div class="max-screen-space-container flex-column-items-centered">
-    <Navbar />
+    <Navbar v-bind:usertype="'doctor'" />
     <AnalysisVisualization v-bind:analysisData="analysisData"/>
   </div>
 </template>
 
 <script>
-import Navbar from '../components/Navbar.vue'
-import AnalysisVisualization from '../components/AnalysisVisualization.vue'
+import Navbar from '../../components/Navbar.vue'
+import AnalysisVisualization from '../../components/AnalysisVisualization.vue'
 
 export default {
   name: 'AnalysisView',

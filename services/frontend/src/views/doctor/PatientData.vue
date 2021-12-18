@@ -1,6 +1,6 @@
 <template>
   <div class="max-screen-space-container flex-column-items-centered">
-    <Navbar />
+    <Navbar v-bind:usertype="'doctor'" />
     <SearchPatient v-if="!showSearchBox" v-bind:searchPatient="searchPatient"/>
     <div v-else>
       <PatientTable v-bind:patientData="patientData"/>
@@ -10,10 +10,10 @@
 </template>
 
 <script>
-import Navbar from '../components/Navbar.vue'
-import SearchPatient from '../components/SearchPatient.vue'
-import PatientTable from '../components/PatientTable.vue'
-import AnalysisResultTable from '../components/AnalysisResultTable.vue'
+import Navbar from '../../components/Navbar.vue'
+import SearchPatient from '../../components/SearchPatient.vue'
+import PatientTable from '../../components/PatientTable.vue'
+import AnalysisResultTable from '../../components/AnalysisResultTable.vue'
 
 export default {
   name: 'PatientData',

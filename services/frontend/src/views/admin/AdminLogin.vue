@@ -1,20 +1,19 @@
 <template>
   <div class="max-screen-space-container flex-column-items-centered">
-    <RegisterPatient />
+    <Login v-bind:usertype="'admin'" />
   </div>
 </template>
 
 <script>
-import RegisterPatient from '../components/RegisterPatient.vue'
-
+import Login from '../../components/Login.vue'
 export default {
-  name: 'NewPatient',
+  name: 'AdminLogin',
+  props: ["usertype"],
   components: {
-    RegisterPatient
-  },
+  Login
+  }
 }
 </script>
 
 <style>
-
 </style>

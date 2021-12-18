@@ -1,17 +1,18 @@
 <template>
   <div class="max-screen-space-container flex-column-items-centered">
-    <SignIn />
+    <Login v-bind:usertype="'doctor'" />
   </div>
 </template>
 
 <script>
-import SignIn from '../components/SignIn.vue'
+import Login from '../../components/Login.vue'
 
 
 export default {
-  name: 'Login',
+  name: 'DoctorLogin',
+  props: ["usertype"],
   components: {
-  SignIn
+  Login
   }
 }
 </script>
@@ -19,3 +20,4 @@ export default {
 <style>
 
 </style>
+ś
