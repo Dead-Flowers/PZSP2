@@ -8,12 +8,18 @@
 <script>
 
 import '../public/style.css'
+import router from './router'
 export default {
   name: 'App',
   components: {
   },
-  mounted() {
-    this.$store.dispatch("getPatients")
+  async mounted() {
+    await this.$store.dispatch("actionCheckLoggedIn")
+    
+    // TODO: check route for login, use route gourade 
+    if(this.$route.name == 'WelcomePage' && this.$store.getters["isLoggedIn"]){
+      router.push(`/${this.$store.getters["userType"]}/home`)
+    }
   }
 }
 </script>

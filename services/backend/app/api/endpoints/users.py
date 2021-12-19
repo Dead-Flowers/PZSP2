@@ -18,13 +18,19 @@ def read_users(
     db: Session = Depends(deps.get_db),
     skip: int = 0,
     limit: int = 100,
-    current_user: models.User = Depends(deps.user_with_roles(models.UserRole.Admin)),
+    current_user: models.User = Depends(deps.get_current_user),
 ) -> Any:
     """
     Retrieve users.
     """
-    users = crud.user.get_multi(db, skip=skip, limit=limit)
-    return users
+    if crud.user.has_roles(current_user, models.UserRole.Admin):
+        return crud.user.get_multi(db, skip=skip, limit=limit)
+    elif crud.user.has_roles(current_user, models.UserRole.Doctor):
+        return crud.user.get_assigned_patients(db, current_user, skip=skip, limit=limit)
+    else:
+        raise HTTPException(
+            status_code=403, detail="The user doesn't have enough privileges"
+        )
 
 
 @router.post("/", response_model=schemas.User)
@@ -32,7 +38,7 @@ def create_user(
     *,
     db: Session = Depends(deps.get_db),
     user_in: schemas.UserCreate,
-    current_user: models.User = Depends(deps.get_current_user),
+    current_user: models.User = Depends(deps.user_with_roles(models.UserRole.Admin)),
 ) -> Any:
     """
     Create new user.
@@ -42,17 +48,6 @@ def create_user(
         raise HTTPException(
             status_code=400,
             detail="The user with this username already exists in the system.",
-        )
-
-    if (
-        user_in.role in (models.UserRole.Admin, models.UserRole.Doctor)
-        and current_user.role != models.UserRole.Admin
-        or user_in.role == models.UserRole.Patient
-        and current_user.role not in (models.UserRole.Admin, models.UserRole.Doctor)
-    ):
-        raise HTTPException(
-            status_code=403,
-            detail="Insufficient privileges to create a user with such a role.",
         )
 
     user = crud.user.create(db, obj_in=user_in)

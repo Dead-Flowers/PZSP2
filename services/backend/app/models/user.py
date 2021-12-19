@@ -19,6 +19,8 @@ class User(Base):
     email = Column(String, unique=True, index=True, nullable=False)
     hashed_password = Column(String, nullable=False)
     role = Column(Enum(UserRole), nullable=False)
+    pesel = Column(String(11), index=True)
+    passport_num = Column(String, index=True)
     first_name = Column(String, index=True)
     second_name = Column(String, index=True)
     last_name = Column(String, index=True)

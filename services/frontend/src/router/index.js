@@ -1,18 +1,16 @@
 import Router from 'vue-router'
 import AdminPage from '../views/admin/AdminPage.vue'
-import AdminLogin from '../views/admin/AdminLogin.vue'
 import AnalysisView from '../views/doctor/AnalysisView.vue'
 import FirstLogin from '../views/doctor/FirstLogin.vue'
-import DoctorLogin from '../views/doctor/DoctorLogin.vue'
 import NewAnalysis from '../views/doctor/NewAnalysis.vue' 
 import NewPatient from '../views/admin/NewPatient.vue'
 import NewDoctor from '../views/admin/NewDoctor.vue'
 import PageNotFound from '../views/common/PageNotFound.vue'
 import PatientData from '../views/doctor/PatientData.vue'
 import PatientPage from '../views/patient/PatientPage.vue'
-import PatientLogin from '../views/patient/PatientLogin.vue'
 import DoctorPage from '../views/doctor/DoctorPage'
 import Welcome from '../views/common/Welcome.vue'
+import LoginView from '../views/common/LoginView.vue'
 
 
 export default new Router({
@@ -28,12 +26,12 @@ export default new Router({
       name: 'PageNotFound',
       component: PageNotFound 
     },
-    // admin
     {
-      path: '/admin/login',
-      name: 'admin_Login',
-      component: AdminLogin
+      path: '/login',
+      name: 'LoginPage',
+      component: LoginView
     },
+    // admin
     {
       path: '/admin/home',
       name: 'admin_Page',
@@ -49,17 +47,16 @@ export default new Router({
       name: 'admin_NewDoctor',
       component: NewDoctor
     },
+    {
+      path: '/admin/register-completed',
+      name: 'register-completed',
+      component: NewDoctor
+    },
     // doctor
     {
       path: '/doctor/analysis-view',
       name: 'doctor_AnalysisView',
       component: AnalysisView
-    },
-    {
-      path: '/doctor/login',
-      name: 'doctor_Login',
-      component: DoctorLogin,
-      
     },
     {
       path: '/doctor/new-analysis',
@@ -82,11 +79,6 @@ export default new Router({
       component: FirstLogin
     },
     // patient
-    {
-      path: '/patient/login',
-      name: 'patient_Login',
-      component: PatientLogin
-    },
     {
       path: '/patient/home',
       name: 'patient_Page',

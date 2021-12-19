@@ -27,7 +27,6 @@
       class="input-element-standard button"
       type="button"
       value="Zaloguj się"
-      style="margin-inline-end: 20px"
       @click="checkLogin"
     />
     <router-link to="/" class="go-home" > Powróć do strony głównej </router-link>
@@ -39,7 +38,6 @@ import router from '../router'
 
 export default {
   name: 'Login',
-  props: ["usertype"],
   data() {
     return {
       username: null,
@@ -47,9 +45,14 @@ export default {
     }
   },
   methods: {
-    checkLogin() {
-      // TODO: this is a mock
-      if (this.username == "test" && this.password == "test") {
+    async checkLogin() {
+      let payload = {
+        username: this.username,
+        password: this.password,
+      }
+      await this.$store.dispatch("actionLogIn", payload);
+      
+      if (this.$store.getters["isLoggedIn"]) {
         this.acceptLogin();
       }
       else {
@@ -58,7 +61,7 @@ export default {
     },
     acceptLogin() {
       console.log('Logowanie powiodło się');
-      router.push(`/${this.usertype}/home`)
+      router.push(`/${this.$store.getters["userType"]}/home`)
     },
     rejectLogin() {
       this.username=null;
