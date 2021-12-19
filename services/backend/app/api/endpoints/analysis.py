@@ -251,10 +251,25 @@ def get_results(
             status_code=403,
             detail="Insufficient privilages to access this patient's results",
         )
-    if patient_id is None:
-        results = crud.analysis_result.get_multi(db, skip, limit)
+    if crud.user.has_roles(current_user, models.UserRole.Admin):
+        if patient_id is None:
+            results = crud.analysis_result.get_multi(db, skip, limit)
+        else:
+            results = crud.analysis_result.get_by_patient_id(db, patient_id)
     else:
-        results = crud.analysis_result.get_by_patient_id(db, patient_id)
+        if patient_id is None:
+            patients = crud.user.get_by_doctor_id(db, current_user.id)
+            results = []
+            for pat in patients:
+                results.append(crud.analysis_result.get_by_patient_id(db, pat.id))
+        else:
+            if check_doctor(db, current_user.id, patient_id):
+                results = crud.analysis_result.get_by_patient_id(db, patient_id)
+            else:
+                raise HTTPException(
+                    status_code=403,
+                    detail="Insufficient privilages to access this patient's results"
+                )
     filtered_results = []
     for result in results:
         filtered_results.append(
