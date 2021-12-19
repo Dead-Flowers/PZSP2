@@ -237,13 +237,13 @@ def get_results(
     skip: int = 0,
     limit: int = 100,
 ):
-    if (
-        not crud.user.has_roles(current_user, models.UserRole.Admin, models.UserRole.Doctor)
+    if not crud.user.has_roles(
+        current_user, models.UserRole.Admin, models.UserRole.Doctor
     ):
         raise HTTPException(
             status_code=403, detail="Insufficient privilages to access all results"
         )
-    
+
     results = []
     if crud.user.has_roles(current_user, models.UserRole.Admin):
         if patient_id is None:
