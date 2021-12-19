@@ -1,7 +1,15 @@
 import uuid
 import datetime
 
-from sqlalchemy import Boolean, Column, String, ForeignKey, Integer, LargeBinary, DateTime
+from sqlalchemy import (
+    Boolean,
+    Column,
+    String,
+    ForeignKey,
+    Integer,
+    LargeBinary,
+    DateTime,
+)
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.sql import func
 from sqlalchemy_json import NestedMutableJson

@@ -18,13 +18,18 @@ class CRUDAnalysisResult(
     CRUDBase[AnalysisResult, AnalysisResultCreate, AnalysisResultUpdate]
 ):
     def get_by_patient_id(self, db: Session, patient_id: UUID):
-        return db.query(AnalysisResult).filter(AnalysisResult.patient_id == patient_id).all()
+        return (
+            db.query(AnalysisResult)
+            .filter(AnalysisResult.patient_id == patient_id)
+            .all()
+        )
 
     def create(self, db: Session, *, obj_in: AnalysisResultCreate) -> AnalysisResult:
         db_obj = AnalysisResult(
-            status=obj_in.status, 
+            status=obj_in.status,
             patient_id=obj_in.patient_id,
-            recording_id=obj_in.recording_id)
+            recording_id=obj_in.recording_id,
+        )
         db.add(db_obj)
         db.commit()
         db.refresh(db_obj)
