@@ -43,11 +43,13 @@ def get_current_user(
     return user
 
 
-def get_current_superuser(
-    current_user: models.User = Depends(get_current_user),
-) -> models.User:
-    if not crud.user.is_superuser(current_user):
-        raise HTTPException(
-            status_code=400, detail="The user doesn't have enough privileges"
-        )
-    return current_user
+class user_with_roles:
+    def __init__(self, *allowed_roles: models.UserRole):
+        self.allowed_roles = allowed_roles
+
+    def __call__(self, current_user: models.User = Depends(get_current_user)):
+        if self.allowed_roles and current_user.role not in self.allowed_roles:
+            raise HTTPException(
+                status_code=403, detail="The user doesn't have enough privileges"
+            )
+        return current_user

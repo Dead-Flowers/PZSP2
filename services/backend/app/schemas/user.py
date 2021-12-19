@@ -3,17 +3,23 @@ from uuid import UUID
 
 from pydantic import BaseModel, EmailStr
 
+from app.models.user import UserRole
+
 
 # Shared properties
 class UserBase(BaseModel):
-    email: EmailStr
-    full_name: Optional[str] = None
-    is_superuser: bool = False
+    email: Optional[EmailStr]
+    role: Optional[UserRole]
+    first_name: Optional[str] = None
+    second_name: Optional[str] = None
+    last_name: Optional[str] = None
 
 
 # Properties to receive via API on creation
 class UserCreate(UserBase):
+    email: EmailStr
     password: str
+    role: UserRole
 
 
 # Properties to receive via API on update
@@ -23,6 +29,7 @@ class UserUpdate(UserBase):
 
 class UserInDBBase(UserBase):
     id: Optional[UUID] = None
+    doctor_id: Optional[UUID] = None
 
     class Config:
         orm_mode = True

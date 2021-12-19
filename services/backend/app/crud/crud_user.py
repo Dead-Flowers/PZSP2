@@ -4,7 +4,7 @@ from sqlalchemy.orm import Session
 
 from app.core.security import get_password_hash, verify_password
 from app.crud.base import CRUDBase
-from app.models.user import User
+from app.models.user import User, UserRole
 from app.schemas.user import UserCreate, UserUpdate
 
 
@@ -15,9 +15,11 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
     def create(self, db: Session, *, obj_in: UserCreate) -> User:
         db_obj = User(
             email=obj_in.email,
-            full_name=obj_in.full_name,
             hashed_password=get_password_hash(obj_in.password),
-            is_superuser=obj_in.is_superuser,
+            role=obj_in.role,
+            first_name=obj_in.first_name,
+            second_name=obj_in.second_name,
+            last_name=obj_in.last_name,
         )
         db.add(db_obj)
         db.commit()
@@ -31,7 +33,7 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
             update_data = obj_in
         else:
             update_data = obj_in.dict(exclude_unset=True)
-        if update_data["password"]:
+        if update_data.get("password", None):
             hashed_password = get_password_hash(update_data["password"])
             del update_data["password"]
             update_data["hashed_password"] = hashed_password
@@ -45,8 +47,8 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
             return None
         return user
 
-    def is_superuser(self, user: User) -> bool:
-        return user.is_superuser
+    def has_roles(self, user: User, *roles: UserRole) -> bool:
+        return user.role in roles
 
 
 user = CRUDUser(User)
