@@ -50,5 +50,8 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
     def has_roles(self, user: User, *roles: UserRole) -> bool:
         return user.role in roles
 
+    def get_assigned_patients(self, db: Session, doctor: User, *, skip: int = 0, limit: int = 100):
+        return db.query(User).filter(User.doctor_id == doctor.id).offset(skip).limit(limit).all()
+
 
 user = CRUDUser(User)
