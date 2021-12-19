@@ -52,6 +52,7 @@ async def upload_audio_file(
             status_code=403, detail="Insufficient privilages to access this patient"
         )
     data = await file_in.read()
+    print(file_in.filename)
     rec_create = RecordingCreate(
         blob=data, patient_id=patient_id, filename=file_in.filename
     )

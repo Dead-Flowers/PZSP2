@@ -2,7 +2,7 @@
   <div class="max-screen-space-container flex-column-items-centered">
     <Navbar v-bind:usertype="'doctor'" />
     <SearchUser v-if="showSearchBox" v-bind:searchUser="searchUser" v-bind:userType="'patient'" />
-    <AnalysisInit v-else />
+    <AnalysisInit v-bind:patientID="chosenUserId"  v-else />
   </div>
 </template>
 
@@ -29,6 +29,7 @@ export default {
     searchUser(id) {
       this.showSearchBox = false;
       this.chosenUserId = id
+      console.log(id)
     },
   }
 }

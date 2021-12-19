@@ -11,6 +11,7 @@ Vue.use(Vuex)
 // don't know much about modules
 
 const state = {
+  //TODO: think it over 
   currentPatient: {
     patientIdType: 'pesel',
     patientId: "0123456789",
@@ -88,11 +89,12 @@ export const actions = {
     }
     context.commit("setAnalysisResult", data)
   },
-  async uploadFile (context) {
+  async uploadFile (context, payload) {
     let formData = new FormData();
+    console.log(payload.file)
     formData.append('file_in', context.state.analysis.file);
-
-    let response = await api.uploadFile(context.state.user.token, formData)
+    console.log(context.state.user.token)
+    let response = await api.uploadFile(context.state.user.token, formData, payload.patientID)
     context.commit("setRecordingID", response.data)
     
     response = await api.startAnalysis(context.state.user.token ,context.state.analysis.recordingID)

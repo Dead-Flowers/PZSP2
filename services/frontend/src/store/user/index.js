@@ -6,6 +6,7 @@ const defaultState = {
     registrationError: false,
     registrationSuccess: false, 
     token: '',
+    id: null,
     userID: null,
     username: null,
     firstName: null,
@@ -177,6 +178,9 @@ const defaultState = {
     resetRegistration(state) {
         state.registrationSuccess = false;
         state.registrationError = false;
+    },
+    setID(state, payload) {
+        state.id = payload
     }
 
   }

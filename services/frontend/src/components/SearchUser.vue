@@ -53,54 +53,45 @@
     />
     <table v-if="foundUsers">
       <tr>
-        <th> Id </th>
+        <th> Pesel/Numer paszportu </th>
         <th> Imie </th>
         <th> Nazwisko </th>
       </tr>
       <tr 
-        v-bind:key="user.userId" 
+        v-bind:key="user.id" 
         v-for="user in this.userList"
       >
         <td>
           <input 
             type="button"
-            @click="(e)=>{chooseUser(user.userId); e.target.value='x';}"
+            @click="(e)=>{chooseUser(user.id, user); e.target.value='x';}"
           />
-          {{`${user.userIdType} - ${user.userId}` }}
+          {{ ( user.pesel == null) ? user.passport_num : user.pesel }}
         </td>
-        <td>{{`${user.userFirstName} ${user.userSecondName}`}}</td>
-        <td>{{user.userSurname}}</td>
+        <td>{{`${user.first_name} ${user.second_name}`}}</td>
+        <td>{{user.last_name}}</td>
       </tr>
     </table>
   </div>  
 </template>
 
 <script>
+import { api } from '@/api';
 
 export default {
   name: 'SearchUser',
   props: ['searchUser', 'userType'],
   data() {
     return {
+      //TODO: refactor userid useridtype handling 
       userIdType: 'pesel',
       userId: null,
+      id: null,
       firstName: null,
       secondName: null,
       surname: null,
-      userList: [{
-          userIdType: 'pesel',
-          userId: 1111,
-          userFirstName: 'aaa',
-          userSecondName: 'bbb',
-          userSurname: 'ccc',
-        },
-        {
-          userIdType: 'pesel',
-          userId: 12,
-          userFirstName: 'ddd',
-          userSecondName: 'fff',
-          userSurname: 'eee',
-        }],
+      email: null,
+      userList: [],
       foundUsers: false,
       chosenUserId: null,
     }
@@ -109,17 +100,49 @@ export default {
     changeUserIdType(event) {
       this.userIdType = event.target.value;
     },
-    searchForUser() {
+    async searchForUser() {
+      //TODO: REFACTOR THIS PLS
+      //TODO: unify naming and names last/sur name
+      let params = {}
+      if(this.firstName != null) {
+        params["first_name"] = this.firstName
+      }
+      if(this.secondName != null) {
+        params["second_name"] = this.secondName
+      }
+      if(this.surname != null) {
+        params["last_name"] = this.surname
+      }
+      if(this.email != null) {
+        params["email"] = this.email
+      }
+      if(this.userId != null) {
+        if(this.userIdType == "pesel") {
+          params["pesel"] = this.userId
+        } else {
+          params["pass_num"] = this.userId
+        }
+      }
+
+      try {
+        let respone ;
+        if (params != {}) {
+          respone = await api.getUsers(this.$store.getters["token"], params)
+        } else {
+          respone = await api.getUsers(this.$store.getters["token"], undefined)
+        }
+        console.log(respone)
+        this.userList = respone.data
+      } catch(error) {
+        console.log(error)
+      }
       console.log(this.userList)
       if (!this.foundUsers) this.foundUsers = true;
       else {
         console.log(this.chosenUserId);
-        this.searchUser(this.chosenUserId)
+        if(this.chosenUserId != null)
+          this.searchUser(this.chosenUserId)
       }
-    },
-    verifyUser () {
-      // this is a mock
-      return this.userId=='11111' || `${this.firstName} ${this.secondName} ${this.surname}`=="Bonifacy Rupert Gąska";
     },
     chooseUser(id) {
       this.chosenUserId = id;

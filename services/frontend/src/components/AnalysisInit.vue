@@ -23,6 +23,7 @@ import router from '../router'
 
 export default {
   name: "AnalysisInit",
+  props: ["patientID"],
   data() {
     return {
       noFiles: true,
@@ -30,7 +31,8 @@ export default {
   },
   methods: {
     async startAnalysis() {
-      await this.$store.dispatch("uploadFile");
+      console.log(this.analysisFile)
+      await this.$store.dispatch("uploadFile", { patientID: this.patientID});
       router.push('/doctor/analysis-view');
     },
     fileChange(event) {
