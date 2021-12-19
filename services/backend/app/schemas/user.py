@@ -8,11 +8,14 @@ from app.models.user import UserRole
 
 # Shared properties
 class UserBase(BaseModel):
-    email: Optional[EmailStr]
-    role: Optional[UserRole]
+    email: Optional[EmailStr] = None
+    role: Optional[UserRole] = None
+    pesel: Optional[str] = None
+    passport_num: Optional[str] = None
     first_name: Optional[str] = None
     second_name: Optional[str] = None
     last_name: Optional[str] = None
+    doctor_id: Optional[UUID] = None
 
 
 # Properties to receive via API on creation
@@ -29,7 +32,6 @@ class UserUpdate(UserBase):
 
 class UserInDBBase(UserBase):
     id: Optional[UUID] = None
-    doctor_id: Optional[UUID] = None
 
     class Config:
         orm_mode = True
