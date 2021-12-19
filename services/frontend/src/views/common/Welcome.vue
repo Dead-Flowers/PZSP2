@@ -13,9 +13,7 @@
         <li> <a href="https://www.w3schools.com"> Zapraszamy wszystkich do wypełniania ankiety </a> </li>
         <li> <a href="https://www.w3schools.com"> Została wprowadzona nowa szata graficzna </a> </li>
         </ul>
-        <router-link to='/doctor/Login' class="input-element-standard"> Panel Lekarza </router-link>
-        <router-link to='/patient/Login' class="input-element-standard"> Panel Pacjenta </router-link>
-        <router-link to='/admin/Login' class="input-element-standard"> Panel Admina </router-link>
+        <router-link to='/login' class="input-element-standard"> Zaloguj się </router-link>
       </div>
     </div>
   </div>

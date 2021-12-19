@@ -38,7 +38,6 @@ import router from '../router'
 
 export default {
   name: 'Login',
-  props: ["usertype"],
   data() {
     return {
       username: null,
@@ -62,7 +61,7 @@ export default {
     },
     acceptLogin() {
       console.log('Logowanie powiodło się');
-      router.push(`/${this.usertype}/home`)
+      router.push(`/${this.$store.getters["userType"]}/home`)
     },
     rejectLogin() {
       this.username=null;
