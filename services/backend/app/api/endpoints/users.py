@@ -166,8 +166,10 @@ def read_user_by_id(
     user = crud.user.get(db, id=user_id)
     if user == current_user:
         return user
-    #TODO:  check if this doctor has the patient 
-    if not crud.user.has_roles(current_user, models.UserRole.Admin, models.UserRole.Doctor):
+    # TODO:  check if this doctor has the patient
+    if not crud.user.has_roles(
+        current_user, models.UserRole.Admin, models.UserRole.Doctor
+    ):
         raise HTTPException(
             status_code=400, detail="The user doesn't have enough privileges"
         )

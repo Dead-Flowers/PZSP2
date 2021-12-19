@@ -43,8 +43,7 @@ async def upload_audio_file(
     patient_id: UUID,
     file_in: UploadFile = File(...),
 ):
-    print(current_user.id)
-    print(patient_id)
+
     if not crud.user.has_roles(
         current_user, models.UserRole.Admin
     ) and not check_doctor(db, current_user.id, patient_id):
@@ -52,7 +51,7 @@ async def upload_audio_file(
             status_code=403, detail="Insufficient privilages to access this patient"
         )
     data = await file_in.read()
-    print(file_in.filename)
+
     rec_create = RecordingCreate(
         blob=data, patient_id=patient_id, filename=file_in.filename
     )
