@@ -51,6 +51,27 @@
       value="Wyszukaj"
       @click="searchForUser"
     />
+    <table v-if="foundUsers">
+      <tr>
+        <th> Id </th>
+        <th> Imie </th>
+        <th> Nazwisko </th>
+      </tr>
+      <tr 
+        v-bind:key="user.userId" 
+        v-for="user in this.userList"
+      >
+        <td>
+          <input 
+            type="button"
+            @click="(e)=>{chooseUser(user.userId); e.target.value='x';}"
+          />
+          {{`${user.userIdType} - ${user.userId}` }}
+        </td>
+        <td>{{`${user.userFirstName} ${user.userSecondName}`}}</td>
+        <td>{{user.userSurname}}</td>
+      </tr>
+    </table>
   </div>  
 </template>
 
@@ -66,7 +87,22 @@ export default {
       firstName: null,
       secondName: null,
       surname: null,
-      userList: [],
+      userList: [{
+          userIdType: 'pesel',
+          userId: 1111,
+          userFirstName: 'aaa',
+          userSecondName: 'bbb',
+          userSurname: 'ccc',
+        },
+        {
+          userIdType: 'pesel',
+          userId: 12,
+          userFirstName: 'ddd',
+          userSecondName: 'fff',
+          userSurname: 'eee',
+        }],
+      foundUsers: false,
+      chosenUserId: null,
     }
   },
   methods: {
@@ -74,28 +110,25 @@ export default {
       this.userIdType = event.target.value;
     },
     searchForUser() {
-      if (this.verifyUser()) {
-        this.userFound();
-      }
+      console.log(this.userList)
+      if (!this.foundUsers) this.foundUsers = true;
       else {
-        this.userNotFound();
+        console.log(this.chosenUserId);
+        this.searchUser(this.chosenUserId)
       }
     },
     verifyUser () {
       // this is a mock
       return this.userId=='11111' || `${this.firstName} ${this.secondName} ${this.surname}`=="Bonifacy Rupert Gąska";
     },
-    userFound() {
-      this.searchUser();
-    },
-    userNotFound() {
-      alert('Nie znaleziono użytkownika');
-    },
+    chooseUser(id) {
+      this.chosenUserId = id;
+    }
   },
   mounted() {
     //change this to users
-    this.userList = this.$store.getters.getPatients
-  }
+    // this.userList = this.$store.getters.getPatients
+  },
 }
 </script>
 
