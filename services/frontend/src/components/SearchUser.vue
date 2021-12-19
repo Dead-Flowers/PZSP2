@@ -51,6 +51,29 @@
       value="Wyszukaj"
       @click="searchForUser"
     />
+    <tabel v-if="foundUsers">
+      <tr>
+        <th> Id </th>
+        <th> Imie </th>
+        <th> Nazwisko </th>
+      </tr>
+      <tr 
+        v-bind:key="user.userId" 
+        v-for="user in userList"
+      >
+        <td>
+          <inptu 
+            type="checkbox"
+            v-model="chosenUser"
+            v-on="chosenUser = $event.target.value"
+            :value="user.userId"
+          />
+          {{`${user.userIdType} - ${user.userId}` }}
+        </td>
+        <td>{{`${user.userFirstName} ${user.userSecondName}`}}</td>
+        <td>{{user.userSurname}}</td>
+      </tr>
+    </tabel>
   </div>  
 </template>
 
@@ -66,7 +89,24 @@ export default {
       firstName: null,
       secondName: null,
       surname: null,
-      userList: [],
+      userList: [
+        {
+          userIdType: 'pesel',
+          userId: 1111,
+          userFirstName: aaa,
+          userSecondName: bbb,
+          userSurname: ccc,
+        },
+        {
+          userIdType: 'pesel',
+          userId: 12,
+          userFirstName: ddd,
+          userSecondName: fff,
+          userSurname: eee,
+        },
+      ],
+      foundUsers: false,
+      chosenUser: null,
     }
   },
   methods: {
@@ -74,22 +114,14 @@ export default {
       this.userIdType = event.target.value;
     },
     searchForUser() {
-      if (this.verifyUser()) {
-        this.userFound();
-      }
+      if (!this.foundUsers) this.foundUsers = true;
       else {
-        this.userNotFound();
+        console.log(this.chosenUser);
       }
     },
     verifyUser () {
       // this is a mock
       return this.userId=='11111' || `${this.firstName} ${this.secondName} ${this.surname}`=="Bonifacy Rupert Gąska";
-    },
-    userFound() {
-      this.searchUser();
-    },
-    userNotFound() {
-      alert('Nie znaleziono użytkownika');
     },
   },
   mounted() {
