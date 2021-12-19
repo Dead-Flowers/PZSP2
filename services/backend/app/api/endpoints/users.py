@@ -28,7 +28,9 @@ def read_users(
     elif crud.user.has_roles(current_user, models.UserRole.Doctor):
         return crud.user.get_assigned_patients(db, current_user, skip=skip, limit=limit)
     else:
-        raise HTTPException(status_code=403, detail="The user doesn't have enough privileges")
+        raise HTTPException(
+            status_code=403, detail="The user doesn't have enough privileges"
+        )
 
 
 @router.post("/", response_model=schemas.User)
