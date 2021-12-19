@@ -268,7 +268,7 @@ def get_results(
             else:
                 raise HTTPException(
                     status_code=403,
-                    detail="Insufficient privilages to access this patient's results"
+                    detail="Insufficient privilages to access this patient's results",
                 )
     filtered_results = []
     for result in results:
