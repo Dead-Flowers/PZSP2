@@ -47,29 +47,21 @@ export default {
   },
   methods: {
     checkPasswordChange() {
-      if (this.passwordAuth()) {
-        if (this.newPassword != this.newPasswordConfirm) 
-        {
-          this.rejectPasswordChangeByNotMatch();
-          return;
-        } 
-        this.acceptPasswordChange();
+      if (this.newPassword != this.newPasswordConfirm) 
+      {
+        this.rejectPasswordChangeByNotMatch();
+        return;
+      } 
+      this.passwordChange();
+    },
+    async passwordChange() {
+      let payload = {
+        password: this.newPassword
       }
-      else this.rejectPasswordChangeByAuth();
-    },
-    passwordAuth() {
-      // this is a mock
-      return this.currentPassword == "test";
-    },
-    acceptPasswordChange() {
-      // do sth
+      
+      await this.$store.dispatch("actionUpdateMe", payload)
+
       alert("Zmiana hasła udana");
-    },
-    rejectPasswordChangeByAuth() {
-      this.oldPassword=null;
-      this.newPassword=null;
-      this.newPasswordConfirm=null;
-      alert("Niepoprawne obecne hasło");
     },
     rejectPasswordChangeByNotMatch() {
       this.oldPassword=null;

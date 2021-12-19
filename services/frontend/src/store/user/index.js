@@ -6,6 +6,7 @@ const defaultState = {
     registrationError: false,
     registrationSuccess: false, 
     token: '',
+    id: null,
     userID: null,
     username: null,
     firstName: null,
@@ -41,12 +42,7 @@ const defaultState = {
         try {
             const response = await api.getMe(context.state.token)
             if (response.data) {
-                context.commit("setUserID", response.data.id);
-                context.commit("setUsername", response.data.email);
-                context.commit("setFirstName", response.data.first_name);
-                context.commit("setSecondName", response.data.second_name);
-                context.commit("setSurName", response.data.last_name);
-                context.commit("setUserType", response.data.role);                
+                setUserData(context, response.data)                
             }
         } catch (error) {
             await context.dispatch("actionCheckApiError", error);
@@ -83,7 +79,20 @@ const defaultState = {
     },
 
     async actionCheckApiError(context, payload) {
+        console.log(payload)
         if (payload.response.status === 401) {
+            await context.dispatch("actionLogOut");
+        }
+    },
+
+    async actionUpdateMe(context, payload) {
+        try {
+            const response = await api.updateMe(context.state.token, payload);
+            if(response.data) {
+                setUserData(context, response.data)
+            }
+        } catch (error) {
+            //TODO: better error handling 
             await context.dispatch("actionLogOut");
         }
     },
@@ -169,6 +178,9 @@ const defaultState = {
     resetRegistration(state) {
         state.registrationSuccess = false;
         state.registrationError = false;
+    },
+    setID(state, payload) {
+        state.id = payload
     }
 
   }
@@ -180,6 +192,15 @@ const defaultState = {
     getters,
   };
 
+
+const setUserData = (context, data) => {
+    context.commit("setUserID", data.id);
+    context.commit("setUsername", data.email);
+    context.commit("setFirstName", data.first_name);
+    context.commit("setSecondName", data.second_name);
+    context.commit("setSurName", data.last_name);
+    context.commit("setUserType", data.role);
+}
 
 const getLocalToken = () => localStorage.getItem('token');
 
