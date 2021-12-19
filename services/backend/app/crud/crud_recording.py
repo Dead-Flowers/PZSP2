@@ -11,7 +11,7 @@ from app.schemas.recording import RecordingCreate
 
 
 class CRUDRecording(CRUDBase[Recording, RecordingCreate, None]):
-    def get_by_patient_id(self, db: Session, *, patient_id: UUID) -> List[Recording]:
+    def get_by_patient_id(self, db: Session, patient_id: UUID) -> List[Recording]:
         return db.query(Recording).filter(Recording.patient_id == patient_id).all()
     
     def create(self, db: Session, *, obj_in: RecordingCreate) -> Recording:

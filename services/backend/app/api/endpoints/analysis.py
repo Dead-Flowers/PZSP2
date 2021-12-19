@@ -38,6 +38,8 @@ async def upload_audio_file(
     patient_id: UUID, 
     file_in: UploadFile = File(...)
 ):
+    print(current_user.id)
+    print(patient_id)
     if current_user.role != "admin" and not check_doctor(db, current_user.id, patient_id):
         raise HTTPException(
             status_code=401,

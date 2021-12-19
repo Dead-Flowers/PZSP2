@@ -10,10 +10,10 @@ from app.schemas.user import UserCreate, UserUpdate
 
 
 class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
-    def get_by_email(self, db: Session, *, email: str) -> Optional[User]:
+    def get_by_email(self, db: Session, email: str) -> Optional[User]:
         return db.query(User).filter(User.email == email).first()
 
-    def get_by_doctor_id(self, db: Session, *, doctor_id: UUID) -> List[User]:
+    def get_by_doctor_id(self, db: Session, doctor_id: UUID) -> List[User]:
         return db.query(User).filter(User.doctor_id == doctor_id).all()
 
     def create(self, db: Session, *, obj_in: UserCreate) -> User:
@@ -24,6 +24,7 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
             first_name=obj_in.first_name,
             second_name=obj_in.second_name,
             last_name=obj_in.last_name,
+            doctor_id=obj_in.doctor_id
         )
         db.add(db_obj)
         db.commit()
