@@ -1,18 +1,17 @@
 <template>
   <div class="max-screen-space-container flex-column-items-centered">
-    <Login v-bind:usertype="'patient'" />
+    <LoginForm/>
   </div>
 </template>
 
 <script>
-import Login from '../../components/Login.vue'
+import LoginForm from '../../components/LoginForm.vue'
 
 
 export default {
-  name: 'PatientLogin',
-  props: ["usertype"],
+  name: 'Login',
   components: {
-  Login
+  LoginForm
   }
 }
 </script>

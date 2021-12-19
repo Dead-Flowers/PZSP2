@@ -1,13 +1,16 @@
 <template>
   <form class="register-patient-box sector flex-column-items-centered">
-    Zarejestruj pacjenta
+    <div v-if="registationDone"> Rejestracja zakończona  </div> 
+    <div v-else> Zarejestruj pacjenta  </div> 
+    <div v-if="registationDone" class="save-password-box">  Zapisz hasło dla pacjeta: {{ password }} </div>
+    <div v-if="registationError"> Problem z rejestracją </div>
     <input
       class="input-element-standard keyboard-input"
       type="text"
       name="email"
+      v-model="email"
       placeholder="Email..."
       autocomplete="off"
-      v-model="email"
     />
     <select 
       id="patient-id-type-selector"
@@ -24,82 +27,83 @@
       v-bind:type="[patientIdType=='pesel' ? 'number': 'text']"
       v-bind:name="patientIdType"
       v-bind:placeholder="[patientIdType=='pesel' ? 'Pesel...': 'Nr paszportu...']"
-      autocomplete="off"
       v-model="patientId"
+      autocomplete="off"
     />
     <input
       class="input-element-standard keyboard-input"
       type="text"
       name="first-name"
+      v-model="fistName"
       placeholder="Pierwsze Imię..."
       autocomplete="off"
-      v-model="firstName"
     />
     <input
       class="input-element-standard keyboard-input"
       type="text"
       name="second-name"
+      v-model="secondName"
       placeholder="Drugie Imię (opcjonalnie)..."
       autocomplete="off"
-      v-model="secondName"
     />
     <input
       class="input-element-standard keyboard-input"
       type="text"
       name="surname"
       placeholder="Nazwisko..."
-      autocomplete="off"
       v-model="surname"
+      autocomplete="off"
     />
     <input
       class="input-element-standard button"
       type="button"
       value="Zarejestruj pacjenta"
-      @click="registerPatient"
+      @click="submitRegistration"
     />
   </form>
 </template>
 
 <script>
+import { generatePassword } from "@/utils.js"
 
 export default {
   name: "RegisterPatientForm",
   data() {
     return {
+      registationDone: false,
+      registationError: false,
       patientIdType: 'pesel',
-      patientId: null,
-      firstName: null,
+      fistName: null,
       secondName: null,
       surname: null,
-      mail: null,
+      email: null,
+      patientId: null,
+      password: null,
     }
+  },
+  beforeMount() {
+    this.$store.commit("resetRegistration")
   },
   methods: {
     changePatientIdType(event) {
       this.patientIdType = event.target.value;
     },
-    registerPatient() {
-      let data_packet = this.parsedata()
-      console.log(data_packet);  //this is here only so vue does not cry
-      // backend connection here
-      this.resetForm();
-    },
-    parsedata() {
-      return {
-        "idType": this.patientIdType,
-        "id": this.patientId,
-        "firstName": this.firstName,
-        "secondName": this.secondName,
-        "surname": this.surname,
-        "email": this.email,
+    async submitRegistration(){
+      this.password = generatePassword()
+      let payload = {
+        patientIdType: this.patientIdType,
+        first_name: this.fistName,
+        second_name: this.secondName,
+        last_name: this.surname,
+        email: this.email,
+        patient_id: this.patientId,
+        password: this.password,
+        role: "patient"
       }
-    },
-    resetForm() {
-      this.patientId = null;
-      this.firstName =  null;
-      this.secondName = null;
-      this.surname = null;
-      this.email = null;
+      await this.$store.dispatch("actionRegister",  payload)
+      
+      this.registationDone = this.$store.getters["registrationSuccess"]
+      this.registationError = this.$store.getters["registrationError"]
     }
   }
 }
@@ -110,5 +114,8 @@ export default {
   padding-block: 40px;
   padding-inline: 50px;
   font-size: 2rem;
+}
+.save-password-box{
+  font-size: 1rem
 }
 </style>

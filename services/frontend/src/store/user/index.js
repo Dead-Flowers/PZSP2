@@ -8,14 +8,16 @@ const defaultState = {
     token: '',
     userID: null,
     username: null,
-    isSuperUser: false,
-    fullName: null,
+    firstName: null,
+    secondName: null,
+    surname: null,
     userType: null,
   };
   
   export const actions = {
     async actionLogIn(context, payload) {
         try {
+            console.log(payload)
             const response = await api.logIn(payload.username, payload.password)
             const token = response.data.access_token;
             if (token) {
@@ -23,7 +25,7 @@ const defaultState = {
                 context.commit("setToken", token);
                 context.commit("setLoggedIn", true)
                 context.commit("setLogInError", false)
-                await context.dispatch("actionGetMe"); //! this can not work, got to check this
+                await context.dispatch("actionGetMe"); 
             } else {
                 await context.dispatch("actionLogOut");
             }
@@ -37,12 +39,14 @@ const defaultState = {
 
     async actionGetMe(context) {
         try {
-            const response = await api.getMe(context.state.token, context.state.userID)
+            const response = await api.getMe(context.state.token)
             if (response.data) {
                 context.commit("setUserID", response.data.id);
                 context.commit("setUsername", response.data.email);
-                context.commit("setFullName", response.data.full_name);
-                context.commit("setSuperUser", response.data.is_superuser);
+                context.commit("setFirstName", response.data.first_name);
+                context.commit("setSecondName", response.data.second_name);
+                context.commit("setSurName", response.data.last_name);
+                context.commit("setUserType", response.data.role);                
             }
         } catch (error) {
             await context.dispatch("actionCheckApiError", error);
@@ -61,7 +65,7 @@ const defaultState = {
             }
             if (token) {
                 try {
-                    context.dispatch("actionGetMe");
+                    await context.dispatch("actionGetMe");
                     context.commit("setLoggedIn", true)
                 } catch (error) {
                     await context.dispatch("actionLogOut");
@@ -86,7 +90,7 @@ const defaultState = {
 
     async actionRegister(context, payload) {
         try {
-            const response = await api.createUserOpen(payload)
+            const response = await api.createUser(context.state.token, payload)
             if (response.status == 200) {
                 context.commit("setRegistrationError", false)
                 context.commit("setRegistrationSuccess", true)
@@ -111,16 +115,21 @@ const defaultState = {
     isLoggedIn: (state) => state.isLoggedIn,
     username: (state) => state.username,
     email: (state) => state.username,
-    fullName: (state) => state.fullName,
+    firstName: (state) => state.firstName,
+    secondName: (state) => state.secondName,
+    surname: (state) => state.surname,
     userType: (state) => state.userType,
     user: (state) => { return {
         userID: null,
         username: state.username,
-        isSuperUser: state.isSuperUser,
-        fullName: state.fullName,
+        firstName: state.firstName,
+        secondName: state.secondName,
+        surname: state.surname,
         userType: state.userType,
         }
-    }
+    },
+    registrationError: (state) => state.registrationError,
+    registrationSuccess: (state) => state.registrationSuccess,
     }
  
   export const mutations = {
@@ -139,11 +148,14 @@ const defaultState = {
     setLogInError(state, payload) {
         state.logInError = payload;
     },
-    setFullName(state, payload) {
-        state.fullName = payload;
+    setFirstName(state, payload) {
+        state.firstName = payload;
     },
-    setSuperUser(state, payload) {
-        state.isSuperUser = payload
+    setSecondName(state, payload) {
+        state.secondName = payload;
+    },
+    setSurName(state, payload) {
+        state.surname = payload;
     },
     setRegistrationError(state, payload) {
         state.registrationError = payload;
@@ -153,6 +165,10 @@ const defaultState = {
     },
     setUserType(state, payload) {
         state.userType = payload
+    },
+    resetRegistration(state) {
+        state.registrationSuccess = false;
+        state.registrationError = false;
     }
 
   }
