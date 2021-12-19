@@ -138,11 +138,9 @@ export default {
       }
       console.log(this.userList)
       if (!this.foundUsers) this.foundUsers = true;
-      else {
-        console.log(this.chosenUserId);
-        if(this.chosenUserId != null)
-          this.searchUser(this.chosenUserId)
-      }
+      console.log(this.chosenUserId);
+      if(this.chosenUserId != null)
+        this.searchUser(this.chosenUserId)
     },
     chooseUser(id) {
       this.chosenUserId = id;

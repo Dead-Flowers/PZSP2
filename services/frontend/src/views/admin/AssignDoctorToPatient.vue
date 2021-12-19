@@ -23,6 +23,7 @@
 <script>
 import Navbar from '../../components/Navbar.vue'
 import SearchPatient from '../../components/SearchUser.vue'
+import { api } from '@/api';
 
 export default {
   name: 'AssignDoctorToPatient',
@@ -38,15 +39,25 @@ export default {
   },
   methods: {
     searchPatient(patientId) {
+      this.patientId = patientId
       console.log(patientId);
       // do sth with backend
     },
     searchDoctor(userId) {
+      this.doctorId = userId
       console.log(userId);
       // do sth with backend
     },
-    assignD2P() {
-      console.log(this.doctorId, this.patientId);
+    async assignD2P() {
+      console.log(this.patientId)
+      console.log(this.doctorId)
+      let newData = {
+        doctor_id: this.doctorId
+      }
+      //TODO catch errro
+      const response = await api.updateUser(this.$store.getters["token"], this.patientId, newData)
+
+      console.log(response);
     },
   }
 }
