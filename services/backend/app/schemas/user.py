@@ -23,6 +23,7 @@ class UserCreate(UserBase):
     email: EmailStr
     password: str
     role: UserRole
+    pesel: str
 
 
 # Properties to receive via API on update

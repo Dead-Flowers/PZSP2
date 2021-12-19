@@ -40,9 +40,9 @@ async def upload_audio_file(
 ):
     print(current_user.id)
     print(patient_id)
-    if current_user.role != "admin" and not check_doctor(db, current_user.id, patient_id):
+    if not crud.user.has_roles(current_user, models.UserRole.Admin) and not check_doctor(db, current_user.id, patient_id):
         raise HTTPException(
-            status_code=401,
+            status_code=403,
             detail="Insufficient privilages to access this patient"
         )
     data = await file_in.read()
@@ -60,9 +60,9 @@ def get_recording(
 ):
     recording = crud.recording.get(db, recording_id)
     patient_id = recording.patient_id
-    if current_user.role != "admin" and not check_doctor(db, current_user.id, patient_id):
+    if not crud.user.has_roles(current_user, models.UserRole.Admin) and not check_doctor(db, current_user.id, patient_id):
         raise HTTPException(
-            status_code=401,
+            status_code=403,
             detail="Insufficient privilages to access this patient"
         )
     return dict(id=recording.id, filename=recording.filename, patient_id=recording.patient_id, byte_length=recording.byte_length)
@@ -77,14 +77,14 @@ def get_recordings(
     skip: int = 0,
     limit: int = 100
 ):
-    if current_user.role != "admin" and patient_id is None:
+    if not crud.user.has_roles(current_user, models.UserRole.Admin) and patient_id is None:
         raise HTTPException(
-            status_code=401,
+            status_code=403,
             detail="Insufficient privilages to access all recordings"
         )
-    elif not check_doctor(db, current_user.id, patient_id):
+    elif crud.user.has_roles(current_user, models.UserRole.Doctor) and not check_doctor(db, current_user.id, patient_id):
         raise HTTPException(
-            status_code=401,
+            status_code=403,
             detail="Insufficient privilages to access this recording"
         )
     if patient_id is None:
@@ -107,9 +107,9 @@ def perform_analysis(
     db: Session
     for db in deps.get_db():
         recording = crud.recording.get(db, recording_id)
-        if current_user.role != "admin" and not check_doctor(db, current_user.id, recording.patient_id):
+        if not crud.user.has_roles(current_user, models.UserRole.Admin) and not check_doctor(db, current_user.id, recording.patient_id):
             raise HTTPException(
-                status_code=401,
+                status_code=403,
                 detail="Insufficient privilages to access this recording"
             )
         analysis_create = AnalysisResultCreate(status="CREATED", patient_id=recording.patient_id, recording_id=recording_id)
@@ -126,9 +126,9 @@ def get_results(
     analysis_id: UUID
 ):
     result = crud.analysis_result.get(db, analysis_id)
-    if current_user.role != "admin" and not check_doctor(db, current_user.id, result.patient_id):
+    if not crud.user.has_roles(current_user, models.UserRole.Admin) and not check_doctor(db, current_user.id, result.patient_id):
         raise HTTPException(
-            status_code=401,
+            status_code=403,
             detail="Insufficient privilages to access this analysis result"
         )
     return dict(id=result.id, status=result.status)
@@ -142,9 +142,9 @@ def get_results(
     analysis_id: UUID
 ):
     result = crud.analysis_result.get(db, analysis_id)
-    if current_user.role != "admin" and not check_doctor(db, current_user.id, result.patient_id):
+    if not crud.user.has_roles(current_user, models.UserRole.Admin) and not check_doctor(db, current_user.id, result.patient_id):
         raise HTTPException(
-            status_code=401,
+            status_code=403,
             detail="Insufficient privilages to access this analysis result"
         )
     if result.status != "COMPLETED":
@@ -163,9 +163,9 @@ def get_results(
     analysis_id: UUID
 ):
     result = crud.analysis_result.get(db, analysis_id)
-    if current_user.role != "admin" and not check_doctor(db, current_user.id, result.patient_id):
+    if not crud.user.has_roles(current_user, models.UserRole.Admin) and not check_doctor(db, current_user.id, result.patient_id):
         raise HTTPException(
-            status_code=401,
+            status_code=403,
             detail="Insufficient privilages to access this analysis result"
         )
     if result.status != "COMPLETED":
@@ -184,9 +184,9 @@ def get_results(
     analysis_id: UUID
 ):
     result = crud.analysis_result.get(db, analysis_id)
-    if current_user.role != "admin" and not check_doctor(db, current_user.id, result.patient_id):
+    if not crud.user.has_roles(current_user, models.UserRole.Admin) and not check_doctor(db, current_user.id, result.patient_id):
         raise HTTPException(
-            status_code=401,
+            status_code=403,
             detail="Insufficient privilages to access this analysis result"
         )
     return result.status
@@ -201,14 +201,14 @@ def get_results(
     skip: int = 0, 
     limit: int = 100
 ):
-    if current_user.role != "admin" and patient_id is None:
+    if not crud.user.has_roles(current_user, models.UserRole.Admin) and patient_id is None:
         raise HTTPException(
-            status_code=401,
+            status_code=403,
             detail="Insufficient privilages to access all results"
         )
-    elif not check_doctor(db, current_user.id, patient_id):
+    elif crud.user.has_roles(current_user, models.UserRole.Doctor) and not check_doctor(db, current_user.id, patient_id):
         raise HTTPException(
-            status_code=401,
+            status_code=403,
             detail="Insufficient privilages to access this patient's results"
         )
     if patient_id is None:
