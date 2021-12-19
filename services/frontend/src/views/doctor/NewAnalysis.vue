@@ -21,8 +21,15 @@ export default {
   data() {
     return {
       showSearchBox: true,
-      patientData: {}
+      patientData: {},
+      chosenUserId: null,
     }
+  },
+  methods: {
+    searchUser(id) {
+      this.showSearchBox = false;
+      this.chosenUserId = id
+    },
   }
 }
 </script>

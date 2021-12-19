@@ -51,7 +51,7 @@
       value="Wyszukaj"
       @click="searchForUser"
     />
-    <tabel v-if="foundUsers">
+    <table v-if="foundUsers">
       <tr>
         <th> Id </th>
         <th> Imie </th>
@@ -59,21 +59,19 @@
       </tr>
       <tr 
         v-bind:key="user.userId" 
-        v-for="user in userList"
+        v-for="user in this.userList"
       >
         <td>
-          <inptu 
-            type="checkbox"
-            v-model="chosenUser"
-            v-on="chosenUser = $event.target.value"
-            :value="user.userId"
+          <input 
+            type="button"
+            @click="(e)=>{chooseUser(user.userId); e.target.value='x';}"
           />
           {{`${user.userIdType} - ${user.userId}` }}
         </td>
         <td>{{`${user.userFirstName} ${user.userSecondName}`}}</td>
         <td>{{user.userSurname}}</td>
       </tr>
-    </tabel>
+    </table>
   </div>  
 </template>
 
@@ -89,24 +87,22 @@ export default {
       firstName: null,
       secondName: null,
       surname: null,
-      userList: [
-        {
+      userList: [{
           userIdType: 'pesel',
           userId: 1111,
-          userFirstName: aaa,
-          userSecondName: bbb,
-          userSurname: ccc,
+          userFirstName: 'aaa',
+          userSecondName: 'bbb',
+          userSurname: 'ccc',
         },
         {
           userIdType: 'pesel',
           userId: 12,
-          userFirstName: ddd,
-          userSecondName: fff,
-          userSurname: eee,
-        },
-      ],
+          userFirstName: 'ddd',
+          userSecondName: 'fff',
+          userSurname: 'eee',
+        }],
       foundUsers: false,
-      chosenUser: null,
+      chosenUserId: null,
     }
   },
   methods: {
@@ -114,20 +110,25 @@ export default {
       this.userIdType = event.target.value;
     },
     searchForUser() {
+      console.log(this.userList)
       if (!this.foundUsers) this.foundUsers = true;
       else {
-        console.log(this.chosenUser);
+        console.log(this.chosenUserId);
+        this.searchUser(this.chosenUserId)
       }
     },
     verifyUser () {
       // this is a mock
       return this.userId=='11111' || `${this.firstName} ${this.secondName} ${this.surname}`=="Bonifacy Rupert Gąska";
     },
+    chooseUser(id) {
+      this.chosenUserId = id;
+    }
   },
   mounted() {
     //change this to users
-    this.userList = this.$store.getters.getPatients
-  }
+    // this.userList = this.$store.getters.getPatients
+  },
 }
 </script>
 
