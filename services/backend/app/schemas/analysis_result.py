@@ -15,6 +15,8 @@ class AnalysisResultBase(BaseModel):
 
 class AnalysisResultCreate(AnalysisResultBase):
     status: str
+    patient_id: UUID
+    recording_id: UUID
 
 
 class AnalysisResultStatusUpdate(AnalysisResultBase):

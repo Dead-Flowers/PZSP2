@@ -1,6 +1,8 @@
-from typing import Any, Dict, Optional, Union
+from typing import Any, Dict, List, Optional, Union
+from uuid import UUID
 
 from sqlalchemy.orm import Session
+from sqlalchemy.sql.expression import and_, or_
 
 from app.core.security import get_password_hash, verify_password
 from app.crud.base import CRUDBase
@@ -9,8 +11,51 @@ from app.schemas.user import UserCreate, UserUpdate
 
 
 class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
-    def get_by_email(self, db: Session, *, email: str) -> Optional[User]:
+    def get_by_email(self, db: Session, email: str) -> Optional[User]:
         return db.query(User).filter(User.email == email).first()
+
+    def get_by_params(
+        self,
+        db: Session,
+        pesel="",
+        pass_num="",
+        f_name="",
+        s_name="",
+        l_name="",
+        email="",
+        user: User = None,
+        skip: int = 0,
+        limit: int = 100,
+    ) -> List[User]:
+        by_params = db.query(User).filter(User.email.ilike(f"%{email}%"))
+        by_params = by_params.filter(User.first_name.ilike(f"%{f_name}%"))
+        by_params = by_params.filter(User.last_name.ilike(f"%{l_name}%"))
+        if pesel != "":
+            by_params = by_params.filter(
+                and_(User.pesel != None, User.pesel.ilike(f"%{pesel}%"))
+            )
+        if s_name != "":
+            by_params = by_params.filter(
+                and_(User.second_name != None, User.second_name.ilike(f"%{s_name}%"))
+            )
+        if pass_num != "":
+            by_params = by_params.filter(
+                and_(
+                    User.passport_num != None, User.passport_num.ilike(f"%{pass_num}%")
+                )
+            )
+        if self.has_roles(user, UserRole.Admin):
+            return by_params.offset(skip).limit(limit).all()
+        else:
+            return (
+                by_params.filter(User.doctor_id == user.id)
+                .offset(skip)
+                .limit(limit)
+                .all()
+            )
+
+    def get_by_doctor_id(self, db: Session, doctor_id: UUID) -> List[User]:
+        return db.query(User).filter(User.doctor_id == doctor_id).all()
 
     def create(self, db: Session, *, obj_in: UserCreate) -> User:
         db_obj = User(
@@ -20,6 +65,8 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
             first_name=obj_in.first_name,
             second_name=obj_in.second_name,
             last_name=obj_in.last_name,
+            doctor_id=obj_in.doctor_id,
+            pesel=obj_in.pesel,
         )
         db.add(db_obj)
         db.commit()

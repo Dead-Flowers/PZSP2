@@ -12,3 +12,4 @@ class RecordingBase(BaseModel):
 class RecordingCreate(RecordingBase):
     blob: bytes
     filename: str
+    patient_id: UUID

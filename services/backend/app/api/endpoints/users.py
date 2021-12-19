@@ -1,6 +1,8 @@
 from typing import Any, List
 from uuid import UUID
 
+from sqlalchemy.sql.sqltypes import String
+
 from fastapi import APIRouter, Body, Depends, HTTPException
 from fastapi.encoders import jsonable_encoder
 from pydantic.networks import EmailStr
@@ -16,17 +18,47 @@ router = APIRouter()
 @router.get("/", response_model=List[schemas.User])
 def read_users(
     db: Session = Depends(deps.get_db),
+    current_user: models.User = Depends(deps.get_current_user),
+    pesel: str = "",
+    pass_num: str = "",
+    first_name: str = "",
+    second_name: str = "",
+    last_name: str = "",
+    email: str = "",
     skip: int = 0,
     limit: int = 100,
-    current_user: models.User = Depends(deps.get_current_user),
 ) -> Any:
     """
     Retrieve users.
     """
     if crud.user.has_roles(current_user, models.UserRole.Admin):
-        return crud.user.get_multi(db, skip=skip, limit=limit)
+        # return crud.user.get_multi(db, skip=skip, limit=limit)
+        return crud.user.get_by_params(
+            db,
+            pesel,
+            pass_num,
+            first_name,
+            second_name,
+            last_name,
+            email,
+            current_user,
+            skip,
+            limit,
+        )
     elif crud.user.has_roles(current_user, models.UserRole.Doctor):
-        return crud.user.get_assigned_patients(db, current_user, skip=skip, limit=limit)
+        # return crud.user.get_assigned_patients(db, current_user, skip=skip, limit=limit)
+        return crud.user.get_by_params(
+            db,
+            pesel,
+            pass_num,
+            first_name,
+            second_name,
+            last_name,
+            email,
+            current_user,
+            skip,
+            limit,
+        )
     else:
         raise HTTPException(
             status_code=403, detail="The user doesn't have enough privileges"
