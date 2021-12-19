@@ -10,7 +10,7 @@ const defaultState = {
     username: null,
     firstName: null,
     secondName: null,
-    surName: null,
+    surname: null,
     userType: null,
   };
   
@@ -117,14 +117,14 @@ const defaultState = {
     email: (state) => state.username,
     firstName: (state) => state.firstName,
     secondName: (state) => state.secondName,
-    surName: (state) => state.surName,
+    surname: (state) => state.surname,
     userType: (state) => state.userType,
     user: (state) => { return {
         userID: null,
         username: state.username,
         firstName: state.firstName,
         secondName: state.secondName,
-        surName: state.surName,
+        surname: state.surname,
         userType: state.userType,
         }
     },
@@ -155,7 +155,7 @@ const defaultState = {
         state.secondName = payload;
     },
     setSurName(state, payload) {
-        state.surName = payload;
+        state.surname = payload;
     },
     setRegistrationError(state, payload) {
         state.registrationError = payload;

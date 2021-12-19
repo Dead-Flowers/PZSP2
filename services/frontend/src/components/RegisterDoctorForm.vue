@@ -32,7 +32,7 @@
       class="input-element-standard keyboard-input"
       type="text"
       name="surname"
-      v-model="surName"
+      v-model="surname"
       placeholder="Nazwisko..."
       autocomplete="off"
     />
@@ -56,7 +56,7 @@ export default {
       registationError: false,
       fistName: null,
       secondName: null,
-      surName: null,
+      surname: null,
       email: null,
       password: null,
     }
@@ -70,7 +70,7 @@ export default {
       let payload = {
         first_name: this.fistName,
         second_name: this.secondName,
-        last_name: this.surName,
+        last_name: this.surname,
         email: this.email,
         password: this.password,
         role: "doctor"

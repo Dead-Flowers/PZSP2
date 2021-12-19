@@ -51,7 +51,7 @@
       type="text"
       name="surname"
       placeholder="Nazwisko..."
-      v-model="surName"
+      v-model="surname"
       autocomplete="off"
     />
     <input
@@ -75,7 +75,7 @@ export default {
       patientIdType: 'pesel',
       fistName: null,
       secondName: null,
-      surName: null,
+      surname: null,
       email: null,
       patientId: null,
       password: null,
@@ -94,7 +94,7 @@ export default {
         patientIdType: this.patientIdType,
         first_name: this.fistName,
         second_name: this.secondName,
-        last_name: this.surName,
+        last_name: this.surname,
         email: this.email,
         patient_id: this.patientId,
         password: this.password,
