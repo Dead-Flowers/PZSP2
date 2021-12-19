@@ -27,7 +27,6 @@
       class="input-element-standard button"
       type="button"
       value="Zaloguj się"
-      style="margin-inline-end: 20px"
       @click="checkLogin"
     />
     <router-link to="/" class="go-home" > Powróć do strony głównej </router-link>

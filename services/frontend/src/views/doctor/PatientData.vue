@@ -52,7 +52,7 @@ export default {
           patientName: "Bonifacy Rupert",
           patientSurname: "Gąska",
           date: "02-01-2020",
-          analysisHyperlink: "https://www.google.com"
+          analysisHyperlink: "https://www.w3schools.com"
         },
         {
           analysisId: 4,
@@ -61,7 +61,7 @@ export default {
           patientName: "Bonifacy Rupert",
           patientSurname: "Gąska",
           date: "02-01-2020",
-          analysisHyperlink: "https://www.google.com"
+          analysisHyperlink: "https://www.w3schools.com"
         },
         {
           analysisId: 3,
@@ -70,7 +70,7 @@ export default {
           patientName: "Bonifacy Rupert",
           patientSurname: "Gąska",
           date: "02-01-2020",
-          analysisHyperlink: "https://www.google.com"
+          analysisHyperlink: "https://www.w3schools.com"
         },
         {
           analysisId: 2,
@@ -79,7 +79,7 @@ export default {
           patientName: "Bonifacy Rupert",
           patientSurname: "Gąska",
           date: "02-01-2020",
-          analysisHyperlink: "https://www.google.com"
+          analysisHyperlink: "https://www.w3schools.com"
         },
         {
           analysisId: 1,
@@ -88,7 +88,7 @@ export default {
           patientName: "Bonifacy Rupert",
           patientSurname: "Gąska",
           date: "02-01-2020",
-          analysisHyperlink: "https://www.google.com"
+          analysisHyperlink: "https://www.w3schools.com"
         },
       ]
     },
