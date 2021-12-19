@@ -49,6 +49,11 @@ export default new Router({
       name: 'admin_NewDoctor',
       component: NewDoctor
     },
+    {
+      path: '/admin/register-completed',
+      name: 'register-completed',
+      component: NewDoctor
+    },
     // doctor
     {
       path: '/doctor/analysis-view',

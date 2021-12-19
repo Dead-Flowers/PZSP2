@@ -46,9 +46,14 @@ export default {
     }
   },
   methods: {
-    checkLogin() {
-      // TODO: this is a mock
-      if (this.username == "test" && this.password == "test") {
+    async checkLogin() {
+      let payload = {
+        username: this.username,
+        password: this.password,
+      }
+      await this.$store.dispatch("actionLogIn", payload);
+      
+      if (this.$store.getters["isLoggedIn"]) {
         this.acceptLogin();
       }
       else {

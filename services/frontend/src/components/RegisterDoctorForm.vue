@@ -1,79 +1,84 @@
 <template>
   <form class="register-patient-box sector flex-column-items-centered">
-    Zarejestruj doktora
+    <div v-if="registationDone"> Rejestracja zakończona  </div> 
+    <div v-else> Zarejestruj Doktora  </div> 
+    <div v-if="registationDone" class="save-password-box">  Zapisz hasło dla Doktora: {{ password }} </div>
+    <div v-if="registationError"> Problem z rejestracją </div>
     <input
       class="input-element-standard keyboard-input"
       type="text"
       name="email"
       placeholder="Email..."
-      autocomplete="off"
       v-model="email"
+      autocomplete="off"
     />
     <input
       class="input-element-standard keyboard-input"
       type="text"
       name="first-name"
+      v-model="fistName"
       placeholder="Pierwsze Imię..."
       autocomplete="off"
-      v-model="firstName"
     />
     <input
       class="input-element-standard keyboard-input"
       type="text"
       name="second-name"
+      v-model="secondName"
       placeholder="Drugie Imię (opcjonalnie)..."
       autocomplete="off"
-      v-model="secondName"
     />
     <input
       class="input-element-standard keyboard-input"
       type="text"
       name="surname"
+      v-model="surName"
       placeholder="Nazwisko..."
       autocomplete="off"
-      v-model="surname"
     />
     <input
       class="input-element-standard button"
       type="button"
       value="Zarejestruj doktora"
-      @click="registerDoc"
+      @click="submitRegistration"
     />
   </form>
 </template>
 
 <script>
+import { generatePassword } from "@/utils.js"
 
-export default {
+export default {  
   name: "RegisterDoctorForm",
   data() {
     return {
-      firstName: null,
+      registationDone: false,
+      registationError: false,
+      fistName: null,
       secondName: null,
-      surname: null,
+      surName: null,
       email: null,
+      password: null,
     }
   },
+  beforeMount() {
+    this.$store.commit("resetRegistration")
+  },
   methods: {
-    registerDoc() {
-      let data_packet = this.parsedata();
-      console.log(data_packet); //this is here only so vue does not cry
-      // backend connection here
-      this.resetForm();
-    },
-    parsedata() {
-      return {
-        "firstName": this.firstName,
-        "secondName": this.secondName,
-        "surname": this.surname,
-        "email": this.email,
+    async submitRegistration(){
+      this.password = generatePassword()
+      let payload = {
+        first_name: this.fistName,
+        second_name: this.secondName,
+        last_name: this.surName,
+        email: this.email,
+        password: this.password,
+        role: "doctor"
       }
-    },
-    resetForm() {
-      this.firstName =  null;
-      this.secondName = null;
-      this.surname = null;
-      this.email = null;
+      await this.$store.dispatch("actionRegister",  payload)
+      
+      this.registationDone = this.$store.getters["registrationSuccess"]
+      this.registationError = this.$store.getters["registrationError"]
     }
   }
 }
@@ -84,5 +89,9 @@ export default {
   padding-block: 40px;
   padding-inline: 50px;
   font-size: 2rem;
+}
+
+.save-password-box{
+  font-size: 1rem
 }
 </style>

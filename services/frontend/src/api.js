@@ -16,7 +16,7 @@ export const api = {
     params.append('username', username);
     params.append('password', password);
 
-    return axios.post(`${APISUFFIX}/login/`, params);
+    return axios.post(`${APISUFFIX}/api/login/access-token`, params);
   },
 
   async getMe(token) {
