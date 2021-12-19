@@ -1,7 +1,7 @@
 <template>
   <div class="max-screen-space-container flex-column-items-centered">
     <Navbar v-bind:usertype="'doctor'" />
-    <SearchPatient v-if="!showSearchBox" v-bind:searchPatient="searchPatient"/>
+    <SearchUser v-if="!showSearchBox" v-bind:searchUser="searchUser" v-bind:userType="'patient'" />
     <div v-else>
       <PatientTable v-bind:patientData="patientData"/>
       <AnalysisResultTable v-bind:analyses="analyses" />
@@ -11,7 +11,7 @@
 
 <script>
 import Navbar from '../../components/Navbar.vue'
-import SearchPatient from '../../components/SearchPatient.vue'
+import SearchUser from '../../components/SearchUser.vue'
 import PatientTable from '../../components/PatientTable.vue'
 import AnalysisResultTable from '../../components/AnalysisResultTable.vue'
 
@@ -19,7 +19,7 @@ export default {
   name: 'PatientData',
   components: {
     Navbar,
-    SearchPatient,
+    SearchUser,
     PatientTable,
     AnalysisResultTable
   },
@@ -31,11 +31,11 @@ export default {
     }
   },
   methods: {
-    searchPatient(patientId) {
-      this.getPatientData(patientId);
+    searchUser(userId) {
+      this.getUserData(userId);
       this.showSearchBox = true;
     },
-    getPatientData(id) {
+    getUserData(id) {
       // TODO: this is a mock, we need to get data from backend 
       id = 11111;
       this.patientData = {

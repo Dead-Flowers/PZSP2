@@ -4,6 +4,7 @@ import AnalysisView from '../views/doctor/AnalysisView.vue'
 import FirstLogin from '../views/doctor/FirstLogin.vue'
 import NewAnalysis from '../views/doctor/NewAnalysis.vue' 
 import NewPatient from '../views/admin/NewPatient.vue'
+import AssignDoctorToPatient from '../views/admin/AssignDoctorToPatient.vue'
 import NewDoctor from '../views/admin/NewDoctor.vue'
 import PageNotFound from '../views/common/PageNotFound.vue'
 import PatientData from '../views/doctor/PatientData.vue'
@@ -51,6 +52,11 @@ export default new Router({
       path: '/admin/register-completed',
       name: 'register-completed',
       component: NewDoctor
+    },
+    {
+      path: '/admin/assign-d2p',
+      name: 'admin_assignD2P',
+      component: AssignDoctorToPatient
     },
     // doctor
     {

@@ -49,6 +49,13 @@
             value="Zarejestruj Doktora"
           />
         </router-link>
+        <router-link to='/admin/assign-d2p' >
+          <input 
+            class="tab"
+            type="button"
+            value="Przypisz doktora do pacjenta"
+          />
+        </router-link>
       </div>
       <!-- patient tabs -->
       <div v-if="(usertype == 'patient')" class="tab-space">
