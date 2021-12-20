@@ -67,7 +67,11 @@
         <td>
           <input 
             type="button"
-            @click="searchUser(user)"
+            @click="() => {
+              userList = [];
+              foundUsers = false;
+              searchUser(user);
+            }"
           />
           {{ ( user.pesel == null) ? user.passport_num : user.pesel }}
         </td>
