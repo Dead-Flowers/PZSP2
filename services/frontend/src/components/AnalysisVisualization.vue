@@ -69,7 +69,8 @@ export default {
     VChart
   },
   provide: {
-    [THEME_KEY]: "vintage"
+    [THEME_KEY]: "dark",
+
   },
   data() {
     return {
@@ -134,7 +135,7 @@ export default {
 
 .chart {
   width: 100%;
-  height: 0.5vh;
+  height: 50vh;
 }
 
 .card {
