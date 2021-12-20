@@ -2,10 +2,8 @@
   <div class="max-screen-space-container flex-row-items-start">
     <Navbar v-bind:usertype="'doctor'" />
     <div class="navbar-as-adjacent flex-column-items-centered">
-      <div class="sector">
         <SearchUser v-if="showSearchBox" v-bind:searchUser="searchUser" v-bind:userType="'patient'" />
         <AnalysisInit v-bind:patientID="chosenUserId"  v-else />
-      </div>
     </div>
   </div>
 </template>

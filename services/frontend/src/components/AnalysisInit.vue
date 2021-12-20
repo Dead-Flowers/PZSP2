@@ -1,5 +1,5 @@
 <template>
-  <form class="sector flex-column-items-start">
+  <form class="flex-column-items-start">
     <input
       class="input-element-standard"
       style="margin-block-start: 0px"
