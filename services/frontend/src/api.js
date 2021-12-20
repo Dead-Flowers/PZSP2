@@ -30,7 +30,7 @@ export const api = {
   async getUsers(token, params) {
     let config = authHeaders(token);
     if (params !== undefined) {
-      config['params'] = params
+      config['params'] = params;
     }
     return axios.get(`${APISUFFIX}/api/users/`, config);
   },
@@ -51,10 +51,9 @@ export const api = {
 
   async uploadFile(token, file, patientID) {
     let config = authHeaders(token);
-    console.log(patientID)
     config.headers ['Content-Type'] = 'multipart/form-data';
-    config["params"] = {}
-    config.params["patient_id"] = patientID
+    config["params"] = {};
+    config.params["patient_id"] = patientID;
     return axios.post(`${APISUFFIX}/api/analysis/recordings/upload`,
     file,
     config)

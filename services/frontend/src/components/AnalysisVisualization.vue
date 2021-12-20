@@ -3,9 +3,9 @@
 
   <div v-else class="sector flex-column-items-centered card">
 
-    <div class="flex-row-items-centered" style="margin-block-end: 30px">
+    <div class="flex-row-items-centered" style="margin-block-end: 1.5vw">
 
-      <table style="margin-inline-end: 30px">
+      <table style="margin-inline-end: 1.5vw">
         <tr>
           <td>Pesel </td>
           <td>{{ currentPatient.patientId }} </td>
@@ -69,7 +69,8 @@ export default {
     VChart
   },
   provide: {
-    [THEME_KEY]: "vintage"
+    [THEME_KEY]: "dark",
+
   },
   data() {
     return {
@@ -134,11 +135,11 @@ export default {
 
 .chart {
   width: 100%;
-  height: 500px;
+  height: 50vh;
 }
 
 .card {
-  margin: 50px;
+  margin: 2.5vw;
   width: 75%;
 }
 

@@ -1,19 +1,21 @@
 <template>
-  <div class="max-screen-space-container flex-column-items-centered">
+  <div class="max-screen-space-container flex-row-items-start">
     <Navbar v-bind:usertype="'admin'" />
-    <RegisterPatientForm />
+    <div class="navbar-as-adjacent flex-column-items-centered">
+      <RegisterUserForm v-bind:usertype="'patient'"/>
+    </div>
   </div>
 </template>
 
 <script>
-import RegisterPatientForm from '../../components/RegisterPatientForm.vue'
+import RegisterUserForm from '../../components/RegisterUserForm.vue'
 import Navbar from '../../components/Navbar.vue'
 
 export default {
   name: 'NewPatient',
   components: {
     Navbar,
-    RegisterPatientForm,
+    RegisterUserForm,
   },
 }
 </script>

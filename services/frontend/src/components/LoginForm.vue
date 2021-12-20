@@ -75,8 +75,8 @@ export default {
 
 <style scoped>
 .login-box {
-  padding-block: 40px;
-  padding-inline: 50px;
-  font-size: 2rem;
+  padding-block: 2vw;
+  padding-inline: 2.5vw;
+  font-size: 2vw;
 }
 </style>

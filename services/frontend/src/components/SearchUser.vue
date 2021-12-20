@@ -1,49 +1,52 @@
 <template>
-  <div class="sector flex-column-items-centered">
-    <label> Wyszukaj po peselu lub numerze paszportu </label> 
-    <select 
-      id="user-id-type-selector"
-      class="input-element-standard input-element-addon keyboard-input input-element-small"
-      name="user-id-type"
-      @change="changeUserIdType($event)"
-    >
-      <option value="pesel">Pesel</option>
-      <option value="passport-id">Nr paszportu</option>
-    </select>
-    <input
-      id="user-id"
-      class="input-element-standard input-element-addon keyboard-input"
-      v-bind:type="[userIdType=='pesel' ? 'number': 'text']"
-      v-bind:name="userIdType"
-      v-bind:placeholder="[userIdType=='pesel' ? 'Pesel...': 'Nr paszportu...']"
-      v-model="userId"
-      autocomplete="off"
-    />
-    <label style="margin-block-start: 30px"> Wyszukaj po imieniu i nazwisku </label> 
-    <input
-      class="input-element-standard input-element-addon keyboard-input"
-      type="text"
-      name="first-name"
-      placeholder="Pierwsze Imię..."
-      v-model="firstName"
-      autocomplete="off"
-    />
-    <input
-      class="input-element-standard input-element-addon keyboard-input"
-      type="text"
-      name="second-name"
-      placeholder="Drugie Imię (opcjonalnie)..."
-      v-model="secondName"
-      autocomplete="off"
-    />
-    <input
-      class="input-element-standard input-element-addon keyboard-input"
-      type="text"
-      name="surname"
-      placeholder="Nazwisko..."
-      v-model="surname"
-      autocomplete="off"
-    />   
+  <div class="flex-column-items-start">
+    <label> Kryteria wyszukiwania (nie wszystkie są wymagane)</label>
+    <div class="flex-row-items-start" >
+      <select 
+        id="user-id-type-selector"
+        class="input-element-standard input-element-addon keyboard-input"
+        name="user-id-type"
+        @change="changeUserIdType($event)"
+      >
+        <option value="pesel">Pesel</option>
+        <option value="passport-id">Nr paszportu</option>
+      </select>
+      <input
+        id="user-id"
+        class="input-element-standard input-element-addon keyboard-input"
+        type="text"
+        v-bind:name="userIdType"
+        v-bind:placeholder="[userIdType=='pesel' ? 'Pesel...': 'Nr paszportu...']"
+        v-model="userId"
+        autocomplete="off"
+      />
+    </div>
+    <div class="flex-row-items-start" >
+      <input
+        class="input-element-standard input-element-addon keyboard-input"
+        type="text"
+        name="first-name"
+        placeholder="Pierwsze Imię..."
+        v-model="firstName"
+        autocomplete="off"
+      />
+      <input
+        class="input-element-standard input-element-addon keyboard-input"
+        type="text"
+        name="second-name"
+        placeholder="Drugie Imię..."
+        v-model="secondName"
+        autocomplete="off"
+      />
+      <input
+        class="input-element-standard input-element-addon keyboard-input"
+        type="text"
+        name="surname"
+        placeholder="Nazwisko..."
+        v-model="surname"
+        autocomplete="off"
+      />  
+    </div> 
     <input
       class="input-element-standard input-element-addon"
       type="button"
@@ -64,7 +67,11 @@
         <td>
           <input 
             type="button"
-            @click="(e)=>{chooseUser(user.id, user); e.target.value='x';}"
+            @click="() => {
+              userList = [];
+              foundUsers = false;
+              searchUser(user);
+            }"
           />
           {{ ( user.pesel == null) ? user.passport_num : user.pesel }}
         </td>
@@ -77,7 +84,6 @@
 
 <script>
 import { api } from '@/api';
-
 export default {
   name: 'SearchUser',
   props: ['searchUser', 'userType'],
@@ -101,60 +107,62 @@ export default {
       this.userIdType = event.target.value;
     },
     async searchForUser() {
+      this.userList = [];
       //TODO: REFACTOR THIS PLS
       //TODO: unify naming and names last/sur name
       let params = {}
       if(this.firstName != null) {
-        params["first_name"] = this.firstName
+        params["first_name"] = this.firstName;
       }
       if(this.secondName != null) {
-        params["second_name"] = this.secondName
+        params["second_name"] = this.secondName;
       }
       if(this.surname != null) {
-        params["last_name"] = this.surname
+        params["last_name"] = this.surname;
       }
       if(this.email != null) {
-        params["email"] = this.email
+        params["email"] = this.email;
       }
       if(this.userId != null) {
         if(this.userIdType == "pesel") {
-          params["pesel"] = this.userId
+          params["pesel"] = this.userId;
         } else {
-          params["pass_num"] = this.userId
+          params["pass_num"] = this.userId;
         }
       }
-
       try {
         let respone ;
         if (params != {}) {
-          respone = await api.getUsers(this.$store.getters["token"], params)
+          respone = await api.getUsers(this.$store.getters["token"], params);
         } else {
-          respone = await api.getUsers(this.$store.getters["token"], undefined)
+          respone = await api.getUsers(this.$store.getters["token"], undefined);
         }
         console.log(respone)
-        this.userList = respone.data
+        let unfilteredUserList = respone.data
+        unfilteredUserList.forEach(element => {
+          if (element.role == this.userType) this.userList.push(element);
+        });
+
       } catch(error) {
         console.log(error)
       }
       console.log(this.userList)
-      if (!this.foundUsers) this.foundUsers = true;
-      console.log(this.chosenUserId);
-      if(this.chosenUserId != null)
-        this.searchUser(this.chosenUserId)
+      if (this.userList.length > 0) this.foundUsers = true;
     },
-    chooseUser(id) {
-      this.chosenUserId = id;
-    }
   },
   mounted() {
-    //change this to users
-    // this.userList = this.$store.getters.getPatients
+      this.userList = [];
+      this.foundUsers = false;
   },
 }
 </script>
 
 <style scoped>
 .input-element-addon {
-  margin-inline-start: 20px;
+  margin-inline-start: 2vw;
 }
+label {
+  font-size: 1.5vw;
+}
+
 </style>

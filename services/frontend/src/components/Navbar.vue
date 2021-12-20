@@ -1,7 +1,9 @@
 <template>
   <div class="navbar">
     <div class="navbar-start">
-      <router-link class="page-name link" to='/' >Bowel Lab</router-link>
+      <div class="page-name-container">
+        <router-link class="page-name link" to='/' >Bowel Lab</router-link>
+      </div>
       <!-- doctor tabs -->
       <div v-if="(usertype == 'doctor')" class="tab-space">
         <router-link to='/doctor/home'>
@@ -101,27 +103,32 @@ export default {
 .navbar {
   top: 0;
   left: 0;
-  position: fixed;
-  z-index: 10;
-  background-color: var(--color-sector);
-  margin: 0;
-  padding-block-start: 40px;
+  position: inherit;
+  background-color: var(--color-navbar);
+  margin-right: 1px;
+  padding-block-start: 2vw;
   height: 100vh;
   width: var(--width-navbar);
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  overflow-x: hidden;
+  overflow-wrap: break-word;
 }
 
 .navbar-end {
-  margin-block-end: 60px;
+  margin-block-end: 3vw;
+}
+
+.page-name-container {
+  min-width: var(--width-navbar);
+  text-align: center;
+  align-items: center;
 }
 
 .page-name {
-  font-size: 1.5rem;
-  margin-inline: 15px;
+  font-size: 2vw;
+  color: var(--text-color)
 }
 
 .tab-space {
@@ -133,14 +140,13 @@ export default {
 .tab {
   background-color: var(--color-accent);
   border: 0;
-  margin-block-start: 3px;
-  padding-block: 15px;
+  margin-block-start: 0.15vw;
+  padding-block: 0.75vw;
   width: var(--width-navbar);
-  padding: 20px;
-  font-size: 1rem;
+  font-size: 1.2vw;
   font-family:  "Roboto", sans-serif;
   color: var(--color-text);
-  overflow-wrap: break-word;
+  white-space: normal;
 }
 
 .tab:hover {

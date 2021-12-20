@@ -1,7 +1,9 @@
 <template>
-  <div class="max-screen-space-container flex-column-items-centered">
+  <div class="max-screen-space-container flex-row-items-start">
     <Navbar v-bind:usertype="'doctor'" />
-    <AnalysisVisualization v-bind:analysisData="analysisData"/>
+    <div class="navbar-as-adjacent flex-column-items-centered">
+      <AnalysisVisualization v-bind:analysisData="analysisData"/>
+    </div>
   </div>
 </template>
 

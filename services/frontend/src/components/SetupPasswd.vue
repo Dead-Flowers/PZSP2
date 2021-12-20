@@ -58,7 +58,7 @@ export default {
 
 <style scoped>
 label {
-  margin-block-end: 10px;
+  margin-block-end: 1vw;
 }
 
 </style>

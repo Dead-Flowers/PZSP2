@@ -1,33 +1,33 @@
 <template>
-  <form class="register-patient-box sector flex-column-items-centered">
+  <form class="register-user-box sector flex-column-items-centered">
     <div v-if="registationDone"> Rejestracja zakończona  </div> 
-    <div v-else> Zarejestruj pacjenta  </div> 
-    <div v-if="registationDone" class="save-password-box">  Zapisz hasło dla pacjeta: {{ password }} </div>
+    <div v-else> Zarejestruj {{this.wording}} </div> 
+    <div v-if="registationDone" class="save-password-box">  Zapisz hasło dla użytkownika: {{ password }} </div>
     <div v-if="registationError"> Problem z rejestracją </div>
+    <select 
+      id="user-id-type-selector"
+      class="input-element-standard keyboard-input"
+      name="user-id-type"
+      @change="changeUserIdType($event)"
+    >
+      <option value="pesel">Pesel</option>
+      <option value="passport-id">Nr paszportu</option>
+    </select>
+    <input
+      id="user-id"
+      class="input-element-standard keyboard-input"
+      type="text"
+      v-bind:name="userIdType"
+      v-bind:placeholder="[userIdType=='pesel' ? 'Pesel...': 'Nr paszportu...']"
+      v-model="userId"
+      autocomplete="off"
+    />
     <input
       class="input-element-standard keyboard-input"
       type="text"
       name="email"
       v-model="email"
       placeholder="Email..."
-      autocomplete="off"
-    />
-    <select 
-      id="patient-id-type-selector"
-      class="input-element-standard keyboard-input input-element-small"
-      name="patient-id-type"
-      @change="changePatientIdType($event)"
-    >
-      <option value="pesel">Pesel</option>
-      <option value="passport-id">Nr paszportu</option>
-    </select>
-    <input
-      id="patient-id"
-      class="input-element-standard keyboard-input"
-      v-bind:type="[patientIdType=='pesel' ? 'number': 'text']"
-      v-bind:name="patientIdType"
-      v-bind:placeholder="[patientIdType=='pesel' ? 'Pesel...': 'Nr paszportu...']"
-      v-model="patientId"
       autocomplete="off"
     />
     <input
@@ -57,7 +57,7 @@
     <input
       class="input-element-standard button"
       type="button"
-      value="Zarejestruj pacjenta"
+      value="Zarejestruj"
       @click="submitRegistration"
     />
   </form>
@@ -67,38 +67,43 @@
 import { generatePassword } from "@/utils.js"
 
 export default {
-  name: "RegisterPatientForm",
+  name: "RegisterUserForm",
+  props: ['usertype'],
   data() {
     return {
       registationDone: false,
       registationError: false,
-      patientIdType: 'pesel',
+      userIdType: 'pesel',
       fistName: null,
       secondName: null,
       surname: null,
       email: null,
-      patientId: null,
+      userId: null,
       password: null,
+      wording: null,
     }
   },
   beforeMount() {
-    this.$store.commit("resetRegistration")
+    this.$store.commit("resetRegistration");
+    if (this.usertype == 'patient') this.wording = 'pacjenta';
+    if (this.usertype == 'doctor') this.wording = 'doktora';
   },
   methods: {
-    changePatientIdType(event) {
-      this.patientIdType = event.target.value;
+    changeUserIdType(event) {
+      this.userIdType = event.target.value;
     },
     async submitRegistration(){
       this.password = generatePassword()
       let payload = {
-        patientIdType: this.patientIdType,
+        userIdType: this.userIdType,
         first_name: this.fistName,
         second_name: this.secondName,
         last_name: this.surname,
         email: this.email,
-        patient_id: this.patientId,
+        user_id: this.userId,
         password: this.password,
-        role: "patient"
+        role: this.usertype,
+        pesel: this.userId,
       }
       await this.$store.dispatch("actionRegister",  payload)
       
@@ -110,10 +115,10 @@ export default {
 </script>
 
 <style scoped>
-.register-patient-box {
-  padding-block: 40px;
-  padding-inline: 50px;
-  font-size: 2rem;
+.register-user-box {
+  padding-block: 2vw;
+  padding-inline: 2.5vw;
+  font-size: 2vw;
 }
 .save-password-box{
   font-size: 1rem

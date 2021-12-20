@@ -29,7 +29,7 @@ export default {
 
 <style scoped>
 label {
-  font-size: 4rem;
+  font-size: 4vw;
 }
 
 .welcome-img {
