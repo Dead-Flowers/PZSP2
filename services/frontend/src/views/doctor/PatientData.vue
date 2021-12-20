@@ -2,10 +2,12 @@
   <div class="max-screen-space-container flex-row-items-start">
     <Navbar v-bind:usertype="'doctor'" />
     <div class="navbar-as-adjacent flex-column-items-centered">
-      <SearchUser v-if="showSearchBox" v-bind:searchUser="searchUser" v-bind:userType="'patient'" />
-      <div v-else>
-        <PatientTable v-bind:patientData="patientData"/>
-        <AnalysisResultTable v-bind:analysis="analyses" />
+      <div class="sector">
+        <SearchUser v-if="showSearchBox" v-bind:searchUser="searchUser" v-bind:userType="'patient'" />
+        <div v-else>
+          <PatientTable v-bind:patientData="patientData"/>
+          <AnalysisResultTable v-bind:analysis="analyses" />
+        </div>
       </div>
     </div>
   </div>

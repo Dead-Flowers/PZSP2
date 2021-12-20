@@ -1,5 +1,5 @@
 <template>
-  <div class="sector flex-column-items-start">
+  <div class="flex-column-items-start">
     <label> Kryteria wyszukiwania (nie wszystkie są wymagane)</label>
     <div class="flex-row-items-start" >
       <select 
@@ -103,6 +103,7 @@ export default {
       this.userIdType = event.target.value;
     },
     async searchForUser() {
+      this.userList = [];
       //TODO: REFACTOR THIS PLS
       //TODO: unify naming and names last/sur name
       let params = {}
@@ -146,8 +147,8 @@ export default {
     },
   },
   mounted() {
-    //change this to users
-    // this.userList = this.$store.getters.getPatients
+      this.userList = [];
+      this.foundUsers = false;
   },
 }
 </script>

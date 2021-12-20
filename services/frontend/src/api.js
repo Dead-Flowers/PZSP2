@@ -51,10 +51,9 @@ export const api = {
 
   async uploadFile(token, file, patientID) {
     let config = authHeaders(token);
-    console.log(patientID)
     config.headers ['Content-Type'] = 'multipart/form-data';
-    config["params"] = {}
-    config.params["patient_id"] = patientID
+    config["params"] = {};
+    config.params["patient_id"] = patientID;
     return axios.post(`${APISUFFIX}/api/analysis/recordings/upload`,
     file,
     config)

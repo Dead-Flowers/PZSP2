@@ -143,7 +143,7 @@ export default {
   margin-block-start: 0.15vw;
   padding-block: 0.75vw;
   width: var(--width-navbar);
-  font-size: 1.7vw;
+  font-size: 1.2vw;
   font-family:  "Roboto", sans-serif;
   color: var(--color-text);
   white-space: normal;
