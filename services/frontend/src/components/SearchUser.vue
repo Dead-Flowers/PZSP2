@@ -1,49 +1,52 @@
 <template>
-  <div class="sector flex-column-items-centered">
-    <label> Wyszukaj po peselu lub numerze paszportu </label> 
-    <select 
-      id="user-id-type-selector"
-      class="input-element-standard input-element-addon keyboard-input input-element-small"
-      name="user-id-type"
-      @change="changeUserIdType($event)"
-    >
-      <option value="pesel">Pesel</option>
-      <option value="passport-id">Nr paszportu</option>
-    </select>
-    <input
-      id="user-id"
-      class="input-element-standard input-element-addon keyboard-input"
-      type="text"
-      v-bind:name="userIdType"
-      v-bind:placeholder="[userIdType=='pesel' ? 'Pesel...': 'Nr paszportu...']"
-      v-model="userId"
-      autocomplete="off"
-    />
-    <label style="margin-block-start: 30px"> Wyszukaj po imieniu i nazwisku </label> 
-    <input
-      class="input-element-standard input-element-addon keyboard-input"
-      type="text"
-      name="first-name"
-      placeholder="Pierwsze Imię..."
-      v-model="firstName"
-      autocomplete="off"
-    />
-    <input
-      class="input-element-standard input-element-addon keyboard-input"
-      type="text"
-      name="second-name"
-      placeholder="Drugie Imię (opcjonalnie)..."
-      v-model="secondName"
-      autocomplete="off"
-    />
-    <input
-      class="input-element-standard input-element-addon keyboard-input"
-      type="text"
-      name="surname"
-      placeholder="Nazwisko..."
-      v-model="surname"
-      autocomplete="off"
-    />   
+  <div class="sector flex-column-items-start">
+    <label> Kryteria wyszukiwania (nie wszystkie są wymagane)</label>
+    <div class="flex-row-items-start" >
+      <select 
+        id="user-id-type-selector"
+        class="input-element-standard input-element-addon keyboard-input"
+        name="user-id-type"
+        @change="changeUserIdType($event)"
+      >
+        <option value="pesel">Pesel</option>
+        <option value="passport-id">Nr paszportu</option>
+      </select>
+      <input
+        id="user-id"
+        class="input-element-standard input-element-addon keyboard-input"
+        type="text"
+        v-bind:name="userIdType"
+        v-bind:placeholder="[userIdType=='pesel' ? 'Pesel...': 'Nr paszportu...']"
+        v-model="userId"
+        autocomplete="off"
+      />
+    </div>
+    <div class="flex-row-items-start" >
+      <input
+        class="input-element-standard input-element-addon keyboard-input"
+        type="text"
+        name="first-name"
+        placeholder="Pierwsze Imię..."
+        v-model="firstName"
+        autocomplete="off"
+      />
+      <input
+        class="input-element-standard input-element-addon keyboard-input"
+        type="text"
+        name="second-name"
+        placeholder="Drugie Imię..."
+        v-model="secondName"
+        autocomplete="off"
+      />
+      <input
+        class="input-element-standard input-element-addon keyboard-input"
+        type="text"
+        name="surname"
+        placeholder="Nazwisko..."
+        v-model="surname"
+        autocomplete="off"
+      />  
+    </div> 
     <input
       class="input-element-standard input-element-addon"
       type="button"
@@ -64,7 +67,7 @@
         <td>
           <input 
             type="button"
-            @click="searchUser(user.id)"
+            @click="searchUser(user)"
           />
           {{ ( user.pesel == null) ? user.passport_num : user.pesel }}
         </td>
@@ -151,6 +154,9 @@ export default {
 
 <style scoped>
 .input-element-addon {
-  margin-inline-start: 20px;
+  margin-inline-start: 2vw;
+}
+label {
+  font-size: 1.5vw;
 }
 </style>

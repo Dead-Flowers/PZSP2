@@ -6,7 +6,7 @@
     <div v-if="registationError"> Problem z rejestracją </div>
     <select 
       id="user-id-type-selector"
-      class="input-element-standard keyboard-input input-element-small"
+      class="input-element-standard keyboard-input"
       name="user-id-type"
       @change="changeUserIdType($event)"
     >
@@ -116,9 +116,9 @@ export default {
 
 <style scoped>
 .register-user-box {
-  padding-block: 40px;
-  padding-inline: 50px;
-  font-size: 2rem;
+  padding-block: 2vw;
+  padding-inline: 2.5vw;
+  font-size: 2vw;
 }
 .save-password-box{
   font-size: 1rem

@@ -16,7 +16,7 @@ export default {
 <style>
 #page-not-found {
   background-color: red;
-  font-size: 2rem;
+  font-size: 2vw;
   color: white;
 }
 

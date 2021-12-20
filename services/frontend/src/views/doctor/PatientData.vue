@@ -1,10 +1,12 @@
 <template>
-  <div class="max-screen-space-container flex-column-items-centered">
+  <div class="max-screen-space-container flex-row-items-start">
     <Navbar v-bind:usertype="'doctor'" />
-    <SearchUser v-if="showSearchBox" v-bind:searchUser="searchUser" v-bind:userType="'patient'" />
-    <div v-else>
-      <PatientTable v-bind:patientData="patientData"/>
-      <AnalysisResultTable v-bind:analysis="analyses" />
+    <div class="navbar-as-adjacent flex-column-items-centered">
+      <SearchUser v-if="showSearchBox" v-bind:searchUser="searchUser" v-bind:userType="'patient'" />
+      <div v-else>
+        <PatientTable v-bind:patientData="patientData"/>
+        <AnalysisResultTable v-bind:analysis="analyses" />
+      </div>
     </div>
   </div>
 </template>
@@ -32,8 +34,8 @@ export default {
     }
   },
   methods: {
-    async searchUser(userId) {
-      await this.getUserData(userId);
+    async searchUser(user) {
+      await this.getUserData(user.id);
       this.showSearchBox = false;
     },
     async getUserData(id) {

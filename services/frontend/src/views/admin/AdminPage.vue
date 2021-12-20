@@ -1,5 +1,5 @@
 <template>
-  <div class="max-screen-space-container flex-column-items-centered">
+  <div class="max-screen-space-container flex-row-items-start">
     <Navbar v-bind:usertype="'admin'" />
     <ChangePassword />
   </div>

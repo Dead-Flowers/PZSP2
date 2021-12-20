@@ -1,7 +1,9 @@
 <template>
-  <div class="max-screen-space-container flex-column-items-centered">
+  <div class="max-screen-space-container flex-row-items-start">
     <Navbar v-bind:usertype="'doctor'" />
-    <ChangePassword />
+    <div class="navbar-as-adjacent flex-column-items-centered">
+      <ChangePassword />
+    </div>
   </div>
 </template>
 

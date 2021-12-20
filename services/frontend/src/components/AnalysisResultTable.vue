@@ -66,8 +66,8 @@ export default {
 <style scoped>
 .analysis-table-box {
   background-color: var(--color-sector);
-  padding-block: 40px;
-  padding-inline: 50px;
+  padding-block: 2vw;
+  padding-inline: 2.5vw;
   display: table;
   color: var(--color-text);
 }

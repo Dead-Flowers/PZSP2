@@ -1,7 +1,9 @@
 <template>
-  <div class="max-screen-space-container flex-column-items-centered">
+  <div class="max-screen-space-container flex-row-items-start">
     <Navbar v-bind:usertype="'admin'" />
-    <RegisterUserForm v-bind:usertype="'doctor'" />
+    <div class="navbar-as-adjacent flex-column-items-centered">
+      <RegisterUserForm v-bind:usertype="'doctor'" />
+    </div>
   </div>
 </template>
 

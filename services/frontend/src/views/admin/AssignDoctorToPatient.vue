@@ -1,63 +1,96 @@
 <template>
-  <div class="max-screen-space-container flex-column-items-centered">
+  <div class="max-screen-space-container flex-row-items-start">
     <Navbar v-bind:usertype="'admin'" />
-    <div class="flex-row-items-centered">
-      <div class="sector flex-column-items-centered">
+    <div class="navbar-as-adjacent flex-column-items-centered">
+      <div  
+        class="sector flex-column-items-centered"
+        v-if="this.stage == 0"
+      >
         <label> Wyszukaj Pacjenta </label>
-        <SearchPatient v-bind:searchUser="searchPatient" v-bind:userType="'patient'" />
+        <SearchUser v-bind:searchUser="searchPatient" v-bind:userType="'patient'" />
       </div>
-      <div class="sector flex-column-items-centered">
+      <div 
+        class="sector flex-column-items-centered"
+        v-if="this.stage == 1"
+      >
+        <label> Wybrany pacjent {{ `${this.patientInfo["first_name"]} ${this.patientInfo["second_name"]} ${this.patientInfo["last_name"]}`}}</label>
         <label> Wyszukaj Doktora </label>
-        <SearchPatient v-bind:searchUser="searchDoctor" v-bind:userType="'doctor'" />
+        <SearchUser v-bind:searchUser="searchDoctor" v-bind:userType="'doctor'" />
+      </div>
+      <div 
+        class="sector flex-column-items-centered"
+        v-if="this.stage == 2"
+      >
+        <label> Sukces! Przyisano pacjenta do doktora. </label>
+        <label> Wybrany pacjent {{ `${this.patientInfo["first_name"]} ${this.patientInfo["second_name"]} ${this.patientInfo["last_name"]}`}}</label>
+        <label> Wybrany doktor {{ `${this.patientInfo["first_name"]} ${this.patientInfo["second_name"]} ${this.patientInfo["last_name"]}`}}</label>
+        <input
+          class="input-element-standard input-element-addon"
+          type="button"
+          name="button"
+          value="Przypisz nowego pacjenta do tego doktora"
+          @click="searchForUser"
+        />
       </div>
     </div>
+
+
     <input
-        class="input-element-standard button"
-        type="button"
-        value="Przypisz pacjenta do doktora"
-        @click="assignD2P"
-      />
+      class="input-element-standard button"
+      type="button"
+      value="Przypisz pacjenta do doktora"
+      @click="assignD2P"
+    />
   </div>
 </template>
 
 <script>
 import Navbar from '../../components/Navbar.vue'
-import SearchPatient from '../../components/SearchUser.vue'
+import SearchUser from '../../components/SearchUser.vue'
 import { api } from '@/api';
 
 export default {
   name: 'AssignDoctorToPatient',
   components: {
     Navbar,
-    SearchPatient,
+    SearchUser,
   },
   data() {
     return {
       patientId: null,
-      doctorId: null
+      patientInfo: null,
+      doctorId: null,
+      doctorInfo: null,
+      stage: 0,
     }
   },
   methods: {
-    searchPatient(patientId) {
-      this.patientId = patientId
-      console.log(patientId);
-      // do sth with backend
+    searchPatient(patient) {
+      this.patientInfo = patient;
+      this.patientId = patient.id;
+      this.stage = 1;
     },
-    searchDoctor(userId) {
-      this.doctorId = userId
-      console.log(userId);
-      // do sth with backend
+    searchDoctor(user) {
+      this.doctorInfo = user;
+      this.doctorId = user.id;
+      this.assignD2P();
+      this.stage = 2;
     },
     async assignD2P() {
-      console.log(this.patientId)
-      console.log(this.doctorId)
       let newData = {
-        doctor_id: this.doctorId
+        doctor_id: this.doctorId,
       }
-      //TODO catch errro
-      const response = await api.updateUser(this.$store.getters["token"], this.patientId, newData)
+      const response = await api.updateUser(this.$store.getters["token"], this.patientId, newData);
+    },
+    newPatientSameDoctor() {
 
-      console.log(response);
+    },
+    newPatientNewDoctor() {
+      this.stage = 0;
+      this.patientId = null;
+      this.patientInfo = null;
+      this.doctorId = null;
+      this.doctorInfo = null;
     },
   }
 }
@@ -65,9 +98,9 @@ export default {
 
 <style scoped>
 label {
-  font-size: 2rem;
-  padding: 5px;
-  margin-block-start: 30px;
+  font-size: 2vw;
+  padding: 0.25vw;
+  margin-block-start:  1.5vw;
 }
 
 </style>
