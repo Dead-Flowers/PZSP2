@@ -164,4 +164,5 @@ export default {
 label {
   font-size: 1.5vw;
 }
+
 </style>
