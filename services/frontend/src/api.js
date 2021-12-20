@@ -30,7 +30,7 @@ export const api = {
   async getUsers(token, params) {
     let config = authHeaders(token);
     if (params !== undefined) {
-      config['params'] = params
+      config['params'] = params;
     }
     return axios.get(`${APISUFFIX}/api/users/`, config);
   },

@@ -1,7 +1,7 @@
 <template>
   <div class="max-screen-space-container flex-column-items-centered">
     <Navbar v-bind:usertype="'doctor'" />
-    <SearchUser v-if="!showSearchBox" v-bind:searchUser="searchUser" v-bind:userType="'patient'" />
+    <SearchUser v-if="showSearchBox" v-bind:searchUser="searchUser" v-bind:userType="'patient'" />
     <div v-else>
       <PatientTable v-bind:patientData="patientData"/>
       <AnalysisResultTable v-bind:analysis="analyses" />
@@ -26,7 +26,7 @@ export default {
   },
   data() {
     return {
-      showSearchBox: false,
+      showSearchBox: true,
       patientData: {},
       analyses: []
     }
@@ -34,10 +34,9 @@ export default {
   methods: {
     async searchUser(userId) {
       await this.getUserData(userId);
-      this.showSearchBox = true;
+      this.showSearchBox = false;
     },
     async getUserData(id) {
-      // TODO: this is a mock, we need to get data from backend 
       // pobierz dane pacjetna    
       //TODO: catch err  
       const responeUser = await api.getUser(this.$store.getters["token"], id)

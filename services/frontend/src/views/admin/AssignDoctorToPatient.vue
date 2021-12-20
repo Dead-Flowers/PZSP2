@@ -4,11 +4,11 @@
     <div class="flex-row-items-centered">
       <div class="sector flex-column-items-centered">
         <label> Wyszukaj Pacjenta </label>
-        <SearchPatient v-bind:searchUser="searchPatient" v-bind:usertype="'patient'" />
+        <SearchPatient v-bind:searchUser="searchPatient" v-bind:userType="'patient'" />
       </div>
       <div class="sector flex-column-items-centered">
         <label> Wyszukaj Doktora </label>
-        <SearchPatient v-bind:searchUser="searchDoctor" v-bind:usertype="'doctor'" />
+        <SearchPatient v-bind:searchUser="searchDoctor" v-bind:userType="'doctor'" />
       </div>
     </div>
     <input

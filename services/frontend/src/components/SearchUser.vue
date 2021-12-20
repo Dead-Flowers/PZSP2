@@ -13,7 +13,7 @@
     <input
       id="user-id"
       class="input-element-standard input-element-addon keyboard-input"
-      v-bind:type="[userIdType=='pesel' ? 'number': 'text']"
+      type="text"
       v-bind:name="userIdType"
       v-bind:placeholder="[userIdType=='pesel' ? 'Pesel...': 'Nr paszportu...']"
       v-model="userId"
@@ -64,7 +64,7 @@
         <td>
           <input 
             type="button"
-            @click="(e)=>{chooseUser(user.id, user); e.target.value='x';}"
+            @click="searchUser(user.id)"
           />
           {{ ( user.pesel == null) ? user.passport_num : user.pesel }}
         </td>
@@ -77,7 +77,6 @@
 
 <script>
 import { api } from '@/api';
-
 export default {
   name: 'SearchUser',
   props: ['searchUser', 'userType'],
@@ -105,46 +104,43 @@ export default {
       //TODO: unify naming and names last/sur name
       let params = {}
       if(this.firstName != null) {
-        params["first_name"] = this.firstName
+        params["first_name"] = this.firstName;
       }
       if(this.secondName != null) {
-        params["second_name"] = this.secondName
+        params["second_name"] = this.secondName;
       }
       if(this.surname != null) {
-        params["last_name"] = this.surname
+        params["last_name"] = this.surname;
       }
       if(this.email != null) {
-        params["email"] = this.email
+        params["email"] = this.email;
       }
       if(this.userId != null) {
         if(this.userIdType == "pesel") {
-          params["pesel"] = this.userId
+          params["pesel"] = this.userId;
         } else {
-          params["pass_num"] = this.userId
+          params["pass_num"] = this.userId;
         }
       }
-
       try {
         let respone ;
         if (params != {}) {
-          respone = await api.getUsers(this.$store.getters["token"], params)
+          respone = await api.getUsers(this.$store.getters["token"], params);
         } else {
-          respone = await api.getUsers(this.$store.getters["token"], undefined)
+          respone = await api.getUsers(this.$store.getters["token"], undefined);
         }
         console.log(respone)
-        this.userList = respone.data
+        let unfilteredUserList = respone.data
+        unfilteredUserList.forEach(element => {
+          if (element.role == this.userType) this.userList.push(element);
+        });
+
       } catch(error) {
         console.log(error)
       }
       console.log(this.userList)
-      if (!this.foundUsers) this.foundUsers = true;
-      console.log(this.chosenUserId);
-      if(this.chosenUserId != null)
-        this.searchUser(this.chosenUserId)
+      if (this.userList.length > 0) this.foundUsers = true;
     },
-    chooseUser(id) {
-      this.chosenUserId = id;
-    }
   },
   mounted() {
     //change this to users

@@ -1,9 +1,11 @@
 :root {
   --color-bcg: #d7ccc8;
+  --color-navbar: #3a2722;
   --color-sector: #5d4037;
   --color-accent:  #795548;
   --color-text: #ffffff;
   --color-text-darker: #c1c8cc;
+  --color-text-link: #b7ec7a;
   
   --color-table-header: #2c2b2b;
   --color-table-record1: #3f3d3d;
@@ -104,14 +106,15 @@ body {
   margin-block-start: 10px !important;
   font-size: 1rem;  
 }
-.link {
-  background-color: transparent !important;
+.link, a {
+  background-color: transparent;
   text-decoration: none;
   font-size: 1rem;
-  color: var(--color-text);
+  color: var(--color-text-link);
+  white-space: normal;
 }
 
-.link:hover {
+.link:hover, a:hover {
   filter: brightness(90%);
 }
 

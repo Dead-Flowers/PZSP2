@@ -1,19 +1,19 @@
 <template>
   <div class="max-screen-space-container flex-column-items-centered">
     <Navbar v-bind:usertype="'admin'" />
-    <RegisterDoctorForm />
+    <RegisterUserForm v-bind:usertype="'doctor'" />
   </div>
 </template>
 
 <script>
-import RegisterDoctorForm from '../../components/RegisterDoctorForm.vue'
+import RegisterUserForm from '../../components/RegisterUserForm.vue'
 import Navbar from '../../components/Navbar.vue'
 
 export default {
   name: 'NewDoctor',
   components: {
     Navbar,
-    RegisterDoctorForm,
+    RegisterUserForm,
   },
 }
 </script>

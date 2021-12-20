@@ -103,7 +103,7 @@ export default {
   left: 0;
   position: fixed;
   z-index: 10;
-  background-color: var(--color-sector);
+  background-color: var(--color-navbar);
   margin: 0;
   padding-block-start: 40px;
   height: 100vh;
@@ -112,7 +112,7 @@ export default {
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  overflow-x: hidden;
+  overflow-wrap: break-word;
 }
 
 .navbar-end {
@@ -122,6 +122,7 @@ export default {
 .page-name {
   font-size: 1.5rem;
   margin-inline: 15px;
+  vertical-align: baseline;
 }
 
 .tab-space {
@@ -137,10 +138,10 @@ export default {
   padding-block: 15px;
   width: var(--width-navbar);
   padding: 20px;
-  font-size: 1rem;
+  font-size: 1vw;
   font-family:  "Roboto", sans-serif;
   color: var(--color-text);
-  overflow-wrap: break-word;
+  white-space: normal;
 }
 
 .tab:hover {
