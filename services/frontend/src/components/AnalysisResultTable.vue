@@ -12,7 +12,7 @@
         v-for="record in analysis"
       >
         <td>{{record.status}}</td>
-        <td>{{record.created_date}}</td>
+        <td>{{ formatDate(record.created_date)}}</td>
         <td>
           <router-link to='/doctor/analysis-view' >
             Kliknij by zobaczyć nagranie 🗃️
@@ -57,7 +57,11 @@ export default {
         s += d[element];
       });
       return s;    
-    }
+    },
+    formatDate (datestr) {
+      let date = new Date(Date.parse(datestr));
+      return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`
+    },
   },
 
 }

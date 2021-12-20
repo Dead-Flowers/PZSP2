@@ -7,7 +7,7 @@
       </tr>
       <tr>
         <th>Imię</th>
-        <td class="table-record-odd">{{`${patientData.first_name} ${patientData.secondName}`}}</td>
+        <td class="table-record-odd">{{`${patientData.first_name} ${patientData.second_name}`}}</td>
       </tr>
       <tr>  
         <th>Nazwisko</th>

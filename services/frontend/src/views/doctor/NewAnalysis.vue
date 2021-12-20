@@ -4,7 +4,10 @@
     <div class="navbar-as-adjacent flex-column-items-centered">
         <div class="sector">
           <SearchUser v-if="showSearchBox" v-bind:searchUser="searchUser" v-bind:userType="'patient'" />
-          <AnalysisInit v-bind:patientID="chosenUserId"  v-else />
+          <div v-else>
+            <label > Wybrany pacjent - {{ `${this.patientInfo["first_name"]} ${this.patientInfo["second_name"]} ${this.patientInfo["last_name"]}`}}</label>
+            <AnalysisInit v-bind:patientID="chosenUserId"  />
+          </div>
         </div>
     </div>
   </div>
@@ -25,13 +28,14 @@ export default {
   data() {
     return {
       showSearchBox: true,
-      patientData: {},
+      patientInfo: {},
       chosenUserId: null,
     }
   },
   methods: {
     searchUser(user) {
       this.showSearchBox = false;
+      this.patientInfo = user;
       this.chosenUserId = user.id
       console.log(user.id)
     },
