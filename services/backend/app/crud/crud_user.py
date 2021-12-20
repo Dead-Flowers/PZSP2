@@ -17,38 +17,38 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
     def get_by_params(
         self,
         db: Session,
-        pesel="",
-        pass_num="",
-        f_name="",
-        s_name="",
-        l_name="",
-        email="",
-        user: User = None,
+        user: User,
+        pesel: str = "",
+        pass_num: str = "",
+        f_name: str = "",
+        s_name: str = "",
+        l_name: str = "",
+        email: str = "",
         skip: int = 0,
         limit: int = 100,
     ) -> List[User]:
-        by_params = db.query(User).filter(User.email.ilike(f"%{email}%"))
-        by_params = by_params.filter(User.first_name.ilike(f"%{f_name}%"))
-        by_params = by_params.filter(User.last_name.ilike(f"%{l_name}%"))
-        if pesel != "":
-            by_params = by_params.filter(
-                and_(User.pesel != None, User.pesel.ilike(f"%{pesel}%"))
+        params = [
+            prop.ilike(f"%{val}%")
+            for val, prop in zip(
+                [pesel, pass_num, f_name, s_name, l_name, email],
+                [
+                    User.pesel,
+                    User.passport_num,
+                    User.first_name,
+                    User.second_name,
+                    User.last_name,
+                    User.email,
+                ],
             )
-        if s_name != "":
-            by_params = by_params.filter(
-                and_(User.second_name != None, User.second_name.ilike(f"%{s_name}%"))
-            )
-        if pass_num != "":
-            by_params = by_params.filter(
-                and_(
-                    User.passport_num != None, User.passport_num.ilike(f"%{pass_num}%")
-                )
-            )
+            if val
+        ]
         if self.has_roles(user, UserRole.Admin):
-            return by_params.offset(skip).limit(limit).all()
+            return db.query(User).filter(*params).offset(skip).limit(limit).all()
         else:
             return (
-                by_params.filter(User.doctor_id == user.id)
+                db.query(User)
+                .filter(*params)
+                .filter(User.doctor_id == user.id)
                 .offset(skip)
                 .limit(limit)
                 .all()

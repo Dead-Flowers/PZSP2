@@ -31,31 +31,16 @@ def read_users(
     """
     Retrieve users.
     """
-    if crud.user.has_roles(current_user, models.UserRole.Admin):
-        # return crud.user.get_multi(db, skip=skip, limit=limit)
+    if crud.user.has_roles(current_user, models.UserRole.Admin, models.UserRole.Doctor):
         return crud.user.get_by_params(
             db,
+            current_user,
             pesel,
             pass_num,
             first_name,
             second_name,
             last_name,
             email,
-            current_user,
-            skip,
-            limit,
-        )
-    elif crud.user.has_roles(current_user, models.UserRole.Doctor):
-        # return crud.user.get_assigned_patients(db, current_user, skip=skip, limit=limit)
-        return crud.user.get_by_params(
-            db,
-            pesel,
-            pass_num,
-            first_name,
-            second_name,
-            last_name,
-            email,
-            current_user,
             skip,
             limit,
         )
@@ -164,12 +149,13 @@ def read_user_by_id(
     Get a specific user by id.
     """
     user = crud.user.get(db, id=user_id)
-    if user == current_user:
-        return user
-    # TODO:  check if this doctor has the patient
-    if not crud.user.has_roles(
-        current_user, models.UserRole.Admin, models.UserRole.Doctor
+    if user == current_user or (
+        crud.user.has_roles(current_user, models.UserRole.Doctor)
+        and user
+        and user.doctor_id == current_user.id
     ):
+        return user
+    if not crud.user.has_roles(current_user, models.UserRole.Admin):
         raise HTTPException(
             status_code=400, detail="The user doesn't have enough privileges"
         )
