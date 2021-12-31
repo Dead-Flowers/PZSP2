@@ -1,29 +1,41 @@
 <template>
-  <div class="max-screen-space-container flex-column-items-centered">
-    <div class="sector  flex-row-items-centered">
-      <div class="flex-column-items-centered">
-        <label>Witaj w BowelLab</label>
-        <img src="doctor.png" class="welcome-img"/>
-      </div>
+  <div style="display: flex">
+      <img src="doctor.png" class="welcome-img"/>
       <div class="flex-column-items-start">
-        <label> Aktualności </label>  
+        <label>Witaj w BowelLab</label>
+        <h3> Aktualności </h3>  
         <ul>
-        <li> <a href="https://www.w3schools.com"> Nowa aktualizacja 03.12.2021 </a>   </li>
-        <li> <a href="https://www.w3schools.com"> Od teraz kontakt z administratorem jeszcze łatwiejszy </a> </li>
-        <li> <a href="https://www.w3schools.com"> Zapraszamy wszystkich do wypełniania ankiety </a> </li>
-        <li> <a href="https://www.w3schools.com"> Została wprowadzona nowa szata graficzna </a> </li>
+          <li> <a href="https://www.w3schools.com"> Aktualnoś </a>   </li>
+          <li> <a href="https://www.w3schools.com"> Od teraz kontakt z administratorem jeszcze łatwiejszy </a> </li>
+          <li> <a href="https://www.w3schools.com"> Zapraszamy wszystkich do wypełniania ankiety </a> </li>
+          <li> <a href="https://www.w3schools.com"> Została wprowadzona nowa szata graficzna </a> </li>
         </ul>
         <router-link to='/login' class="input-element-standard"> Zaloguj się </router-link>
       </div>
-    </div>
   </div>
 </template>
 
 <script>
 export default {
   name: 'Welcome',
-  components: {
-  }
+  data () {
+    return {
+      colors: [
+        'indigo',
+        'warning',
+        'pink darken-2',
+        'red lighten-1',
+        'deep-purple accent-4',
+      ],
+      slides: [
+        'First',
+        'Second',
+        'Third',
+        'Fourth',
+        'Fifth',
+      ],
+    }
+  },
 }
 </script>
 
@@ -33,9 +45,8 @@ label {
 }
 
 .welcome-img {
-  width: 60%;
-  height: 60%;
+  width: 60vw;
+  height: 60vh;
   object-fit: contain;
-
 }
 </style>

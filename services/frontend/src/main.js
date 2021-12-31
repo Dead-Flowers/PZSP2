@@ -1,21 +1,24 @@
-import Vue from 'vue'
+import Vue from 'vue';
 import VueRouter from 'vue-router';
-import router from './router'
-import App from './App.vue'
-import store from './store'
-import axios from 'axios'
-import ECharts from 'vue-echarts'
-import { use } from 'echarts/core'
+import Vuetify from '@/plugins/vuetify';
+import router from './router';
+import App from './App.vue';
+import store from './store';
+import axios from 'axios';
+import ECharts from 'vue-echarts';
+import { use } from 'echarts/core';
+import 'vuetify/dist/vuetify.min.css';
 import {
   CanvasRenderer
-} from 'echarts/renderers'
+} from 'echarts/renderers';
 import {
   BarChart
-} from 'echarts/charts'
+} from 'echarts/charts';
 import {
   GridComponent,
   TooltipComponent
-} from 'echarts/components'
+} from 'echarts/components';
+
 
 Vue.config.productionTip = false
 Vue.use(VueRouter);
@@ -34,5 +37,6 @@ Vue.component('v-chart', ECharts)
 new Vue({
   render: h => h(App),
   store,
-  router: router
+  router: router,
+  vuetify: Vuetify
 }).$mount('#app')

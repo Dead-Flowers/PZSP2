@@ -1,17 +1,28 @@
 <template>
-  <div id="app" class="app flex-column-items-centered">
-    <router-view>
-    </router-view>
-  </div>
+  <v-app id="app">
+    <v-navigation-drawer app v-if="isLoggedIn()">
+    </v-navigation-drawer>
+    <v-main>
+      <v-container fluid>
+        <router-view>
+        </router-view>
+      </v-container>
+    </v-main>
+    <v-footer app>
+    </v-footer>
+  </v-app>
 </template>
 
 <script>
-
-import '../public/style.css'
 import router from './router'
 export default {
   name: 'App',
   components: {
+  },
+  methods: {
+    isLoggedIn() {
+      return this.$store.getters["isLoggedIn"];
+    }
   },
   async mounted() {
     await this.$store.dispatch("actionCheckLoggedIn")

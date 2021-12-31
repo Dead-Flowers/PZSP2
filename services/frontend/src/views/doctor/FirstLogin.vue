@@ -6,7 +6,7 @@
 
 <script>
 import SetupPasswd from '../../components/SetupPasswd.vue'
-import '../../../public/style.css'
+
 
 export default {
   name: 'FirstLogin',
