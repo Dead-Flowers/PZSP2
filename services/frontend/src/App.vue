@@ -1,23 +1,22 @@
 <template>
   <v-app id="app">
-    <v-navigation-drawer app v-if="isLoggedIn()">
-    </v-navigation-drawer>
+    <Navbar v-if="isLoggedIn()" />
     <v-main>
       <v-container fluid>
         <router-view>
         </router-view>
       </v-container>
     </v-main>
-    <v-footer app>
-    </v-footer>
   </v-app>
 </template>
 
 <script>
 import router from './router'
+import Navbar from "./components/Navbar.vue"
 export default {
   name: 'App',
   components: {
+    Navbar,
   },
   methods: {
     isLoggedIn() {

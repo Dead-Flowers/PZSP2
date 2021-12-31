@@ -1,36 +1,51 @@
 <template>
-  <form class="login-box sector flex-column-items-centered">
-    Witaj, zaloguj się
-    <input
-      class="input-element-standard keyboard-input"
-      type="text"
-      name="login"
-      placeholder="Login..."
-      v-model="username"
-      autocomplete="off"
-    />
-    <input
-      class="input-element-standard keyboard-input"
-      type="password"
-      name="password"
-      placeholder="Hasło..."
+  <v-form
+    ref="form"
+    v-model="valid"
+    lazy-validation
+    @submit="(e) => {e.preventDefault(); checkLogin();}"
+  >
+    <h1>Witaj, zaloguj się</h1>
+    <v-text-field
+      v-model="email"
+      :rules="emailRules"
+      label="E-mail"
+      required
+    >
+    </v-text-field>
+    <v-text-field
       v-model="password"
-      autocomplete="off"
-    />
-    <a  
-      class="input-element-standard button link"
-      href="https://www.w3schools.com"
+      type="password"
+      label="Hasło"
+      required
+    >
+    </v-text-field>
+
+
+    <v-btn
+      :disabled="!valid"
+      color="success"
+      class="mr-4"
+      type="submit"
+    >
+      Zaloguj się
+    </v-btn>
+
+    <v-btn
+      color="error"
+      class="mr-4"
+      @click="forgotPassword"
     >
       Zapomniałeś hasła?
-    </a>
-    <input
-      class="input-element-standard button"
-      type="button"
-      value="Zaloguj się"
-      @click="checkLogin"
-    />
-    <router-link to="/" class="go-home" > Powróć do strony głównej </router-link>
-  </form>
+    </v-btn>
+
+    <v-btn
+      color="warning"
+      @click="goToFrontpage"
+    >
+      Powróć do strony głównej
+    </v-btn>
+  </v-form>
 </template>
 
 <script>
@@ -40,14 +55,18 @@ export default {
   name: 'Login',
   data() {
     return {
-      username: null,
-      password: null
+      email: null,
+      password: null,
+      emailRules: [
+        v => !!v || 'E-mail is required',
+        v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+      ],
     }
   },
   methods: {
     async checkLogin() {
       let payload = {
-        username: this.username,
+        username: this.email,
         password: this.password,
       }
       await this.$store.dispatch("actionLogIn", payload);
@@ -64,10 +83,17 @@ export default {
       router.push(`/${this.$store.getters["userType"]}/home`)
     },
     rejectLogin() {
-      this.username=null;
+      this.email=null;
       this.password=null;
       console.log('Logowanie nie powiodło się');
       alert("Niepoprawny login");
+    },
+    goToFrontpage (){
+      router.push("/");
+    },
+    forgotPassword () {
+      //TODO
+      alert("Ta funkcja jeszcze nie istnieje");
     }
   }
 }

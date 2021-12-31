@@ -1,23 +1,59 @@
 <template>
-  <div style="display: flex">
-      <img src="doctor.png" class="welcome-img"/>
-      <div class="flex-column-items-start">
-        <label>Witaj w BowelLab</label>
-        <h3> Aktualności </h3>  
-        <ul>
-          <li> <a href="https://www.w3schools.com"> Aktualnoś </a>   </li>
-          <li> <a href="https://www.w3schools.com"> Od teraz kontakt z administratorem jeszcze łatwiejszy </a> </li>
-          <li> <a href="https://www.w3schools.com"> Zapraszamy wszystkich do wypełniania ankiety </a> </li>
-          <li> <a href="https://www.w3schools.com"> Została wprowadzona nowa szata graficzna </a> </li>
-        </ul>
-        <router-link to='/login' class="input-element-standard"> Zaloguj się </router-link>
+  <div>
+    <div style="display:flex">
+      <div style="margin: 0 auto;">
+        <h1>Witaj w BowelLab</h1>
+        <v-btn
+          color="primary"
+          elevation="2"
+          large
+          outlined
+          @click="goToLoginPage()"
+          style="margin-block: 10px"
+        >
+          Zaloguj się
+        </v-btn>
       </div>
+      <img src="doctor.png" class="welcome-img"/>
+    </div>
+    <v-carousel
+      cycle
+      height="300"
+      hide-delimiter-background
+      show-arrows-on-hover
+    >
+      <v-carousel-item
+        v-for="(slide, i) in slides"
+        :key="i"
+      >
+        <v-sheet
+          :color="colors[i]"
+          height="100%"
+        >
+          <v-row
+            class="fill-height"
+            align="center"
+            justify="center"
+          >
+            <div class="text-h2">
+              {{ slide }}
+            </div>
+          </v-row>
+        </v-sheet>
+      </v-carousel-item>
+    </v-carousel>
   </div>
 </template>
 
 <script>
+import router from "../../router"
 export default {
   name: 'Welcome',
+  methods: {
+    goToLoginPage() {
+      router.push('/login');
+    }
+  },
   data () {
     return {
       colors: [
@@ -28,11 +64,11 @@ export default {
         'deep-purple accent-4',
       ],
       slides: [
-        'First',
-        'Second',
-        'Third',
-        'Fourth',
-        'Fifth',
+        'Aktualność 1',
+        'Aktualność 2',
+        'Aktualność 3',
+        'Aktualność 4',
+        'Aktualność 5',
       ],
     }
   },
@@ -45,8 +81,8 @@ label {
 }
 
 .welcome-img {
-  width: 60vw;
-  height: 60vh;
+  width: 40vw;
+  height: 40vh;
   object-fit: contain;
 }
 </style>

@@ -1,0 +1,50 @@
+body {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+}
+
+.max-screen-space-container {
+  width: 100vw;
+  height: 100vh;
+}
+
+table {
+  width: 100%;
+  min-width: 20vw;  
+  margin: 1.5vw auto 0 auto;
+
+}
+
+th {
+  border: none;
+  background-color: var(--color-table-header);
+  color: white;
+  text-transform: uppercase;
+  padding: 0.5vw;
+}
+  
+tr, td {
+  border: none;
+  padding: 0.25vw;
+  color: var(--color-text);
+}
+
+tr:nth-child(odd) {
+  background-color: var(--color-table-record2);
+}
+tr:nth-child(even) {
+  background-color: var(--color-table-record1);
+}
+
+.go-home {
+  margin-block-start: 1vw;
+  text-decoration: none;
+  font-size: 1vw;
+  color: white;
+}
+
+.go-home:hover {
+  filter: brightness(80%);
+}
