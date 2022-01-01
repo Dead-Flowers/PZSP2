@@ -11,7 +11,7 @@ const defaultState = {
     username: null,
     firstName: null,
     secondName: null,
-    surname: null,
+    last_name: null,
     userType: null,
   };
   
@@ -126,14 +126,14 @@ const defaultState = {
     email: (state) => state.username,
     firstName: (state) => state.firstName,
     secondName: (state) => state.secondName,
-    surname: (state) => state.surname,
+    last_name: (state) => state.last_name,
     userType: (state) => state.userType,
     user: (state) => { return {
         userID: null,
         username: state.username,
         firstName: state.firstName,
         secondName: state.secondName,
-        surname: state.surname,
+        last_name: state.last_name,
         userType: state.userType,
         }
     },
@@ -163,8 +163,8 @@ const defaultState = {
     setSecondName(state, payload) {
         state.secondName = payload;
     },
-    setSurName(state, payload) {
-        state.surname = payload;
+    setLastName(state, payload) {
+        state.last_name = payload;
     },
     setRegistrationError(state, payload) {
         state.registrationError = payload;
@@ -198,7 +198,7 @@ const setUserData = (context, data) => {
     context.commit("setUsername", data.email);
     context.commit("setFirstName", data.first_name);
     context.commit("setSecondName", data.second_name);
-    context.commit("setSurName", data.last_name);
+    context.commit("setLastName", data.last_name);
     context.commit("setUserType", data.role);
 }
 

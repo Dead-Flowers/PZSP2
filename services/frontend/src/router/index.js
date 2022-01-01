@@ -1,7 +1,6 @@
 import Router from 'vue-router'
 import AdminPage from '../views/admin/AdminPage.vue'
 import AnalysisView from '../views/doctor/AnalysisView.vue'
-import FirstLogin from '../views/doctor/FirstLogin.vue'
 import NewAnalysis from '../views/doctor/NewAnalysis.vue' 
 import NewPatient from '../views/admin/NewPatient.vue'
 import AssignDoctorToPatient from '../views/admin/AssignDoctorToPatient.vue'
@@ -78,11 +77,6 @@ export default new Router({
       path: '/doctor/home',
       name: 'doctor_Page',
       component: DoctorPage
-    },
-    {
-      path: '/doctor/newuserfirstsetupofpasswd',
-      name: 'doctor_SetPassword',
-      component: FirstLogin
     },
     // patient
     {

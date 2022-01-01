@@ -20,7 +20,7 @@
         </tr>
         <tr>
             <td>Nazwisko</td>
-      <td>{{ currentPatient.surname }} </td>
+      <td>{{ currentPatient.last_name }} </td>
         </tr>
       </table>
       <table>

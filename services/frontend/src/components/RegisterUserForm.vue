@@ -34,7 +34,7 @@
       label="Drugie Imię"
     />
     <v-text-field
-      v-model="surname"
+      v-model="last_name"
       :rules="rules.required"
       label="Nazwisko"
     />
@@ -63,7 +63,7 @@ export default {
       userIdTypeList: ['pesel', 'id paszportu'],
       firstName: null,
       secondName: null,
-      surname: null,
+      last_name: null,
       email: null,
       userId: null,
       password: null,
@@ -97,7 +97,7 @@ export default {
         userIdType: this.userIdType,
         first_name: this.firstName,
         second_name: this.secondName,
-        last_name: this.surname,
+        last_name: this.last_name,
         email: this.email,
         user_id: this.userId,
         password: this.password,

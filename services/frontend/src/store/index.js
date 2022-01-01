@@ -17,7 +17,7 @@ const state = {
     patientId: "0123456789",
     firstName: "wait for fetch",
     secondName: "wait for fetch",
-    surname: "wait fo fetch",
+    last_name: "wait fo fetch",
   },
   analysis: {
     recordingID: null,
