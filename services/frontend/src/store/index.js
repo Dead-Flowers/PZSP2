@@ -33,19 +33,19 @@ export const mutations = {
     state.currentPatient = patient;
   },
   setAnalysisFile(state, file) {
-    state.analysis.file = file
+    state.analysis.file = file;
   },
   setAnalysisResult(state, result) {
-    state.analysis.result = result
+    state.analysis.result = result;
   },
   setPatients(state, patients) {
-    state.patients = patients
+    state.patients = patients;
   },
   setRecordingID(state, recordingID) {
-    state.analysis.recordingID = recordingID
+    state.analysis.recordingID = recordingID;
   },
   setAnalysisID(state, id) {
-    state.analysis.analysisID = id
+    state.analysis.analysisID = id;
   }
 }
 
@@ -53,20 +53,20 @@ export const actions = {
   //! those are initial implementation, change when implementing real feature
   //TODO: change email if needed
   async getPatient(context, email) {
-    let patient = await api.getPatient(context.state.user.token, email) // yeah this doesn't work rn 
-    context.commit("setPatient", patient)
+    let patient = await api.getPatient(context.state.user.token, email); // yeah this doesn't work rn 
+    context.commit("setPatient", patient);
   },
   async createPatient(context, patient) {
-    await api.createPatient(context.state.user.token, patient)
-    await context.dispatch('getPatient', patient.email) // is this needed ?
+    await api.createPatient(context.state.user.token, patient);
+    await context.dispatch('getPatient', patient.email); // is this needed ?
   },
   async getPatients(context) {
     let patients = await api.getUsers()
-    context.commit('setPatients', patients.data)
+    context.commit('setPatients', patients.data);
   },
   async startAnalysis(context){
-    let response = await api.startAnalysis(context.state.user.token ,context.state.analysis.recordingID)
-    context.commit("setAnalysisID", response.data)
+    let response = await api.startAnalysis(context.state.user.token ,context.state.analysis.recordingID);
+    context.commit("setAnalysisID", response.data);
   },
   async getAnalysisResults(context) {
     let statusCode = 404;

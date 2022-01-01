@@ -5,7 +5,7 @@
         <div class="sector">
           <SearchUser v-if="showSearchBox" v-bind:searchUser="searchUser" v-bind:userType="'patient'" />
           <div v-else>
-            <label > Wybrany pacjent - {{ `${this.patientInfo["first_name"]} ${this.patientInfo["second_name"]} ${this.patientInfo["last_name"]}`}}</label>
+            <h1 > Wybrany pacjent - {{ `${this.patientInfo["first_name"]} ${this.patientInfo["second_name"]} ${this.patientInfo["last_name"]}`}}</h1>
             <AnalysisInit v-bind:patientID="chosenUserId"  />
           </div>
         </div>

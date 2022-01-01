@@ -1,21 +1,25 @@
 <template>
-  <form class="flex-column-items-start">
-    <input
-      class="input-element-standard"
-      style="margin-block-start: 0px"
-      type="button"
-      value="Rozpocznij Analizę"
-      :disabled="noFiles"
-      @click="startAnalysis"
-    />
-    <input
-      class="input-file-field"
-      type="file"
-      name="bowel-sound-file"
-      accept=".mp3,.wav"
+  <v-form
+    ref="form"
+    v-model="analysis_file"
+    @submit="(e) => { e.preventDefault(); startAnalysis(); }"
+  >
+    <v-btn
+      :disabled="!analysis_file"
+      color="success"
+      class="mr-4"
+      type="submit"
+    >
+      Rozpocznij analizę
+    </v-btn>
+    <v-file-input
+      accept=".mp3,.wav, .raw, .mp4, .oog, .aac"
+      label="Wybierz Plik"
+      v-model="analysis_file"
       @change="fileChange"
-    />
-  </form>
+    >
+    </v-file-input>
+  </v-form>
 </template>
 
 <script>
@@ -26,12 +30,11 @@ export default {
   props: ["patientID"],
   data() {
     return {
-      noFiles: true,
+      analysis_file: null,
     }
   },
   methods: {
     async startAnalysis() {
-      console.log(this.analysisFile)
       await this.$store.dispatch("uploadFile", { patientID: this.patientID});
       router.push('/doctor/analysis-view');
     },

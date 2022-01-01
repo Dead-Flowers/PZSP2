@@ -43,7 +43,7 @@
       :headers="headers"
       :items="userList"
       :single-select="true"
-      item-key="id"
+      item-key="userID"
       show-select
       class="elevation-1"
     >
@@ -77,7 +77,7 @@ export default {
       last_name: null,
       userList: [],
       foundUsers: false,
-      selected_user: null,
+      selected_user: [],
       headers: [
         { text:"Pesel", value: "pesel"},
         { text:"Pierwsze Imię", value: "first_name"},
