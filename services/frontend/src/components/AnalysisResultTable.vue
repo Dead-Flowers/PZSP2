@@ -2,8 +2,8 @@
   <div class="analysis-table-box">
     <table> 
       <tr>
-        <th @click="sortBy('status')">Status</th>
-        <th @click="sortBy('created_date')">Data badania</th>
+        <th>Status</th>
+        <th>Data badania</th>
         <th>Nagranie</th>
         <th>Wynik analizy</th>
       </tr>  
@@ -33,31 +33,9 @@ export default {
   props: ['analysis'],
   data() {
     return {
-      lastSortingCriteria: null,
     }
   },
   methods: {
-    sortBy(criteria) {
-      let direction = (criteria == this.lastSortingCriteria)? -1 : 1;
-      this.analysis.sort((a, b) => (a[criteria] >= b[criteria]) ? direction *  1 : direction * -1);
-      if (direction == 1) this.lastSortingCriteria = criteria;
-      else this.lastSortingCriteria = null;
-    },
-
-    sortByMultiple(criteria) {
-      let criteria_cmpr = criteria.toString();
-      let direction = (criteria_cmpr == this.lastSortingCriteria)? -1 : 1;
-      this.analysis.sort((a, b) => (this.combineRecords(a, criteria) >= this.combineRecords(b, criteria)) ? direction * 1 :  direction * -1);
-      if (direction == 1) this.lastSortingCriteria = criteria_cmpr;
-      else this.lastSortingCriteria = null;
-    },
-    combineRecords(d, criteria) {
-      let s = "";
-      criteria.forEach(element => {
-        s += d[element];
-      });
-      return s;    
-    },
     formatDate (datestr) {
       let date = new Date(Date.parse(datestr));
       return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`
@@ -68,11 +46,4 @@ export default {
 </script>
 
 <style scoped>
-.analysis-table-box {
-  background-color: var(--color-sector);
-  padding-block: 2vw;
-  padding-inline: 2.5vw;
-  display: table;
-  color: var(--color-text);
-}
 </style>
