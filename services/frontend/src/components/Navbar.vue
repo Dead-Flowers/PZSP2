@@ -59,7 +59,7 @@
     >
       <v-list-item @click="goToPage('/admin/home')">
         <v-list-item-icon>
-          <v-icon></v-icon>
+          <v-icon ></v-icon>
         </v-list-item-icon>
         <v-list-item-content>
           <v-list-item-title>

@@ -11,15 +11,14 @@
       :rules="emailRules"
       label="E-mail"
       required
-    >
-    </v-text-field>
+    />
     <v-text-field
       v-model="password"
+      :rules="passwordRules"
       type="password"
       label="Hasło"
       required
-    >
-    </v-text-field>
+    />
 
 
     <v-btn
@@ -58,8 +57,11 @@ export default {
       email: null,
       password: null,
       emailRules: [
-        v => !!v || 'E-mail is required',
-        v => /.+@.+\..+/.test(v) || 'E-mail must be valid',
+        v => !!v || 'E-mail jest wymagany',
+        v => /.+@.+\..+/.test(v) || 'E-mail musi być poprawny',
+      ],
+      passwordRules: [
+        v => !!v || 'Hasło jest wymagane',
       ],
     }
   },

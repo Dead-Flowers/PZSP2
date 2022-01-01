@@ -1,66 +1,61 @@
 <template>
-  <form class="register-user-box sector flex-column-items-centered">
-    <div v-if="registationDone"> Rejestracja zakończona  </div> 
-    <div v-else> Zarejestruj {{this.wording}} </div> 
-    <div v-if="registationDone" class="save-password-box">  Zapisz hasło dla użytkownika: {{ password }} </div>
-    <div v-if="registationError"> Problem z rejestracją </div>
-    <select 
-      id="user-id-type-selector"
-      class="input-element-standard keyboard-input"
-      name="user-id-type"
-      @change="changeUserIdType($event)"
-    >
-      <option value="pesel">Pesel</option>
-      <option value="passport-id">Nr paszportu</option>
-    </select>
-    <input
+  <v-form @submit="(e) => {e.preventDefault(); submitRegistration();}">
+    <h1 v-if="registationDone"> Rejestracja zakończona  </h1> 
+    <small v-if="registationDone">  Zapisz hasło dla użytkownika: {{ password }} </small>
+    <h1 v-if="registationError"> Problem z rejestracją </h1>
+    <h1 v-else> Zarejestruj {{this.wording}} </h1> 
+     <v-select
+      :items="items"
+      label="Standard"
+    ></v-select>
+    <v-text-field
       id="user-id"
-      class="input-element-standard keyboard-input"
-      type="text"
-      v-bind:name="userIdType"
-      v-bind:placeholder="[userIdType=='pesel' ? 'Pesel...': 'Nr paszportu...']"
       v-model="userId"
-      autocomplete="off"
+      v-bind:label="[userIdType=='pesel' ? 'Pesel...': 'Nr paszportu...']"
+      :rules="userIdType=='pesel' ? peselRules : null"
+      required
     />
-    <input
-      class="input-element-standard keyboard-input"
-      type="text"
-      name="email"
+    <v-text-field
       v-model="email"
-      placeholder="Email..."
-      autocomplete="off"
+      :rules="emailRules"
+      label="E-mail"
+      required
     />
-    <input
-      class="input-element-standard keyboard-input"
-      type="text"
-      name="first-name"
-      v-model="fistName"
-      placeholder="Pierwsze Imię..."
-      autocomplete="off"
+    <v-text-field
+      v-model="firstName"
+      label="Pierwsze Imię"
+      required
     />
-    <input
-      class="input-element-standard keyboard-input"
-      type="text"
-      name="second-name"
+    <v-text-field
       v-model="secondName"
-      placeholder="Drugie Imię (opcjonalnie)..."
-      autocomplete="off"
+      label="Drugie Imię"
     />
-    <input
-      class="input-element-standard keyboard-input"
-      type="text"
-      name="surname"
-      placeholder="Nazwisko..."
+    <v-text-field
       v-model="surname"
-      autocomplete="off"
+      label="Nazwisko"
+      required
     />
-    <input
-      class="input-element-standard button"
-      type="button"
-      value="Zarejestruj"
-      @click="submitRegistration"
-    />
-  </form>
+    <v-btn
+      :disabled="!valid"
+      color="success"
+      class="mr-4"
+      type="submit"
+    >
+      Zarejestruj
+    </v-btn>
+
+
+
+      <select 
+        id="user-id-type-selector"
+        class="input-element-standard keyboard-input"
+        name="user-id-type"
+        @change="changeUserIdType($event)"
+      >
+        <option value="pesel">Pesel</option>
+        <option value="passport-id">Nr paszportu</option>
+      </select>
+  </v-form>
 </template>
 
 <script>
@@ -81,6 +76,14 @@ export default {
       userId: null,
       password: null,
       wording: null,
+      emailRules: [
+        v => !!v || 'E-mail jest wymagany',
+        v => /.+@.+\..+/.test(v) || 'E-mail musi być poprawny',
+      ],
+      peselRules: [
+        v => !!v || 'Pesel jest wymagany',
+        v => /^[0-9]{11}$/.test(v) || 'Pesel musi zawierać 11 cyfr',
+      ],
     }
   },
   beforeMount() {
@@ -120,7 +123,5 @@ export default {
   padding-inline: 2.5vw;
   font-size: 2vw;
 }
-.save-password-box{
-  font-size: 1rem
-}
+
 </style>
