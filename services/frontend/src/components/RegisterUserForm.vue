@@ -1,30 +1,33 @@
 <template>
-  <v-form @submit="(e) => {e.preventDefault(); submitRegistration();}">
+  <v-form
+    ref="form"
+    v-model="valid" 
+    @submit="(e) => {e.preventDefault(); submitRegistration();}"
+  >
     <h1 v-if="registationDone"> Rejestracja zakończona  </h1> 
     <small v-if="registationDone">  Zapisz hasło dla użytkownika: {{ password }} </small>
     <h1 v-if="registationError"> Problem z rejestracją </h1>
     <h1 v-else> Zarejestruj {{this.wording}} </h1> 
      <v-select
-      :items="items"
-      label="Standard"
-    ></v-select>
+      v-model="userIdType"
+      :items="userIdTypeList"
+      label="Rodzaj numeru identyfikacyjnego"
+    />
     <v-text-field
       id="user-id"
       v-model="userId"
-      v-bind:label="[userIdType=='pesel' ? 'Pesel...': 'Nr paszportu...']"
-      :rules="userIdType=='pesel' ? peselRules : null"
-      required
+      v-bind:label="userIdType=='pesel' ? 'Pesel...': 'Nr paszportu...'"
+      v-bind:rules="userIdType=='pesel' ? rules.pesel : rules.required"
     />
     <v-text-field
       v-model="email"
-      :rules="emailRules"
+      :rules="rules.email"
       label="E-mail"
-      required
     />
     <v-text-field
       v-model="firstName"
+      :rules="rules.required"
       label="Pierwsze Imię"
-      required
     />
     <v-text-field
       v-model="secondName"
@@ -32,29 +35,17 @@
     />
     <v-text-field
       v-model="surname"
+      :rules="rules.required"
       label="Nazwisko"
-      required
     />
     <v-btn
-      :disabled="!valid"
+      v-bind:disabled="!valid"
       color="success"
       class="mr-4"
       type="submit"
     >
       Zarejestruj
     </v-btn>
-
-
-
-      <select 
-        id="user-id-type-selector"
-        class="input-element-standard keyboard-input"
-        name="user-id-type"
-        @change="changeUserIdType($event)"
-      >
-        <option value="pesel">Pesel</option>
-        <option value="passport-id">Nr paszportu</option>
-      </select>
   </v-form>
 </template>
 
@@ -69,22 +60,30 @@ export default {
       registationDone: false,
       registationError: false,
       userIdType: 'pesel',
-      fistName: null,
+      userIdTypeList: ['pesel', 'id paszportu'],
+      firstName: null,
       secondName: null,
       surname: null,
       email: null,
       userId: null,
       password: null,
       wording: null,
-      emailRules: [
-        v => !!v || 'E-mail jest wymagany',
-        v => /.+@.+\..+/.test(v) || 'E-mail musi być poprawny',
-      ],
-      peselRules: [
-        v => !!v || 'Pesel jest wymagany',
-        v => /^[0-9]{11}$/.test(v) || 'Pesel musi zawierać 11 cyfr',
-      ],
+      rules: {
+        email: [
+          v => !!v || 'Wymagane pole',
+          v => /.+@.+\..+/.test(v) || 'E-mail musi być poprawny',
+        ],
+        pesel: [
+          v => !!v || 'Wymagane pole',
+          v => /^[0-9]{11}$/.test(v) || 'Pesel musi zawierać 11 cyfr',
+        ],
+        required: [
+          v => !!v || 'Wymagane pole',
+        ],
+        valid: false,
+      }
     }
+
   },
   beforeMount() {
     this.$store.commit("resetRegistration");
@@ -92,14 +91,11 @@ export default {
     if (this.usertype == 'doctor') this.wording = 'doktora';
   },
   methods: {
-    changeUserIdType(event) {
-      this.userIdType = event.target.value;
-    },
     async submitRegistration(){
       this.password = generatePassword()
       let payload = {
         userIdType: this.userIdType,
-        first_name: this.fistName,
+        first_name: this.firstName,
         second_name: this.secondName,
         last_name: this.surname,
         email: this.email,

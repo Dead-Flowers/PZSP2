@@ -2,36 +2,33 @@
   <v-form
     ref="form"
     v-model="valid"
-    lazy-validation
     @submit="(e) => {e.preventDefault(); checkPasswordChange();}"
   >
     <h1> Zmiana Hasła</h1>
     
     <v-text-field
       v-model="currentPassword"
+      :rules="rules.required"
       type="password"
       label="Obecne hasło"
-      required
     />
 
     <v-text-field
       v-model="newPassword"
-      :rules="newPasswordRules"
+      :rules="rules.newPassword"
       type="password"
       label="Nowe hasło"
-      required
     />
 
     <v-text-field
       v-model="newPasswordConfirm"
-      :rules="newPasswordConfirmRules"
+      :rules="rules.newPasswordConfirm"
       type="password"
       label="Powtórz nowe hasło"
-      required
     />
 
     <v-btn
-      :disabled="!valid"
+      v-bind:disabled="!valid"
       color="success"
       class="mr-4"
       type="submit"
@@ -50,13 +47,20 @@ export default {
       currentPassword: null,
       newPassword: null,
       newPasswordConfirm: null,
-      newPasswordRules: [
-        v => !!v || 'Hasło jest wymagane',
-        v => /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(v) || 'Hasło musi zawierać dużą i małą literę, liczbę i znak specjalny',
-      ],
-      newPasswordConfirmRules: [
-        v => v == this.newPassword || 'Hasła muszą być identyczne'
-      ],
+      rules: { 
+        required: [
+          v => !!v || 'Wymagane pole',
+        ],
+        newPassword: [
+          v => !!v || 'Wymagane pole',
+          v => /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(v) || 'Hasło musi zawierać dużą i małą literę, liczbę i znak specjalny',
+        ],
+        newPasswordConfirm: [
+          v => !!v || 'Wymagane pole',
+          v => v == this.newPassword || 'Hasła muszą być identyczne'
+        ],
+      },
+      valid: false,
     }
   },
   methods: {

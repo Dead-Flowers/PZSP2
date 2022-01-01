@@ -2,7 +2,6 @@
   <v-form
     ref="form"
     v-model="valid"
-    lazy-validation
     @submit="(e) => {e.preventDefault(); checkLogin();}"
   >
     <h1>Witaj, zaloguj się</h1>
@@ -10,14 +9,12 @@
       v-model="email"
       :rules="emailRules"
       label="E-mail"
-      required
     />
     <v-text-field
       v-model="password"
       :rules="passwordRules"
       type="password"
       label="Hasło"
-      required
     />
 
 
@@ -63,6 +60,7 @@ export default {
       passwordRules: [
         v => !!v || 'Hasło jest wymagane',
       ],
+      valid: false,
     }
   },
   methods: {

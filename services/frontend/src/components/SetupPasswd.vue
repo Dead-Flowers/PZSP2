@@ -16,7 +16,6 @@
       name="password-confirm"
       placeholder="Powtórz Hasło..."
       v-model="confirmPassword"
-      autocomplete="off"
     />
     <input
       class="input-element-standard button"
