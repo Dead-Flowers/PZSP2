@@ -11,17 +11,17 @@
       </thead>
       <tbody>
         <tr 
-          v-bind:key="record.id" 
-          v-for="record in analysis"
+          v-bind:key="analysis.id" 
+          v-for="analysis in analyses"
         >
-          <td>{{record.status}}</td>
-          <td>{{ formatDate(record.created_date)}}</td>
+          <td>{{analysis.status}}</td>
+          <td>{{ formatDate(analysis.created_date)}}</td>
           <td>
-            <router-link to='/doctor/analysis-view' >
+            <router-link :to="`/doctor/analysis/${analysis.recording_id}`" >
               Kliknij by zobaczyć nagranie 🗃️
             </router-link>
           <td>
-            <router-link to='/doctor/analysis-view' >
+            <router-link :to="`/doctor/analysis/${analysis.id}`" >
               Kliknij by zobaczyć wyniki 🗃️
             </router-link>
           </td>
@@ -33,9 +33,10 @@
 
 <script>
 export default {
-  name: 'AnalysisResultTable',
-  props: ['analysis'],
+  name: 'analysisResultTable',
+  props: ['analyses'],
   data() {
+    console.log(this.analyses)
     return {
     }
   },

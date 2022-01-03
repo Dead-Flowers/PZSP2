@@ -6,7 +6,7 @@
         <SearchUser v-if="showSearchBox" v-bind:searchUser="searchUser" v-bind:userType="'patient'" />
         <div v-else>
           <PatientTable v-bind:patientData="patientData"/>
-          <AnalysisResultTable v-bind:analysis="analyses" />
+          <AnalysisResultTable v-bind:analyses="analyses" />
         </div>
       </div>
     </div>

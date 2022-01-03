@@ -2,6 +2,7 @@ import Router from 'vue-router'
 import Admin from '../views/admin/Admin.vue'
 import AdminPage from '../views/admin/AdminPage.vue'
 import AnalysisView from '../views/doctor/AnalysisView.vue'
+import AnalysisStarted from '../views/doctor/AnalysisStarted.vue'
 import NewAnalysis from '../views/doctor/NewAnalysis.vue' 
 import NewPatient from '../views/admin/NewPatient.vue'
 import AssignDoctorToPatient from '../views/admin/AssignDoctorToPatient.vue'
@@ -83,9 +84,14 @@ export default new Router({
       },
       children: [ 
         {
-          path: 'analysis-view',
+          path: 'analysis/:id',
           name: 'doctor_AnalysisView',
           component: AnalysisView
+        },
+        {
+          path: 'analysisStarted',
+          name: 'doctor_AnalysisStarter',
+          component: AnalysisStarted
         },
         {
           path: 'new-analysis',

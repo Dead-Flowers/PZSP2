@@ -161,7 +161,7 @@ def get_results(
             status_code=403,
             detail="Insufficient privilages to access this analysis result",
         )
-    return dict(id=result.id, status=result.status)
+    return dict(id=result.id, status=result.status, patient_id=result.patient_id)
 
 
 @router.get("/results/{analysis_id}/frames")

@@ -23,6 +23,7 @@
 
 <script>
 import router from '../router'
+import { api } from '@/api';
 
 export default {
   name: "AnalysisInit",
@@ -34,11 +35,24 @@ export default {
   },
   methods: {
     async startAnalysis() {
-      this.$store.commit("setAnalysisFile", this.analysis_file)
-      await this.$store.dispatch("uploadFile", { patientID: this.patientID});
-      router.push('/doctor/analysis-view');
-    },
-  }
+      await this.uploadFile(this.analysis_file, this.patientID);
+      router.push('/doctor/analysisStarted');
+      },
+    async uploadFile (file, patientID) {
+      try {
+        let formData = new FormData();
+        formData.append('file_in', file);
+        let response = await api.uploadFile(this.$store.getters["token"], formData, patientID)
+        let recordingID = response.data
+
+        response = await api.startAnalysis(this.$store.getters["token"], recordingID)
+        this.$store.commit("setAnalysisID", response.data)
+      } catch (e) {
+        await this.$store.dispatch("actionCheckApiError", e);
+        this.$store.commit("openSnackbar", "Problem with uploading file!");
+      }
+    } 
+  },
 }
 </script>
 
