@@ -1,5 +1,5 @@
 <template>
-  <v-navigation-drawer app dark>
+  <v-navigation-drawer app dark expand-on-hover permanent>
     <v-list-item>
       <v-list-item-content>
         <v-list-item-title class="text-h6">

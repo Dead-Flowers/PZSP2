@@ -3,42 +3,36 @@
 
   <div v-else class="sector flex-column-items-centered card">
 
-    <div class="flex-row-items-centered" style="margin-block-end: 1.5vw">
+    <v-row >
+        <v-col>
+          <v-card class="card" elevation="2">
+            <v-card-title>Dane pacjenta </v-card-title>
+            <v-card-text>
+              <div>Pesel: {{ currentPatient.patientId }}</div>
+              <div>Imie: {{ currentPatient.firstName }}</div>
+              <div v-if="currentPatient.secondName != null">Drugie imie: {{ currentPatient.secondName }}</div>
+              <div>Nazwisko: {{ currentPatient.last_name }} </div>
+            </v-card-text> 
+          </v-card>
+        </v-col>
 
-      <table style="margin-inline-end: 1.5vw">
-        <tr>
-          <td>Pesel </td>
-          <td>{{ currentPatient.patientId }} </td>
-        </tr>
-        <tr>
-      <td>Drugie imie</td>
-      <td>{{ currentPatient.firstName }}</td>
-        </tr>
-         <tr v-if="currentPatient.secondName != null">
-      <td v-if="currentPatient.secondName != null" >Imie</td>
-      <td v-if="currentPatient.secondName != null">{{ currentPatient.firstName }}</td>
-        </tr>
-        <tr>
-            <td>Nazwisko</td>
-      <td>{{ currentPatient.last_name }} </td>
-        </tr>
-      </table>
-      <table>
-        <tr>
-          <td>Średni %</td>
-          <td>{{ average }}%</td>
-        </tr>
-        <tr>
-            <td>Powyżej 80%</td>
-      <td>{{ counts.above }}</td>
-        </tr>
-        <tr>
-        </tr>
-      </table>
-    </div>
-    <v-chart class="chart" 
-    autoresize
-    :option="option" />
+        <v-col>
+          <v-card class="card" elevation="2">
+            <v-card-title>Dane analizy </v-card-title>
+            <v-card-text>
+              <div>Średni % {{ average }}</div>
+              <div>Powyżej 80%: {{ counts.above }}</div>
+            </v-card-text> 
+          </v-card>
+        </v-col>
+    </v-row>
+
+
+    <v-row>
+      <v-chart class="chart" 
+      autoresize
+      :option="option" />
+    </v-row>
   </div>
 </template>
 
@@ -139,8 +133,7 @@ export default {
 }
 
 .card {
-  margin: 2.5vw;
-  width: 75%;
+  height: 100%;
 }
 
 

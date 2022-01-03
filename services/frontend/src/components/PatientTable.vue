@@ -1,19 +1,14 @@
 <template>
   <div class="patient-data-table">
-    <table> 
-      <tr>
-        <th>Pesel/Nr Paszportu</th>
-        <td class="table-record-even">{{ ( patientData.pesel == null) ? patientData.passport_num : patientData.pesel }}</td>
-      </tr>
-      <tr>
-        <th>Imię</th>
-        <td class="table-record-odd">{{`${patientData.first_name} ${patientData.second_name}`}}</td>
-      </tr>
-      <tr>  
-        <th>Nazwisko</th>
-        <td class="table-record-even">{{patientData.last_name}}</td>
-      </tr>
-    </table>
+    <v-card class="card" elevation="2">
+            <v-card-title>Dane pacjenta </v-card-title>
+            <v-card-text>
+              <div>Pesel: {{ patientData.pesel }}</div>
+              <div>Imie: {{ patientData.first_name }}</div>
+              <div v-if="patientData.second_name != null">Drugie imie: {{ patientData.secondName }}</div>
+              <div>Nazwisko: {{ patientData.last_name }} </div>
+            </v-card-text> 
+    </v-card>
   </div>
 </template>
 

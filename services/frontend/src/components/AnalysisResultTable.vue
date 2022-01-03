@@ -1,29 +1,33 @@
 <template>
   <div class="analysis-table-box">
-    <table> 
-      <tr>
-        <th>Status</th>
-        <th>Data badania</th>
-        <th>Nagranie</th>
-        <th>Wynik analizy</th>
-      </tr>  
-      <tr 
-        v-bind:key="record.id" 
-        v-for="record in analysis"
-      >
-        <td>{{record.status}}</td>
-        <td>{{ formatDate(record.created_date)}}</td>
-        <td>
-          <router-link to='/doctor/analysis-view' >
-            Kliknij by zobaczyć nagranie 🗃️
-          </router-link>
-        <td>
-          <router-link to='/doctor/analysis-view' >
-            Kliknij by zobaczyć wyniki 🗃️
-          </router-link>
-        </td>
-      </tr>
-    </table>
+    <v-simple-table>
+      <thead>
+        <tr>
+          <th>Status</th>
+          <th>Data badania</th>
+          <th>Nagranie</th>
+          <th>Wynik analizy</th>
+        </tr>  
+      </thead>
+      <tbody>
+        <tr 
+          v-bind:key="record.id" 
+          v-for="record in analysis"
+        >
+          <td>{{record.status}}</td>
+          <td>{{ formatDate(record.created_date)}}</td>
+          <td>
+            <router-link to='/doctor/analysis-view' >
+              Kliknij by zobaczyć nagranie 🗃️
+            </router-link>
+          <td>
+            <router-link to='/doctor/analysis-view' >
+              Kliknij by zobaczyć wyniki 🗃️
+            </router-link>
+          </td>
+        </tr>
+      </tbody>
+    </v-simple-table>
   </div>
 </template>
 

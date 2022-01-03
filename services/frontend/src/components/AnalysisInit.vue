@@ -16,7 +16,6 @@
       accept=".mp3,.wav, .raw, .mp4, .oog, .aac"
       label="Wybierz Plik"
       v-model="analysis_file"
-      @change="fileChange"
     >
     </v-file-input>
   </v-form>
@@ -30,20 +29,15 @@ export default {
   props: ["patientID"],
   data() {
     return {
-      analysis_file: null,
+      analysis_file: [],
     }
   },
   methods: {
     async startAnalysis() {
+      this.$store.commit("setAnalysisFile", this.analysis_file)
       await this.$store.dispatch("uploadFile", { patientID: this.patientID});
       router.push('/doctor/analysis-view');
     },
-    fileChange(event) {
-      this.noFiles = !event.target.files.length;
-      if (!this.noFiles) {
-        this.$store.commit("setAnalysisFile", event.target.files[0])
-      }
-    }
   }
 }
 </script>
