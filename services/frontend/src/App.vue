@@ -6,6 +6,23 @@
         <router-view>
         </router-view>
       </v-container>
+      <v-snackbar
+        v-model="snackbar"
+        :multi-line="true"
+        >
+          {{ text }}
+
+          <template v-slot:action="{ attrs }">
+            <v-btn
+              color="red"
+              text
+              v-bind="attrs"
+              @click="closeSnackbar"
+            >
+            Close
+            </v-btn>
+          </template>
+      </v-snackbar>
     </v-main>
   </v-app>
 </template>
@@ -21,6 +38,17 @@ export default {
   methods: {
     isLoggedIn() {
       return this.$store.getters["isLoggedIn"];
+    },
+    closeSnackbar() {
+      this.$store.commit('closeSnackbar')
+    }
+  },
+  computed: {
+    snackbar() {
+      return this.$store.getters["isSnackbarOpened"]
+    },
+    text() {
+      return this.$store.getters["snackbarText"]
     }
   },
   async mounted() {

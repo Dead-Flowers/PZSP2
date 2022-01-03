@@ -33,8 +33,8 @@ const defaultState = {
         } catch (err) {
             context.commit("setLoggedIn", false)
             context.commit("setLogInError", true)
-            console.log(err);
             await context.dispatch("actionLogOut");
+            context.commit("openSnackbar", "Problem with logging in")
         }
     },
 
@@ -46,6 +46,7 @@ const defaultState = {
             }
         } catch (error) {
             await context.dispatch("actionCheckApiError", error);
+            context.commit("openSnackbar", "Problem with getting user data")
         }
     },
 
@@ -64,10 +65,12 @@ const defaultState = {
                     await context.dispatch("actionGetMe");
                     context.commit("setLoggedIn", true)
                 } catch (error) {
-                    await context.dispatch("actionLogOut");
+                    await context.dispatch("actionCheckApiError", error);
+                    context.commit("openSnackbar", "You're not logged in!");
                 }
             } else {
                 await context.dispatch("actionLogOut");
+                context.commit("openSnackbar", "You're not logged in!");
             }
         }
     },
@@ -79,8 +82,10 @@ const defaultState = {
     },
 
     async actionCheckApiError(context, payload) {
-        console.log(payload)
         if (payload.response.status === 401) {
+            await context.dispatch("actionLogOut");
+        }
+        if (payload.response.status === 403) {
             await context.dispatch("actionLogOut");
         }
     },
@@ -92,8 +97,8 @@ const defaultState = {
                 setUserData(context, response.data)
             }
         } catch (error) {
-            //TODO: better error handling 
-            await context.dispatch("actionLogOut");
+            await context.dispatch("actionCheckApiError", error);
+            context.commit("openSnackbar", "Problem with updating user");
         }
     },
 
@@ -113,6 +118,7 @@ const defaultState = {
             context.commit("setRegistrationError", true)
             context.commit("setRegistrationSuccess", false)
             console.log(err);
+            context.commit("openSnackbar", "Problem with registration!");
         }
       }
     }

@@ -14,9 +14,9 @@ const state = {
   //TODO: think it over 
   currentPatient: {
     patientIdType: 'pesel',
-    patientId: "0123456789",
-    firstName: "wait for fetch",
-    secondName: "wait for fetch",
+    pesel: "0123456789",
+    first_name: "wait for fetch",
+    second_name: "wait for fetch",
     last_name: "wait fo fetch",
   },
   analysis: {
@@ -25,7 +25,9 @@ const state = {
     file: null,
     result: null,
   },
-  patients: []
+  patients: [],
+  snackbarOpen: false,
+  snackbarText: "",
 }
 
 export const mutations = {
@@ -46,27 +48,39 @@ export const mutations = {
   },
   setAnalysisID(state, id) {
     state.analysis.analysisID = id;
+  },
+  openSnackbar(state, text) {
+    state.snackbarOpen = true;
+    state.snackbarText = text;
+  },
+  closeSnackbar(state) {
+    state.snackbarOpen = false;
   }
 }
 
 export const actions = {
   //! those are initial implementation, change when implementing real feature
   //TODO: change email if needed
-  async getPatient(context, email) {
-    let patient = await api.getPatient(context.state.user.token, email); // yeah this doesn't work rn 
-    context.commit("setPatient", patient);
-  },
-  async createPatient(context, patient) {
-    await api.createPatient(context.state.user.token, patient);
-    await context.dispatch('getPatient', patient.email); // is this needed ?
-  },
-  async getPatients(context) {
-    let patients = await api.getUsers()
-    context.commit('setPatients', patients.data);
-  },
+  // async getPatient(context, email) {
+  //   let patient = await api.getPatient(context.state.user.token, email); // yeah this doesn't work rn 
+  //   context.commit("setPatient", patient);
+  // },
+  // async createPatient(context, patient) {
+  //   await api.createPatient(context.state.user.token, patient);
+  //   await context.dispatch('getPatient', patient.email); // is this needed ?
+  // },
+  // async getPatients(context) {
+  //   let patients = await api.getUsers()
+  //   context.commit('setPatients', patients.data);
+  // },
   async startAnalysis(context){
-    let response = await api.startAnalysis(context.state.user.token ,context.state.analysis.recordingID);
-    context.commit("setAnalysisID", response.data);
+    try {
+      let response = await api.startAnalysis(context.state.user.token ,context.state.analysis.recordingID);
+      context.commit("setAnalysisID", response.data);
+    } catch (e) {
+      await context.dispatch("actionCheckApiError", e);
+      context.commit("openSnackbar", "Problem with uploading file!");
+    }
   },
   async getAnalysisResults(context) {
     let statusCode = 404;
@@ -82,23 +96,27 @@ export const actions = {
       }
       await sleep(200);
     }
-    console.log(response.data)
+
     for(const element of response.data)
     {
       data.push(element.probability)
     }
     context.commit("setAnalysisResult", data)
   },
+
   async uploadFile (context, payload) {
-    let formData = new FormData();
-    console.log(payload.file)
-    formData.append('file_in', context.state.analysis.file);
-    console.log(context.state.user.token)
-    let response = await api.uploadFile(context.state.user.token, formData, payload.patientID)
-    context.commit("setRecordingID", response.data)
-    
-    response = await api.startAnalysis(context.state.user.token ,context.state.analysis.recordingID)
-    context.commit("setAnalysisID", response.data)
+    try {
+      let formData = new FormData();
+      formData.append('file_in', context.state.analysis.file);
+      let response = await api.uploadFile(context.state.user.token, formData, payload.patientID)
+      context.commit("setRecordingID", response.data)
+      
+      response = await api.startAnalysis(context.state.user.token ,context.state.analysis.recordingID)
+      context.commit("setAnalysisID", response.data)
+    } catch (e) {
+      await context.dispatch("actionCheckApiError", e);
+      context.commit("openSnackbar", "Problem with uploading file!");
+    }
   } 
 }
 
@@ -109,6 +127,13 @@ export const getters =  {
   getPatients: state => state.patients,
   getAnalysisID: state => state.analysis.analysisID,
   analysisStarted: state => state.analysis.analysisID == null ? true : false,
+  openSnackbar(state, text) {
+    state.snackbarOpen = true;
+    state.snackbarText = text;
+  },
+  closeSnackbar(state) {
+    state.snackbarOpen = false;
+  },
 }
 
 export default new Vuex.Store({
