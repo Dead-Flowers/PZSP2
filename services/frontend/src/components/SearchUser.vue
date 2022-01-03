@@ -16,11 +16,11 @@
         v-bind:label="userIdType=='pesel' ? 'Pesel...': 'Nr paszportu...'"
       />
       <v-text-field
-        v-model="firstName"
+        v-model="first_name"
         label="Pierwsze Imię"
       />
       <v-text-field
-        v-model="secondName"
+        v-model="second_name"
         label="Drugie Imię"
       />
       <v-text-field
@@ -72,8 +72,8 @@ export default {
       userIdType: 'pesel',
       userIdTypeList: ['pesel', 'nr paszportu'],
       userId: null,
-      firstName: null,
-      secondName: null,
+      first_name: null,
+      second_name: null,
       last_name: null,
       userList: [],
       foundUsers: false,
@@ -87,48 +87,61 @@ export default {
     }
   },
   methods: {
+    createParams() {
+    //TODO: refactor userID maybe? 
+    let params={};
+    if(this.first_name!=null) {
+      params["first_name"]=this.first_name;
+    }
+    if(this.second_name!=null) {
+      params["second_name"]=this.second_name;
+    }
+    if(this.last_name!=null) {
+      params["last_name"]=this.last_name;
+    }
+    if(this.email!=null) {
+      params["email"]=this.email;
+    }
+    if(this.userId!=null) {
+      if(this.userIdType=="pesel") {
+        params["pesel"]=this.userId;
+      } else {
+        params["pass_num"]=this.userId;
+      }
+    }
+    return params;
+    },
+    async getUsers(params) {
+        let respone;
+        if(params!={}) {
+          respone=await api.getUsers(this.$store.getters["token"], params);
+        } else {
+          respone=await api.getUsers(this.$store.getters["token"], undefined);
+        }
+        let unfilteredUserList=respone.data;
+        unfilteredUserList.forEach(element => {
+          if(element.role==this.userType)
+            this.userList.push(element);
+        });
+      },
     async searchForUser() {
       this.userList = [];
       //TODO: REFACTOR THIS PLS
       //TODO: unify naming and names last/sur name
-      let params = {}
-      if(this.firstName != null) {
-        params["first_name"] = this.firstName;
-      }
-      if(this.secondName != null) {
-        params["second_name"] = this.secondName;
-      }
-      if(this.last_name != null) {
-        params["last_name"] = this.last_name;
-      }
-      if(this.email != null) {
-        params["email"] = this.email;
-      }
-      if(this.userId != null) {
-        if(this.userIdType == "pesel") {
-          params["pesel"] = this.userId;
-        } else {
-          params["pass_num"] = this.userId;
-        }
-      }
-      try {
-        let respone ;
-        if (params != {}) {
-          respone = await api.getUsers(this.$store.getters["token"], params);
-        } else {
-          respone = await api.getUsers(this.$store.getters["token"], undefined);
-        }
-        console.log(respone)
-        let unfilteredUserList = respone.data
-        unfilteredUserList.forEach(element => {
-          if (element.role == this.userType) this.userList.push(element);
-        });
 
+      let params=this.createParams();
+
+      try {
+        await this.getUsers(params);
       } catch(error) {
         console.log(error)
+        this.$store.dispatch("actionCheckApiError", error);
+        this.$store.commit("openSnackbar", "Problem with searching");
       }
-      console.log(this.userList)
+
       if (this.userList.length > 0) this.foundUsers = true;
+
+
     },
     initSearch() {
       this.userList = [];

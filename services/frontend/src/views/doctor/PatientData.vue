@@ -42,16 +42,21 @@ export default {
     },
     async getUserData(id) {
       // pobierz dane pacjetna    
-      //TODO: catch err  
-      const responeUser = await api.getUser(this.$store.getters["token"], id)
-      console.log(responeUser)
-      this.patientData = responeUser.data
-      console.log(this.patientData)
+      try {
+        const responeUser = await api.getUser(this.$store.getters["token"], id)
+        this.patientData = responeUser.data
+      } catch (e) {
+        this.$store.dispatch("actionCheckApiError", e);
+        this.$store.commit("openSnackbar", "Problem with getting patient data");
+      }
       // pobiearz analizy
-      const responeAnal = await api.getAnalysis(this.$store.getters["token"], id)
-      console.log(responeAnal)
-      this.analyses = responeAnal.data
-      console.log(this.analyses)
+      try {
+        const responeAnal = await api.getAnalysis(this.$store.getters["token"], id)
+        this.analyses = responeAnal.data
+      } catch (e) {
+        this.$store.dispatch("actionCheckApiError", e);
+        this.$store.commit("openSnackbar", "Problem with getting Analysis data");
+      }
     },
   },
 }

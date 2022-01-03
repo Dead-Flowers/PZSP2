@@ -25,12 +25,12 @@
       label="E-mail"
     />
     <v-text-field
-      v-model="firstName"
+      v-model="first_name"
       :rules="rules.required"
       label="Pierwsze Imię"
     />
     <v-text-field
-      v-model="secondName"
+      v-model="second_name"
       label="Drugie Imię"
     />
     <v-text-field
@@ -111,8 +111,8 @@ export default {
       userIdTypeList: ['pesel', 'id paszportu'],
       sex: null,
       sexList: ['Meżczyzna', 'Kobieta', 'Inna'],
-      firstName: null,
-      secondName: null,
+      first_name: null,
+      second_name: null,
       last_name: null,
       email: null,
       userId: null,
@@ -145,8 +145,8 @@ export default {
       this.password = generatePassword()
       let payload = {
         userIdType: this.userIdType,
-        first_name: this.firstName,
-        second_name: this.secondName,
+        first_name: this.first_name,
+        second_name: this.second_name,
         last_name: this.last_name,
         email: this.email,
         user_id: this.userId,

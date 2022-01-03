@@ -9,8 +9,8 @@ const defaultState = {
     id: null,
     userID: null,
     username: null,
-    firstName: null,
-    secondName: null,
+    first_name: null,
+    second_name: null,
     last_name: null,
     userType: null,
   };
@@ -130,15 +130,15 @@ const defaultState = {
     isLoggedIn: (state) => state.isLoggedIn,
     username: (state) => state.username,
     email: (state) => state.username,
-    firstName: (state) => state.firstName,
-    secondName: (state) => state.secondName,
+    firstName: (state) => state.first_name,
+    secondName: (state) => state.second_name,
     last_name: (state) => state.last_name,
     userType: (state) => state.userType,
     user: (state) => { return {
         userID: null,
         username: state.username,
-        firstName: state.firstName,
-        secondName: state.secondName,
+        first_name: state.first_name,
+        second_name: state.second_name,
         last_name: state.last_name,
         userType: state.userType,
         }
@@ -164,10 +164,10 @@ const defaultState = {
         state.logInError = payload;
     },
     setFirstName(state, payload) {
-        state.firstName = payload;
+        state.first_name = payload;
     },
     setSecondName(state, payload) {
-        state.secondName = payload;
+        state.second_name = payload;
     },
     setLastName(state, payload) {
         state.last_name = payload;

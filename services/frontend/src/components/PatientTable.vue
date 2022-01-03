@@ -5,7 +5,7 @@
             <v-card-text>
               <div>Pesel: {{ patientData.pesel }}</div>
               <div>Imie: {{ patientData.first_name }}</div>
-              <div v-if="patientData.second_name != null">Drugie imie: {{ patientData.secondName }}</div>
+              <div v-if="patientData.second_name != null">Drugie imie: {{ patientData.second_name }}</div>
               <div>Nazwisko: {{ patientData.last_name }} </div>
             </v-card-text> 
     </v-card>

@@ -9,8 +9,8 @@
             <v-card-title>Dane pacjenta </v-card-title>
             <v-card-text>
               <div>Pesel: {{ currentPatient.patientId }}</div>
-              <div>Imie: {{ currentPatient.firstName }}</div>
-              <div v-if="currentPatient.secondName != null">Drugie imie: {{ currentPatient.secondName }}</div>
+              <div>Imie: {{ currentPatient.first_name }}</div>
+              <div v-if="currentPatient.second_name != null">Drugie imie: {{ currentPatient.second_name }}</div>
               <div>Nazwisko: {{ currentPatient.last_name }} </div>
             </v-card-text> 
           </v-card>
