@@ -2,7 +2,19 @@
   <div class="max-screen-space-container flex-row-items-start">
     <Navbar v-bind:usertype="'doctor'" />
     <div class="navbar-as-adjacent flex-column-items-centered">
-      <AnalysisVisualization v-bind:analysisData="analysisData" v-bind:patient="patient"/>
+      <AnalysisVisualization v-if="analisyFinished" v-bind:analysisData="analysisData" v-bind:patient="patient"/>
+      <div v-else>
+          <v-row>
+            <v-progress-circular
+            :size="200"
+            :width="20"
+            color="purple"
+            indeterminate
+            ></v-progress-circular>
+            <div>Analiza nie została jeszcze zakończona</div>
+          </v-row>
+      </div>
+      
     </div>
   </div>
 </template>
@@ -34,10 +46,12 @@ export default {
   },
   async mounted() {
     try {
+      this.loading = true
       // get status and patient id
       let response = await api.getAnalysisResults(this.$store.getters["token"], this.$route.params.id)
       if (response.data.status != "COMPLETED") {
         this.$store.commit("openSnackbar", "Analisysy not finished yet");
+        return;
       }
       // get patient data
       response = await api.getUser(this.$store.getters["token"], response.data.patient_id)
@@ -50,6 +64,8 @@ export default {
         data.push(element.probability)
       }
       this.analysisData = data
+      this.analisyFinished = true;
+      this.loading = false;
     }  catch (error) {
         console.log(error)
         this.$store.dispatch("actionCheckApiError", error);

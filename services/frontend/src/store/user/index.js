@@ -5,9 +5,11 @@ const defaultState = {
     logInError: false,
     registrationError: false,
     registrationSuccess: false, 
+    pesel: null, 
+    passport_num: null,
     token: '',
     id: null,
-    userID: null,
+    userID: null, // shoud use pesel and passport_num, this left for now so nothing breaks
     username: null,
     first_name: null,
     second_name: null,
@@ -79,6 +81,7 @@ const defaultState = {
         removeLocalToken();
         context.commit("setToken", '');
         context.commit("setLoggedIn", false);
+        context.commit("openSnackbar", "You've been logout!");
     },
 
     async actionCheckApiError(context, payload) {
@@ -134,6 +137,7 @@ const defaultState = {
     secondName: (state) => state.second_name,
     last_name: (state) => state.last_name,
     userType: (state) => state.userType,
+    id:(state) => state.id,
     user: (state) => { return {
         userID: null,
         username: state.username,
@@ -187,6 +191,12 @@ const defaultState = {
     },
     setID(state, payload) {
         state.id = payload
+    },
+    setPesel(state, payload) {
+        state.pesel = payload
+    },
+    setPassportNum(state, payload) {
+        state.passport_num = payload
     }
 
   }
@@ -200,7 +210,16 @@ const defaultState = {
 
 
 const setUserData = (context, data) => {
-    context.commit("setUserID", data.id);
+    context.commit("setID", data.id)
+    //TODO set pesel or pass number not userID
+    if (data.pesel != null) {
+        context.commit("setUserID", data.pesel);
+        context.commit("setPesel", data.pesel);
+    }
+    else {
+        context.commit("setUserID", data.passport_num);
+        context.commit("setPassportNum", data.passport_num);
+    }
     context.commit("setUsername", data.email);
     context.commit("setFirstName", data.first_name);
     context.commit("setSecondName", data.second_name);

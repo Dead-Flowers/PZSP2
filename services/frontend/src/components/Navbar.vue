@@ -49,6 +49,17 @@
         </v-list-item-content>
       </v-list-item>
 
+      <v-list-item @click="goToPage('/doctor/recordings')">
+        <v-list-item-icon>
+          <v-icon></v-icon>
+        </v-list-item-icon>
+        <v-list-item-content>
+          <v-list-item-title>
+            Nagrania
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+
     </v-list>
 
     <!-- admin tabs -->
@@ -115,6 +126,17 @@
         <v-list-item-content>
           <v-list-item-title>
             Profil
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-list-item @click="goToPage('/patient/analyses')">
+        <v-list-item-icon>
+          <v-icon></v-icon>
+        </v-list-item-icon>
+        <v-list-item-content>
+          <v-list-item-title>
+            Moje analizy
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>

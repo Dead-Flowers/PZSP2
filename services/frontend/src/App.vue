@@ -1,12 +1,10 @@
 <template>
   <v-app id="app">
-    <Navbar v-if="isLoggedIn()" />
+    <Navbar v-if="isLoggedIn" />
     <v-main>
       <v-container fluid>
-        <router-view>
-        </router-view>
-      </v-container>
-      <v-snackbar
+        <router-view/>
+        <v-snackbar
         v-model="snackbar"
         :multi-line="true"
         >
@@ -22,7 +20,8 @@
             Close
             </v-btn>
           </template>
-      </v-snackbar>
+        </v-snackbar>
+      </v-container>
     </v-main>
   </v-app>
 </template>
@@ -36,9 +35,6 @@ export default {
     Navbar,
   },
   methods: {
-    isLoggedIn() {
-      return this.$store.getters["isLoggedIn"];
-    },
     closeSnackbar() {
       this.$store.commit('closeSnackbar')
     }
@@ -49,15 +45,25 @@ export default {
     },
     text() {
       return this.$store.getters["snackbarText"]
-    }
+    },
+    isLoggedIn() {
+      // porbaly needed to fix, not routing sometimes
+      if(this.$route.name == 'WelcomePage' && this.$store.getters["isLoggedIn"]){
+        router.push(`/${this.$store.getters["userType"]}/home`)
+      }
+
+      return this.$store.getters["isLoggedIn"];
+    },
+  },
+  async beforeMount() {
+    // this needs to be here so routing dosen't gets messed up
+    await this.$store.dispatch("actionCheckLoggedIn")
   },
   async mounted() {
-    await this.$store.dispatch("actionCheckLoggedIn")
-    
     if(this.$route.name == 'WelcomePage' && this.$store.getters["isLoggedIn"]){
       router.push(`/${this.$store.getters["userType"]}/home`)
     }
-  }
+  },
 }
 </script>
 

@@ -49,13 +49,8 @@ export const getters =  {
   getPatients: state => state.patients,
   getAnalysisID: state => state.analysis.analysisID,
   analysisStarted: state => state.analysis.analysisID == null ? true : false,
-  openSnackbar(state, text) {
-    state.snackbarOpen = true;
-    state.snackbarText = text;
-  },
-  closeSnackbar(state) {
-    state.snackbarOpen = false;
-  },
+  isSnackbarOpened: (state) => state.snackbarOpen,
+  snackbarText: (state) => state.snackbarText,
 }
 
 export default new Vuex.Store({

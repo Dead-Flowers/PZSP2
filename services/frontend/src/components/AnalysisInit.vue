@@ -35,7 +35,7 @@ export default {
   },
   methods: {
     async startAnalysis() {
-      await this.uploadFile(this.analysis_file, this.patientID);
+      this.uploadFile(this.analysis_file, this.patientID);
       router.push('/doctor/analysisStarted');
       },
     async uploadFile (file, patientID) {

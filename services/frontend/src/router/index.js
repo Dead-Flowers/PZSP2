@@ -9,8 +9,10 @@ import AssignDoctorToPatient from '../views/admin/AssignDoctorToPatient.vue'
 import NewDoctor from '../views/admin/NewDoctor.vue'
 import PageNotFound from '../views/common/PageNotFound.vue'
 import PatientData from '../views/doctor/PatientData.vue'
+import RecordingsData from '../views/doctor/RecordingsData.vue'
 import PatientPage from '../views/patient/PatientPage.vue'
 import Patient from '../views/patient/Patient.vue'
+import PatientAnalyses from '../views/patient/PatientAnalyses.vue'
 import DoctorPage from '../views/doctor/DoctorPage'
 import Doctor from '../views/doctor/Doctor'
 import Welcome from '../views/common/Welcome.vue'
@@ -42,7 +44,7 @@ export default new Router({
       component: Admin,
       beforeEnter: (to, from, next) => {
         if(!store.getters["isLoggedIn"] || store.getters["userType"] != "admin"){
-          next({ name: "Welcome"  })
+          next({ name: "WelcomePage"  })
         } else next()
       },
       children: [
@@ -79,7 +81,7 @@ export default new Router({
       component: Doctor,
       beforeEnter: (to, from, next) => {
         if(!store.getters["isLoggedIn"] || store.getters["userType"] != "doctor"){
-          next({ name: "Welcome"  })
+          next({ name: "WelcomePage"  })
         } else next()
       },
       children: [ 
@@ -108,6 +110,11 @@ export default new Router({
           name: 'doctor_Page',
           component: DoctorPage
         },
+        {
+          path: 'recordings',
+          name: 'doctor_Recordings',
+          component: RecordingsData
+        },
       ]
     },
     {
@@ -116,14 +123,19 @@ export default new Router({
       component: Patient,
       beforeEnter: (to, from, next) => {
         if(!store.getters["isLoggedIn"] || store.getters["userType"] != "patient"){
-          next({ name: "Welcome"  })
+          next({ name: "WelcomePage"  })
         } else next()
       },
       children: [ 
         {
-          path: '/home',
+          path: 'home',
           name: 'patient_Page',
           component: PatientPage
+        },
+        {
+          path: 'analyses',
+          name: 'patient_Page',
+          component: PatientAnalyses
         },
       ]
     },

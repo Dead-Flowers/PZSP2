@@ -76,6 +76,14 @@ export const api = {
     config["params"] = {}
     config.params["patient_id"] = patientID
     return axios.get(`${APISUFFIX}/api/analysis/results`, config)
+  },
+
+  async getRecordings(token, patientID) {
+    let config = authHeaders(token);
+    config["params"] = {}
+    config.params["patient_id"] = patientID
+    return axios.get(`${APISUFFIX}/api/analysis/recordings`, config)
   }
+  
 
 };
