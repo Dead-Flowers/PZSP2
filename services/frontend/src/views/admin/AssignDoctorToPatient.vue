@@ -5,38 +5,38 @@
         class="sector flex-column-items-centered"
         v-if="this.stage == 'noDoctor'"
       >
-        <label> Wyszukaj Doktora </label>
+        <h1> Wyszukaj Doktora </h1>
         <SearchUser v-bind:searchUser="searchDoctor" v-bind:userType="'doctor'" />
       </div>
       <div 
         class="sector flex-column-items-centered"
         v-if="this.stage == 'hasDoctor'"
       >
-        <label> Wybrany doktor - {{ `${this.doctorInfo["first_name"]} ${this.doctorInfo["second_name"]} ${this.doctorInfo["last_name"]}`}}</label>
-        <label> Wyszukaj Pacjenta </label>
+        <h2> Wybrany doktor - {{ `${this.doctorInfo["first_name"]} ${this.doctorInfo["second_name"]} ${this.doctorInfo["last_name"]}`}}</h2>
+        <h1> Wyszukaj Pacjenta </h1>
         <SearchUser v-bind:searchUser="searchPatient" v-bind:userType="'patient'" />
       </div>
       <div 
         class="sector flex-column-items-centered"
         v-if="this.stage == 'assigned'"
       >
-        <label> Sukces! Przyisano pacjenta do doktora. </label>
-        <label> Wybrany doktor - {{ `${this.doctorInfo["first_name"]} ${this.doctorInfo["second_name"]} ${this.doctorInfo["last_name"]}`}}</label>
-        <label> Wybrany pacjent - {{ `${this.patientInfo["first_name"]} ${this.patientInfo["second_name"]} ${this.patientInfo["last_name"]}`}}</label>
-        <div class="flex-row-items-centered">
-          <input
-            class="input-element-standard input-element-addon spacer"
-            type="button"
-            value="Przypisz nowego pacjenta do tego samego doktora"
-            @click="newPatientSameDoctor"
-          />
-          <input
-            class="input-element-standard input-element-addon"
-            type="button"
-            value="Przypisz nowego pacjenta do nowego doktora"
-            @click="newPatientNewDoctor"
-          />
-        </div>
+        <h1> Sukces! Przyisano pacjenta do doktora. </h1>
+        <h2> Wybrany doktor - {{ `${this.doctorInfo["first_name"]} ${this.doctorInfo["second_name"]} ${this.doctorInfo["last_name"]}`}}</h2>
+        <h2> Wybrany pacjent - {{ `${this.patientInfo["first_name"]} ${this.patientInfo["second_name"]} ${this.patientInfo["last_name"]}`}}</h2>
+        <v-btn
+          color="success"
+          class="mr-4"
+          @click="newPatientSameDoctor"
+        >
+          Przypisz nowego pacjenta do tego samego doktora
+        </v-btn>
+        <v-btn
+          color="success"
+          class="mr-4"
+          @click="newPatientNewDoctor"
+        >
+          Przypisz nowego pacjenta do innego doktora
+        </v-btn>
       </div>
     </div>
   </div>

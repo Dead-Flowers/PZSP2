@@ -41,22 +41,39 @@
       v-if="foundUsers"
       v-model="selected_user"
       :headers="headers"
-      :items="userList"
+      :items="user_list"
       :single-select="true"
-      item-key="userID"
-      show-select
-      class="elevation-1"
+      item-key="pesel"
+      :show-select="true"
+      :multi-sort="true"
+      checkbox-color="red"
     >
-    <template v-slot:top>
-      <v-btn
-        :disabled="!selected_user"
-        color="success"
-        class="mr-4"
-        @click="initSearch"
-      >
-      Wybierz zaznaczonego użytkownika
-      </v-btn>
-    </template>
+      <template #item="{ item }">
+        <tr>
+          <td>
+            <v-checkbox
+              :on-icon="'fa-check-square'"
+              :off-icon="'fa-square'"
+              class="pa-0 ma-0"
+              v-model="selected_user"
+              :value="item"/>
+          </td>
+          <td>{{item.pesel}}</td>
+          <td>{{item.first_name}}</td>
+          <td>{{item.second_name}}</td>
+          <td>{{item.last_name}}</td>
+        </tr>
+      </template>
+      <template v-slot:top>
+        <v-btn
+          :disabled="!selected_user"
+          color="success"
+          class="mr-4"
+          @click="initSearch"
+        >
+        Wybierz zaznaczonego użytkownika
+        </v-btn>
+      </template>
     </v-data-table>
   </div>  
 </template>
@@ -75,14 +92,14 @@ export default {
       first_name: null,
       second_name: null,
       last_name: null,
-      userList: [],
+      user_list: [],
       foundUsers: false,
       selected_user: [],
       headers: [
-        { text:"Pesel", value: "pesel"},
-        { text:"Pierwsze Imię", value: "first_name"},
-        { text:"Drugie Imię", value: "second_name"},
-        { text:"Nazwisko", align: "start", value: "last_name"},
+        { text: "Pesel", align: "start", value: "pesel"},
+        { text: "Pierwsze Imię", value: "first_name"},
+        { text: "Drugie Imię", value: "second_name"},
+        { text: "Nazwisko", value: "last_name"},
       ],
     }
   },
@@ -121,14 +138,12 @@ export default {
         let unfilteredUserList=respone.data;
         unfilteredUserList.forEach(element => {
           if(element.role==this.userType)
-            this.userList.push(element);
+            this.user_list.push(element);
+            console.log(this.user_list)
         });
       },
     async searchForUser() {
-      this.userList = [];
-      //TODO: REFACTOR THIS PLS
-      //TODO: unify naming and names last/sur name
-
+      this.user_list = [];
       let params=this.createParams();
 
       try {
@@ -139,24 +154,24 @@ export default {
         this.$store.commit("openSnackbar", "Problem with searching");
       }
 
-      if (this.userList.length > 0) this.foundUsers = true;
+      if (this.user_list.length > 0) this.foundUsers = true;
 
 
     },
     initSearch() {
-      this.userList = [];
+      this.user_list = [];
       this.foundUsers = false;
       this.searchUser(this.selected_user[0]);
       this.selected_user = null;
     },
   },
   mounted() {
-      this.userList = [];
+      this.user_list = [];
       this.foundUsers = false;
   },
 }
 </script>
 
-<style scoped>
+<style>
 
 </style>

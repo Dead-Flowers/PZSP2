@@ -18,10 +18,34 @@ import {
   GridComponent,
   TooltipComponent
 } from 'echarts/components';
-
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { faUser, 
+  faFlask, 
+  faSignOutAlt,
+  faUserNurse,
+  faUserCircle,
+  faUserPlus,
+  faPeopleArrows,
+  faList,
+  faFileAudio,
+  faPlusSquare,
+ } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 Vue.config.productionTip = false
 Vue.use(VueRouter);
+library.add(faUser, 
+  faFlask,
+  faSignOutAlt,
+  faUserNurse,
+  faUserCircle,
+  faUserPlus,
+  faPeopleArrows,
+  faList,
+  faFileAudio,
+  faPlusSquare
+  )
+Vue.component('font-awesome-icon', FontAwesomeIcon)
 
 use([
   CanvasRenderer,
