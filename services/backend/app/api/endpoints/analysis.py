@@ -244,13 +244,17 @@ def get_results(
             status_code=403, detail="Insufficient privilages to access all results"
         )
 
-    results = []
-    if crud.user.has_roles(current_user, models.UserRole.Admin):
+    all_results = []
+
+    def handle_admin():
         if patient_id is None:
             results = crud.analysis_result.get_multi(db, skip, limit)
         else:
             results = crud.analysis_result.get_by_patient_id(db, patient_id)
-    else:
+        return results
+
+    def handle_doctor():
+        results = []
         if patient_id is None:
             patients = crud.user.get_by_doctor_id(db, current_user.id)
             for pat in patients:
@@ -263,15 +267,23 @@ def get_results(
                     status_code=403,
                     detail="Insufficient privilages to access this patient's results",
                 )
+        return results
+
+    if crud.user.has_roles(current_user, models.UserRole.Admin):
+        all_results = handle_admin()
+    else:
+        all_results = handle_doctor()
+
     filtered_results = []
-    for result in results:
+    for result in all_results:
         filtered_results.append(
             dict(
-                id=result.id,
-                status=result.status,
-                patient_id=result.patient_id,
-                created_date=result.created_date,
-                recording_id=result.recording_id,
+                id=result[0].id,
+                status=result[0].status,
+                patient_id=result[0].patient_id,
+                created_date=result[0].created_date,
+                recording_id=result[0].recording_id,
+                recording_name=result[1].filename,
             )
         )
     return filtered_results
