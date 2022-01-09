@@ -18,8 +18,14 @@ celery = Celery(
 )
 
 
-@celery.task(name="send_file")
-def send_file(recording_id: str, analysis_id: str):
+@celery.task(
+    bind=True,
+    name="send_file",
+    max_retries=5,
+    retry_backoff=True,
+    default_retry_delay=10,
+)
+def send_file(self, recording_id: str, analysis_id: str):
     db: Session
     for db in deps.get_db():
         analysis = crud.analysis_result.get(db, id=analysis_id)
@@ -33,8 +39,15 @@ def send_file(recording_id: str, analysis_id: str):
         image_bytes = io.BytesIO(recording.blob)
         try:
             service.upload_file(image_bytes.read())
-        except Exception:
-            pass
+        except Exception as e:
+            if self.max_retries == self.request.retries:
+                analysis_update_status = AnalysisResultStatusUpdate(status="FAILED")
+                analysis = crud.analysis_result.get(db, id=analysis_id)
+                result = crud.analysis_result.update(
+                    db, db_obj=analysis, obj_in=analysis_update_status
+                )
+
+            self.retry(exc=e)
 
         bowel_ret_val = service.get_status()
         analysis_res_obj = AnalysisResultUpdate(
