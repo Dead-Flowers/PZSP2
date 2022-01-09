@@ -1,6 +1,5 @@
 <template>
   <div class="max-screen-space-container flex-row-items-start">
-    <Navbar v-bind:usertype="'doctor'" />
     <div class="navbar-as-adjacent flex-column-items-centered">
       <div class="sector">
         <PatientTable v-bind:patientData="patientData"/>
@@ -11,7 +10,6 @@
 </template>
 
 <script>
-import Navbar from '../../components/Navbar.vue'
 import PatientTable from '../../components/PatientTable.vue'
 import AnalysisResultTable from '../../components/AnalysisResultTable.vue'
 import { api } from '@/api';
@@ -19,7 +17,6 @@ import { api } from '@/api';
 export default {
   name: 'PatientData',
   components: {
-    Navbar,
     PatientTable,
     AnalysisResultTable
   },

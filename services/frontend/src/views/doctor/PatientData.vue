@@ -1,6 +1,5 @@
 <template>
   <div class="max-screen-space-container flex-row-items-start">
-    <Navbar v-bind:usertype="'doctor'" />
     <div class="navbar-as-adjacent flex-column-items-centered">
       <div class="sector">
         <SearchUser v-if="showSearchBox" v-bind:searchUser="searchUser" v-bind:userType="'patient'" />
@@ -14,7 +13,6 @@
 </template>
 
 <script>
-import Navbar from '../../components/Navbar.vue'
 import SearchUser from '../../components/SearchUser.vue'
 import PatientTable from '../../components/PatientTable.vue'
 import AnalysisResultTable from '../../components/AnalysisResultTable.vue'
@@ -23,7 +21,6 @@ import { api } from '@/api';
 export default {
   name: 'PatientData',
   components: {
-    Navbar,
     SearchUser,
     PatientTable,
     AnalysisResultTable

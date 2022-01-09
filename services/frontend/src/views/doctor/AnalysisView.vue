@@ -1,6 +1,5 @@
 <template>
   <div class="max-screen-space-container flex-row-items-start">
-    <Navbar v-bind:usertype="'doctor'" />
     <div class="navbar-as-adjacent flex-column-items-centered">
       <AnalysisVisualization v-if="analisyFinished" v-bind:analysisData="analysisData" v-bind:patient="patient"/>
       <div v-else>
@@ -20,14 +19,12 @@
 </template>
 
 <script>
-import Navbar from '../../components/Navbar.vue'
 import AnalysisVisualization from '../../components/AnalysisVisualization.vue'
 import { api } from '@/api';
 
 export default {
   name: 'AnalysisView',
   components: {
-    Navbar,
     AnalysisVisualization,
   },
   data() {
