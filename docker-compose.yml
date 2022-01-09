@@ -35,11 +35,18 @@ services:
 
   frontend:
     build: ./services/frontend
+<<<<<<< HEAD
     image: frontend-deadflowers
     links:
       - backend
+=======
+    environment:
+      - NODE_OPTIONS=--openssl-legacy-provider # required for node to start, bug with current version of node 
+>>>>>>> 1a8908e (Prepare websockets integration)
     ports:
       - "8080:8080"
+    volumes:
+      - ./services/frontend/src:/app/src
     container_name: "frontend-deadflowers"
 
   redis:
@@ -53,10 +60,15 @@ services:
     container_name: "redis-deadflowers"
 
   worker:
+<<<<<<< HEAD
     build:
       context: ./services/backend
       dockerfile: ./app/worker/Dockerfile
     image: worker-deadflowers
+=======
+    build: ./services/backend
+    command: celery worker -E --app=app.worker.app.celery --loglevel=info
+>>>>>>> 1a8908e (Prepare websockets integration)
     env_file:
       - backend.env
       - postgres.env

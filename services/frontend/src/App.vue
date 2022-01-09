@@ -28,7 +28,10 @@
 
 <script>
 import router from './router'
+import Vue from "vue";
 import Navbar from "./components/Navbar.vue"
+import WS_URL from "./config";
+import { getLocalToken } from "./store/user";
 export default {
   name: 'App',
   components: {
@@ -47,16 +50,34 @@ export default {
       return this.$store.getters["snackbarText"]
     },
     isLoggedIn() {
-      // porbaly needed to fix, not routing sometimes
-      if(this.$route.name == 'WelcomePage' && this.$store.getters["isLoggedIn"]){
-        router.push(`/${this.$store.getters["userType"]}/home`)
-      }
-
       return this.$store.getters["isLoggedIn"];
     },
   },
+  watch: {
+    isLoggedIn(newValue) {  
+      if(newValue) {
+        if(this.$route.name == 'WelcomePage'){
+          router.push(`/${this.$store.getters["userType"]}/home`)
+        }
+        Vue.prototype.$connect(WS_URL, { format: 'json' });
+      }
+      console.log(Vue.prototype);
+    }
+  },
+  sockets: {
+    onopen() {
+      let socket = Vue.prototype.$socket;
+      const token = getLocalToken();
+      socket.sendObj({type: 'auth', payload: token});
+    },
+    onmessage(event) {
+      console.log(event);
+      const obj = JSON.parse(event.data);
+      console.log(obj);
+    }
+  },
   async beforeMount() {
-    // this needs to be here so routing dosen't gets messed up
+    // this needs to be here so routing doesn't get messed up
     await this.$store.dispatch("actionCheckLoggedIn")
   },
   async mounted() {
