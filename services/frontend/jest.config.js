@@ -4,6 +4,6 @@ module.exports = {
   collectCoverage: true,
   collectCoverageFrom: ["**/*.{js,vue}", "!**/node_modules/**"],
   transformIgnorePatterns: [
-    "node_modules/(?!echarts|(?!echarts\/core))",
+    "node_modules/(?!echarts|(?!echarts/core))",
   ],
 }

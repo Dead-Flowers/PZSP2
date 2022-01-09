@@ -63,7 +63,6 @@ describe('App mount layout', () => {
   beforeEach(() => {
     vuetify = new Vuetify()
     router = new VueRouter({ routes })
-    store
   })
 
   it('mount basic layout', () => {
