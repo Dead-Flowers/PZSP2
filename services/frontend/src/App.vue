@@ -2,26 +2,26 @@
   <v-app id="app">
     <Navbar v-if="isLoggedIn" />
     <v-main>
-      <v-container fluid>
-        <router-view/>
-        <v-snackbar
-        v-model="snackbar"
-        :multi-line="true"
-        >
-          {{ text }}
+      <v-layout align-center justify-center fill-height>
+        <router-view />
+      </v-layout>
+      <v-snackbar
+      v-model="snackbar"
+      :multi-line="true"
+      >
+        {{ text }}
 
-          <template v-slot:action="{ attrs }">
-            <v-btn
-              color="red"
-              text
-              v-bind="attrs"
-              @click="closeSnackbar"
-            >
-            Close
-            </v-btn>
-          </template>
-        </v-snackbar>
-      </v-container>
+        <template v-slot:action="{ attrs }">
+          <v-btn
+            color="red"
+            text
+            v-bind="attrs"
+            @click="closeSnackbar"
+          >
+          Close
+          </v-btn>
+        </template>
+      </v-snackbar>
     </v-main>
   </v-app>
 </template>

@@ -42,8 +42,9 @@ export default {
   },
   methods: {
     formatDate (datestr) {
+      
       let date = new Date(Date.parse(datestr));
-      return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes()}`
+      return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes() < 10 ? '0' + date.getMinutes(): date.getMinutes()}`
     },
   },
 

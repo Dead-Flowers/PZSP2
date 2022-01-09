@@ -1,7 +1,5 @@
 <template>
-  <div class="max-screen-space-container flex-column-items-centered">
     <LoginForm/>
-  </div>
 </template>
 
 <script>

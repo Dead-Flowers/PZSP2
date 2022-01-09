@@ -1,13 +1,9 @@
 <template>
-  <div class="max-screen-space-container flex-row-items-start">
-    <div class="navbar-as-adjacent flex-column-items-centered">
-        <div class="sector">
-          <SearchUser v-if="showSearchBox" v-bind:searchUser="searchUser" v-bind:userType="'patient'" />
-          <div v-else>
-            <h1 > Wybrany pacjent - {{ `${this.patientInfo["first_name"]} ${this.patientInfo["second_name"]} ${this.patientInfo["last_name"]}`}}</h1>
-            <AnalysisInit v-bind:patientID="chosenUserId"  />
-          </div>
-        </div>
+  <div>
+    <SearchUser v-if="showSearchBox" v-bind:searchUser="searchUser" v-bind:userType="'patient'" />
+    <div v-else>
+      <h1 > Wybrany pacjent - {{ `${this.patientInfo["first_name"]} ${this.patientInfo["second_name"]} ${this.patientInfo["last_name"]}`}}</h1>
+      <AnalysisInit v-bind:patientID="chosenUserId"  />
     </div>
   </div>
 </template>

@@ -1,11 +1,7 @@
 <template>
-  <div class="max-screen-space-container flex-row-items-start">
-    <div class="navbar-as-adjacent flex-column-items-centered">
-      <div class="sector">
-        <PatientTable v-bind:patientData="patientData"/>
-        <AnalysisResultTable v-bind:analyses="analyses" />
-      </div>
-    </div>
+  <div>
+    <PatientTable v-bind:patientData="patientData"/>
+    <AnalysisResultTable v-bind:analyses="analyses" />
   </div>
 </template>
 
