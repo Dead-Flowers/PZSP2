@@ -2,18 +2,14 @@
   <div class="max-screen-space-container flex-row-items-start">
     <div class="navbar-as-adjacent flex-column-items-centered">
       <div class="sector">
-        <SearchUser v-if="showSearchBox" v-bind:searchUser="searchUser" v-bind:userType="'patient'" />
-        <div v-else>
-          <PatientTable v-bind:patientData="patientData"/>
-          <AnalysisResultTable v-bind:analyses="analyses" />
-        </div>
+        <PatientTable v-bind:patientData="patientData"/>
+        <AnalysisResultTable v-bind:analyses="analyses" />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import SearchUser from '../../components/SearchUser.vue'
 import PatientTable from '../../components/PatientTable.vue'
 import AnalysisResultTable from '../../components/AnalysisResultTable.vue'
 import { api } from '@/api';
@@ -21,26 +17,21 @@ import { api } from '@/api';
 export default {
   name: 'PatientData',
   components: {
-    SearchUser,
     PatientTable,
     AnalysisResultTable
   },
   data() {
     return {
       showSearchBox: true,
+      loading: true,
       patientData: {},
       analyses: []
     }
   },
-  methods: {
-    async searchUser(user) {
-      await this.getUserData(user.id);
-      this.showSearchBox = false;
-    },
-    async getUserData(id) {
+  async mounted() {
       // pobierz dane pacjetna    
       try {
-        const responeUser = await api.getUser(this.$store.getters["token"], id)
+        const responeUser = await api.getUser(this.$store.getters["token"], this.$store.getters["id"])
         this.patientData = responeUser.data
       } catch (e) {
         this.$store.dispatch("actionCheckApiError", e);
@@ -48,13 +39,12 @@ export default {
       }
       // pobiearz analizy
       try {
-        const responeAnal = await api.getAnalysis(this.$store.getters["token"], id)
+        const responeAnal = await api.getAnalysis(this.$store.getters["token"], this.$store.getters["id"])
         this.analyses = responeAnal.data
       } catch (e) {
         this.$store.dispatch("actionCheckApiError", e);
         this.$store.commit("openSnackbar", "Problem with getting Analysis data");
       }
-    },
   },
 }
 </script>

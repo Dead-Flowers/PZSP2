@@ -1,44 +1,36 @@
 <template>
-  <div v-if="analysisStarted" class="sector flex-column-items-centered card"> Rozpocznij analizę </div>
+  <div class="sector flex-column-items-centered card">
 
-  <div v-else class="sector flex-column-items-centered card">
+    <v-row >
+        <v-col>
+          <v-card class="card" elevation="2">
+            <v-card-title>Dane pacjenta </v-card-title>
+            <v-card-text>
+              <div>Pesel: {{ currentPatient.pesel }}</div>
+              <div>Imie: {{ currentPatient.first_name }}</div>
+              <div v-if="currentPatient.second_name != null">Drugie imie: {{ currentPatient.second_name }}</div>
+              <div>Nazwisko: {{ currentPatient.last_name }} </div>
+            </v-card-text> 
+          </v-card>
+        </v-col>
 
-    <div class="flex-row-items-centered" style="margin-block-end: 1.5vw">
+        <v-col>
+          <v-card class="card" elevation="2">
+            <v-card-title>Dane analizy </v-card-title>
+            <v-card-text>
+              <div>Średni % {{ average }}</div>
+              <div>Powyżej 80%: {{ counts.above }}</div>
+            </v-card-text> 
+          </v-card>
+        </v-col>
+    </v-row>
 
-      <table style="margin-inline-end: 1.5vw">
-        <tr>
-          <td>Pesel </td>
-          <td>{{ currentPatient.patientId }} </td>
-        </tr>
-        <tr>
-      <td>Drugie imie</td>
-      <td>{{ currentPatient.firstName }}</td>
-        </tr>
-         <tr v-if="currentPatient.secondName != null">
-      <td v-if="currentPatient.secondName != null" >Imie</td>
-      <td v-if="currentPatient.secondName != null">{{ currentPatient.firstName }}</td>
-        </tr>
-        <tr>
-            <td>Nazwisko</td>
-      <td>{{ currentPatient.surname }} </td>
-        </tr>
-      </table>
-      <table>
-        <tr>
-          <td>Średni %</td>
-          <td>{{ average }}%</td>
-        </tr>
-        <tr>
-            <td>Powyżej 80%</td>
-      <td>{{ counts.above }}</td>
-        </tr>
-        <tr>
-        </tr>
-      </table>
-    </div>
-    <v-chart class="chart" 
-    autoresize
-    :option="option" />
+
+    <v-row>
+      <v-chart class="chart" 
+      autoresize
+      :option="option" />
+    </v-row>
   </div>
 </template>
 
@@ -64,7 +56,7 @@ use([
 
 export default {
   name: 'AnalysisVisualization',
-  props: ['analysisData'],
+  props: ['analysisData', "patient"],
   components: {
     VChart
   },
@@ -72,61 +64,39 @@ export default {
     [THEME_KEY]: "dark",
 
   },
-  data() {
-    return {
-      analysisStarted: false,
-      currentPatient: {},
-      results: [],
-      len: 0,
-      average: 0,
-      counts: 0, 
-      option: {
+  methods: {
+  },
+  computed: {
+    option() {
+      let xAxis = Array.from({length: this.analysisData.len}, (_, i) => (i + 1)/100.0);
+      return {
         tooltip: {},
         legend: {},
         xAxis: {
-          data: []
+          data: xAxis
         },
         yAxis: {},
         series: [{
           name: 'analiza',
           type: 'bar',
-          data: []
+          data: this.analysisData
         }]
-      },
-    }
-  },
-  beforMount() {
-    this.analysisStarted = this.$store.getters.analysisStarted;
-  },
-  methods: {
-    getUser() {
-      console.log("patien")
-      this.currentPatient = this.$store.getters.getCurrentPatient
+      }
     },
-    getAverage() {
-      let sum = this.results.reduce((a, b) => a + b, 0);
-      let avg = (sum / this.results.length) || 0;
-      return avg
+    average() {
+      let sum = this.analysisData.reduce((a, b) => a + b, 0);
+      let avg = (sum / this.analysisData.length) || 0;
+      return Math.round(avg * 100);
     },
-    getCounts() {
-      return  this.results.reduce(function(s, n) {
+    counts() {
+        return  this.analysisData.reduce(function(s, n) {
          s[n <= 0.80 ? 'below' : 'above'] += 1;
         return s;
       }, { above: 0, below: 0 });
     },
-    setData() {
-      this.results = this.$store.getters.getAnalysisResult;
-      this.len = this.results.length;
-      this.average = Math.round(this.getAverage() * 100);
-      this.counts = this.getCounts();
-      this.option.series[0].data = this.results;
-      this.option.xAxis.data = Array.from({length: this.len}, (_, i) => (i + 1)/100.0);
+    currentPatient() {
+      return this.patient
     }
-  },
-  async mounted() {
-    await this.$store.dispatch("getAnalysisResults")
-    this.setData()
-    this.getUser()
   }
 }
 </script>
@@ -139,8 +109,7 @@ export default {
 }
 
 .card {
-  margin: 2.5vw;
-  width: 75%;
+  height: 100%;
 }
 
 

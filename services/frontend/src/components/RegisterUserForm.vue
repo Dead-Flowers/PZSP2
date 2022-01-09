@@ -1,66 +1,98 @@
 <template>
-  <form class="register-user-box sector flex-column-items-centered">
-    <div v-if="registationDone"> Rejestracja zakończona  </div> 
-    <div v-else> Zarejestruj {{this.wording}} </div> 
-    <div v-if="registationDone" class="save-password-box">  Zapisz hasło dla użytkownika: {{ password }} </div>
-    <div v-if="registationError"> Problem z rejestracją </div>
-    <select 
-      id="user-id-type-selector"
-      class="input-element-standard keyboard-input"
-      name="user-id-type"
-      @change="changeUserIdType($event)"
-    >
-      <option value="pesel">Pesel</option>
-      <option value="passport-id">Nr paszportu</option>
-    </select>
-    <input
+  <v-form
+    ref="form"
+    v-model="valid" 
+    @submit="(e) => {e.preventDefault(); submitRegistration();}"
+  >
+    <h1 v-if="registationDone"> Rejestracja zakończona  </h1> 
+    <small v-if="registationDone">  Zapisz hasło dla użytkownika: {{ password }} </small>
+    <h1 v-if="registationError"> Problem z rejestracją </h1>
+    <h1 v-else> Zarejestruj {{this.wording}} </h1> 
+     <v-select
+      v-model="userIdType"
+      :items="userIdTypeList"
+      label="Rodzaj numeru identyfikacyjnego"
+    />
+    <v-text-field
       id="user-id"
-      class="input-element-standard keyboard-input"
-      type="text"
-      v-bind:name="userIdType"
-      v-bind:placeholder="[userIdType=='pesel' ? 'Pesel...': 'Nr paszportu...']"
       v-model="userId"
-      autocomplete="off"
+      v-bind:label="userIdType=='pesel' ? 'Pesel...': 'Nr paszportu...'"
+      v-bind:rules="userIdType=='pesel' ? rules.pesel : rules.required"
     />
-    <input
-      class="input-element-standard keyboard-input"
-      type="text"
-      name="email"
+    <v-text-field
       v-model="email"
-      placeholder="Email..."
-      autocomplete="off"
+      :rules="rules.email"
+      label="E-mail"
     />
-    <input
-      class="input-element-standard keyboard-input"
-      type="text"
-      name="first-name"
-      v-model="fistName"
-      placeholder="Pierwsze Imię..."
-      autocomplete="off"
+    <v-text-field
+      v-model="first_name"
+      :rules="rules.required"
+      label="Pierwsze Imię"
     />
-    <input
-      class="input-element-standard keyboard-input"
-      type="text"
-      name="second-name"
-      v-model="secondName"
-      placeholder="Drugie Imię (opcjonalnie)..."
-      autocomplete="off"
+    <v-text-field
+      v-model="second_name"
+      label="Drugie Imię"
     />
-    <input
-      class="input-element-standard keyboard-input"
-      type="text"
-      name="surname"
-      placeholder="Nazwisko..."
-      v-model="surname"
-      autocomplete="off"
+    <v-text-field
+      v-model="last_name"
+      :rules="rules.required"
+      label="Nazwisko"
     />
-    <input
-      class="input-element-standard button"
-      type="button"
-      value="Zarejestruj"
-      @click="submitRegistration"
+    <v-select
+      v-model="sex"
+      :items="sexList"
+      label="Wybierz płeć"
     />
-  </form>
+    <v-menu
+        ref="menu"
+        v-model="menu"
+        :close-on-content-click="false"
+        :return-value.sync="birthDate"
+        transition="scale-transition"
+        offset-y
+        min-width="auto"
+      >
+        <template v-slot:activator="{ on, attrs }">
+          <v-text-field
+            v-model="birthDate"
+            label="Data urodzenia"
+            prepend-icon="mdi-calendar"
+            readonly
+            v-bind="attrs"
+            v-on="on"
+          ></v-text-field>
+        </template>
+        <v-date-picker
+          v-model="birthDate"
+          no-title
+          scrollable
+        >
+          <v-spacer></v-spacer>
+          <v-btn
+            text
+            color="primary"
+            @click="menu = false"
+          >
+            Cancel
+          </v-btn>
+          <v-btn
+            text
+            color="primary"
+            @click="$refs.menu.save(birthDate)"
+          >
+            OK
+          </v-btn>
+        </v-date-picker>
+      </v-menu>
+    <v-btn
+      v-bind:disabled="!valid"
+      color="success"
+      class="mr-4"
+      type="submit"
+    >
+      Zarejestruj
+    </v-btn>
+  </v-form>
 </template>
 
 <script>
@@ -71,17 +103,37 @@ export default {
   props: ['usertype'],
   data() {
     return {
+      menu: false,
+      birthDate: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
       registationDone: false,
       registationError: false,
       userIdType: 'pesel',
-      fistName: null,
-      secondName: null,
-      surname: null,
+      userIdTypeList: ['pesel', 'id paszportu'],
+      sex: null,
+      sexList: ['Meżczyzna', 'Kobieta', 'Inna'],
+      first_name: null,
+      second_name: null,
+      last_name: null,
       email: null,
       userId: null,
       password: null,
       wording: null,
+      rules: {
+        email: [
+          v => !!v || 'Wymagane pole',
+          v => /.+@.+\..+/.test(v) || 'E-mail musi być poprawny',
+        ],
+        pesel: [
+          v => !!v || 'Wymagane pole',
+          v => /^[0-9]{11}$/.test(v) || 'Pesel musi zawierać 11 cyfr',
+        ],
+        required: [
+          v => !!v || 'Wymagane pole',
+        ],
+        valid: false,
+      }
     }
+
   },
   beforeMount() {
     this.$store.commit("resetRegistration");
@@ -89,16 +141,13 @@ export default {
     if (this.usertype == 'doctor') this.wording = 'doktora';
   },
   methods: {
-    changeUserIdType(event) {
-      this.userIdType = event.target.value;
-    },
     async submitRegistration(){
       this.password = generatePassword()
       let payload = {
         userIdType: this.userIdType,
-        first_name: this.fistName,
-        second_name: this.secondName,
-        last_name: this.surname,
+        first_name: this.first_name,
+        second_name: this.second_name,
+        last_name: this.last_name,
         email: this.email,
         user_id: this.userId,
         password: this.password,
@@ -120,7 +169,5 @@ export default {
   padding-inline: 2.5vw;
   font-size: 2vw;
 }
-.save-password-box{
-  font-size: 1rem
-}
+
 </style>

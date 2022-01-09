@@ -5,7 +5,7 @@
         <SearchUser v-if="showSearchBox" v-bind:searchUser="searchUser" v-bind:userType="'patient'" />
         <div v-else>
           <PatientTable v-bind:patientData="patientData"/>
-          <AnalysisResultTable v-bind:analyses="analyses" />
+          <RecordingsTable v-bind:recordings="recordings" />
         </div>
       </div>
     </div>
@@ -15,7 +15,7 @@
 <script>
 import SearchUser from '../../components/SearchUser.vue'
 import PatientTable from '../../components/PatientTable.vue'
-import AnalysisResultTable from '../../components/AnalysisResultTable.vue'
+import RecordingsTable from '../../components/RecordingsTable.vue'
 import { api } from '@/api';
 
 export default {
@@ -23,13 +23,13 @@ export default {
   components: {
     SearchUser,
     PatientTable,
-    AnalysisResultTable
+    RecordingsTable
   },
   data() {
     return {
       showSearchBox: true,
       patientData: {},
-      analyses: []
+      recordings: []
     }
   },
   methods: {
@@ -48,8 +48,8 @@ export default {
       }
       // pobiearz analizy
       try {
-        const responeAnal = await api.getAnalysis(this.$store.getters["token"], id)
-        this.analyses = responeAnal.data
+        const responeRec = await api.getRecordings(this.$store.getters["token"], id)
+        this.recordings = responeRec.data
       } catch (e) {
         this.$store.dispatch("actionCheckApiError", e);
         this.$store.commit("openSnackbar", "Problem with getting Analysis data");

@@ -1,86 +1,159 @@
 <template>
-  <div class="navbar">
-    <div class="navbar-start">
-      <div class="page-name-container">
-        <router-link class="page-name link" to='/' >Bowel Lab</router-link>
-      </div>
-      <!-- doctor tabs -->
-      <div v-if="(usertype == 'doctor')" class="tab-space">
-        <router-link to='/doctor/home'>
-          <input 
-            class="tab"
-            type="button"
-            value="Profil"
-          />
-        </router-link>
-        <router-link to='/doctor/new-analysis' >
-          <input 
-            class="tab"
-            type="button"
-            value="Nowa Analiza"
-          />
-        </router-link>
-        <router-link to='/doctor/patient-data'>          
-          <input 
-            class="tab"
-            type="button"
-            value="Pacjenci"
-          />
-        </router-link>
-      </div>
-      <!-- admin tabs -->
-      <div v-if="(usertype == 'admin')" class="tab-space">
-        <router-link to='/admin/home'>
-          <input 
-            class="tab"
-            type="button"
-            value="Profil"
-          />
-        </router-link>
-        <router-link to='/admin/register-patient' >
-          <input 
-            class="tab"
-            type="button"
-            value="Zarejestruj Pacjenta"
-          />
-        </router-link>
-        <router-link to='/admin/register-doctor' >
-          <input 
-            class="tab"
-            type="button"
-            value="Zarejestruj Doktora"
-          />
-        </router-link>
-        <router-link to='/admin/assign-d2p' >
-          <input 
-            class="tab"
-            type="button"
-            value="Przypisz doktora do pacjenta"
-          />
-        </router-link>
-      </div>
-      <!-- patient tabs -->
-      <div v-if="(usertype == 'patient')" class="tab-space">
-        <router-link to='/patient/home'>
-          <input 
-            class="tab"
-            type="button"
-            value="Profil"
-          />
-        </router-link>
-      </div>
-    </div>
+  <v-navigation-drawer app dark expand-on-hover permanent>
+    <v-list-item>
+      <v-list-item-content>
+        <v-list-item-title class="text-h6">
+          BowelLab
+        </v-list-item-title>
+      </v-list-item-content>
+    </v-list-item>
     
-    
-    <div class="navbar-end flex-column-items-centered">
-      <input 
-        class="tab"
-        type="button"
-        value="Wyloguj"
+    <v-divider />
+
+    <!-- doctor tabs -->
+    <v-list
+      dense
+      nav
+      v-if="getUserType() == 'doctor'"
+    >
+      <v-list-item @click="goToPage('/doctor/home')">
+        <v-list-item-icon>
+          <v-icon></v-icon>
+        </v-list-item-icon>
+        <v-list-item-content>
+          <v-list-item-title>
+            Profil
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-list-item @click="goToPage('/doctor/new-analysis')">
+        <v-list-item-icon>
+          <v-icon></v-icon>
+        </v-list-item-icon>
+        <v-list-item-content>
+          <v-list-item-title>
+            Nowa Analiza
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-list-item @click="goToPage('/doctor/patient-data')">
+        <v-list-item-icon>
+          <v-icon></v-icon>
+        </v-list-item-icon>
+        <v-list-item-content>
+          <v-list-item-title>
+            Dane Pacjentów
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-list-item @click="goToPage('/doctor/recordings')">
+        <v-list-item-icon>
+          <v-icon></v-icon>
+        </v-list-item-icon>
+        <v-list-item-content>
+          <v-list-item-title>
+            Nagrania
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+
+    </v-list>
+
+    <!-- admin tabs -->
+    <v-list
+      dense
+      nav
+      v-if="getUserType() == 'admin'"
+    >
+      <v-list-item @click="goToPage('/admin/home')">
+        <v-list-item-icon>
+          <v-icon ></v-icon>
+        </v-list-item-icon>
+        <v-list-item-content>
+          <v-list-item-title>
+            Profil
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-list-item @click="goToPage('/admin/register-patient')">
+        <v-list-item-icon>
+          <v-icon></v-icon>
+        </v-list-item-icon>
+        <v-list-item-content>
+          <v-list-item-title>
+            Zarejestruj Pacjenta
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-list-item @click="goToPage('/admin/register-doctor')">
+        <v-list-item-icon>
+          <v-icon></v-icon>
+        </v-list-item-icon>
+        <v-list-item-content>
+          <v-list-item-title>
+            Zarejestruj Doktora
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-list-item @click="goToPage('/admin/assign-d2p')">
+        <v-list-item-icon>
+          <v-icon></v-icon>
+        </v-list-item-icon>
+        <v-list-item-content>
+          <v-list-item-title>
+            Przypisz doktora do pacjenta
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+    </v-list>
+
+    <!-- patient tabs -->
+    <v-list
+      dense
+      nav
+      v-if="getUserType() == 'patient'"
+    >
+      <v-list-item @click="goToPage('/patient/home')">
+        <v-list-item-icon>
+          <v-icon></v-icon>
+        </v-list-item-icon>
+        <v-list-item-content>
+          <v-list-item-title>
+            Profil
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+
+      <v-list-item @click="goToPage('/patient/analyses')">
+        <v-list-item-icon>
+          <v-icon></v-icon>
+        </v-list-item-icon>
+        <v-list-item-content>
+          <v-list-item-title>
+            Moje analizy
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+      
+    </v-list>
+    <v-footer absolute>
+      <v-btn
+        color="primary"
+        elevation="2"
+        large
+        outlined
         @click="logout"
-      />
-    </div>
-  </div>
+      >
+        Wyloguj
+      </v-btn>
+    </v-footer>
+  </v-navigation-drawer>
 </template>
 
 <script>
@@ -88,68 +161,22 @@ import router from '../router'
 
 export default {
   name: 'Navbar',
-  props: ['usertype'],
   methods: {
     logout: function (event) {
       this.$store.dispatch("actionLogOut")
       console.log("Logged out", event);
       router.push(`/`);
     },
+    getUserType() {
+      return this.$store.getters["userType"];
+    },
+    goToPage(link){
+      router.push(link);
+    }
+
   }
 }
 </script>
 
 <style scoped>
-.navbar {
-  top: 0;
-  left: 0;
-  position: inherit;
-  background-color: var(--color-navbar);
-  margin-right: 1px;
-  padding-block-start: 2vw;
-  height: 100vh;
-  width: var(--width-navbar);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  overflow-wrap: break-word;
-}
-
-.navbar-end {
-  margin-block-end: 3vw;
-}
-
-.page-name-container {
-  min-width: var(--width-navbar);
-  text-align: center;
-  align-items: center;
-}
-
-.page-name {
-  font-size: 2vw;
-  color: var(--text-color)
-}
-
-.tab-space {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.tab {
-  background-color: var(--color-accent);
-  border: 0;
-  margin-block-start: 0.15vw;
-  padding-block: 0.75vw;
-  width: var(--width-navbar);
-  font-size: 1.2vw;
-  font-family:  "Roboto", sans-serif;
-  color: var(--color-text);
-  white-space: normal;
-}
-
-.tab:hover {
-  filter: brightness(90%);
-}
 </style>

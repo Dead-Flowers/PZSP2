@@ -1,37 +1,41 @@
 <template>
-  <form class="change-password-box sector flex-column-items-centered">
-    Zmień hasło
-    <input
-      class="input-element-standard keyboard-input"
-      type="password"
-      name="currentPassword"
-      placeholder="Obecne hasło..."
+  <v-form
+    ref="form"
+    v-model="valid"
+    @submit="(e) => {e.preventDefault(); checkPasswordChange();}"
+  >
+    <h1> Zmiana Hasła</h1>
+    
+    <v-text-field
       v-model="currentPassword"
-      autocomplete="off"
-    /> 
-    <input
-      class="input-element-standard keyboard-input"
+      :rules="rules.required"
       type="password"
-      name="newPassword"
-      placeholder="Nowe hasło..."
+      label="Obecne hasło"
+    />
+
+    <v-text-field
       v-model="newPassword"
-      autocomplete="off"
-    />
-    <input
-      class="input-element-standard keyboard-input"
+      :rules="rules.newPassword"
       type="password"
-      name="newPasswordConf"
-      placeholder="Powtórz nowe hasło..."
+      label="Nowe hasło"
+    />
+
+    <v-text-field
       v-model="newPasswordConfirm"
-      autocomplete="off"
+      :rules="rules.newPasswordConfirm"
+      type="password"
+      label="Powtórz nowe hasło"
     />
-    <input
-      class="input-element-standard button"
-      type="button"
-      value="Zmień hasło"
-      @click="checkPasswordChange"
-    />
-  </form>
+
+    <v-btn
+      v-bind:disabled="!valid"
+      color="success"
+      class="mr-4"
+      type="submit"
+    >
+      Zmień hasło
+    </v-btn>
+  </v-form>
 </template>
 
 <script>
@@ -43,15 +47,26 @@ export default {
       currentPassword: null,
       newPassword: null,
       newPasswordConfirm: null,
+      rules: { 
+        required: [
+          v => !!v || 'Wymagane pole',
+        ],
+        newPassword: [
+          v => !!v || 'Wymagane pole',
+          v => /^(?=.*\d)(?=.*[!@#$%^&*])(?=.*[a-z])(?=.*[A-Z]).{8,}$/.test(v) || 'Hasło musi zawierać dużą i małą literę, liczbę i znak specjalny',
+        ],
+        newPasswordConfirm: [
+          v => !!v || 'Wymagane pole',
+          v => v == this.newPassword || 'Hasła muszą być identyczne'
+        ],
+      },
+      valid: false,
     }
   },
   methods: {
     checkPasswordChange() {
-      if (this.newPassword != this.newPasswordConfirm) 
-      {
-        this.rejectPasswordChangeByNotMatch();
-        return;
-      } 
+      //todo check if currentPassword is correct
+      
       this.passwordChange();
     },
     async passwordChange() {
@@ -62,12 +77,6 @@ export default {
       await this.$store.dispatch("actionUpdateMe", payload)
 
       alert("Zmiana hasła udana");
-    },
-    rejectPasswordChangeByNotMatch() {
-      this.oldPassword=null;
-      this.newPassword=null;
-      this.newPasswordConfirm=null;
-      alert("Nowe hasło nie zostało poprawnie powtórzone!");
     },
   }
 }

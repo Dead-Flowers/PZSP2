@@ -1,6 +1,5 @@
 <template>
   <div class="max-screen-space-container flex-row-items-start">
-    <Navbar v-bind:usertype="'admin'" />
     <div class="navbar-as-adjacent flex-column-items-centered">
       <div  
         class="sector flex-column-items-centered"
@@ -44,14 +43,12 @@
 </template>
 
 <script>
-import Navbar from '../../components/Navbar.vue'
 import SearchUser from '../../components/SearchUser.vue'
 import { api } from '@/api';
 
 export default {
   name: 'AssignDoctorToPatient',
   components: {
-    Navbar,
     SearchUser,
   },
   data() {

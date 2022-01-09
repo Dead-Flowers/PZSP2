@@ -5,13 +5,15 @@ const defaultState = {
     logInError: false,
     registrationError: false,
     registrationSuccess: false, 
+    pesel: null, 
+    passport_num: null,
     token: '',
     id: null,
-    userID: null,
+    userID: null, // shoud use pesel and passport_num, this left for now so nothing breaks
     username: null,
-    firstName: null,
-    secondName: null,
-    surname: null,
+    first_name: null,
+    second_name: null,
+    last_name: null,
     userType: null,
   };
   
@@ -33,8 +35,8 @@ const defaultState = {
         } catch (err) {
             context.commit("setLoggedIn", false)
             context.commit("setLogInError", true)
-            console.log(err);
             await context.dispatch("actionLogOut");
+            context.commit("openSnackbar", "Problem with logging in")
         }
     },
 
@@ -46,6 +48,7 @@ const defaultState = {
             }
         } catch (error) {
             await context.dispatch("actionCheckApiError", error);
+            context.commit("openSnackbar", "Problem with getting user data")
         }
     },
 
@@ -64,10 +67,12 @@ const defaultState = {
                     await context.dispatch("actionGetMe");
                     context.commit("setLoggedIn", true)
                 } catch (error) {
-                    await context.dispatch("actionLogOut");
+                    await context.dispatch("actionCheckApiError", error);
+                    context.commit("openSnackbar", "You're not logged in!");
                 }
             } else {
                 await context.dispatch("actionLogOut");
+                context.commit("openSnackbar", "You're not logged in!");
             }
         }
     },
@@ -76,11 +81,14 @@ const defaultState = {
         removeLocalToken();
         context.commit("setToken", '');
         context.commit("setLoggedIn", false);
+        context.commit("openSnackbar", "You've been logout!");
     },
 
     async actionCheckApiError(context, payload) {
-        console.log(payload)
         if (payload.response.status === 401) {
+            await context.dispatch("actionLogOut");
+        }
+        if (payload.response.status === 403) {
             await context.dispatch("actionLogOut");
         }
     },
@@ -92,8 +100,8 @@ const defaultState = {
                 setUserData(context, response.data)
             }
         } catch (error) {
-            //TODO: better error handling 
-            await context.dispatch("actionLogOut");
+            await context.dispatch("actionCheckApiError", error);
+            context.commit("openSnackbar", "Problem with updating user");
         }
     },
 
@@ -113,6 +121,7 @@ const defaultState = {
             context.commit("setRegistrationError", true)
             context.commit("setRegistrationSuccess", false)
             console.log(err);
+            context.commit("openSnackbar", "Problem with registration!");
         }
       }
     }
@@ -124,16 +133,17 @@ const defaultState = {
     isLoggedIn: (state) => state.isLoggedIn,
     username: (state) => state.username,
     email: (state) => state.username,
-    firstName: (state) => state.firstName,
-    secondName: (state) => state.secondName,
-    surname: (state) => state.surname,
+    firstName: (state) => state.first_name,
+    secondName: (state) => state.second_name,
+    last_name: (state) => state.last_name,
     userType: (state) => state.userType,
+    id:(state) => state.id,
     user: (state) => { return {
         userID: null,
         username: state.username,
-        firstName: state.firstName,
-        secondName: state.secondName,
-        surname: state.surname,
+        first_name: state.first_name,
+        second_name: state.second_name,
+        last_name: state.last_name,
         userType: state.userType,
         }
     },
@@ -158,13 +168,13 @@ const defaultState = {
         state.logInError = payload;
     },
     setFirstName(state, payload) {
-        state.firstName = payload;
+        state.first_name = payload;
     },
     setSecondName(state, payload) {
-        state.secondName = payload;
+        state.second_name = payload;
     },
-    setSurName(state, payload) {
-        state.surname = payload;
+    setLastName(state, payload) {
+        state.last_name = payload;
     },
     setRegistrationError(state, payload) {
         state.registrationError = payload;
@@ -181,6 +191,12 @@ const defaultState = {
     },
     setID(state, payload) {
         state.id = payload
+    },
+    setPesel(state, payload) {
+        state.pesel = payload
+    },
+    setPassportNum(state, payload) {
+        state.passport_num = payload
     }
 
   }
@@ -194,11 +210,20 @@ const defaultState = {
 
 
 const setUserData = (context, data) => {
-    context.commit("setUserID", data.id);
+    context.commit("setID", data.id)
+    //TODO set pesel or pass number not userID
+    if (data.pesel != null) {
+        context.commit("setUserID", data.pesel);
+        context.commit("setPesel", data.pesel);
+    }
+    else {
+        context.commit("setUserID", data.passport_num);
+        context.commit("setPassportNum", data.passport_num);
+    }
     context.commit("setUsername", data.email);
     context.commit("setFirstName", data.first_name);
     context.commit("setSecondName", data.second_name);
-    context.commit("setSurName", data.last_name);
+    context.commit("setLastName", data.last_name);
     context.commit("setUserType", data.role);
 }
 

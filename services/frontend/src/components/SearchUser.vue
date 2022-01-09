@@ -1,84 +1,63 @@
 <template>
-  <div class="flex-column-items-start">
-    <label> Kryteria wyszukiwania (nie wszystkie są wymagane)</label>
-    <div class="flex-row-items-start" >
-      <select 
-        id="user-id-type-selector"
-        class="input-element-standard input-element-addon keyboard-input"
-        name="user-id-type"
-        @change="changeUserIdType($event)"
-      >
-        <option value="pesel">Pesel</option>
-        <option value="passport-id">Nr paszportu</option>
-      </select>
-      <input
+  <div>
+    <h3> Kryteria wyszukiwania (nie wszystkie są wymagane)</h3>
+    <v-form
+      ref="form"
+      @submit="(e) => {e.preventDefault(); searchForUser();}"
+    >
+      <v-select
+        v-model="userIdType"
+        :items="userIdTypeList"
+        label="Rodzaj numeru identyfikacyjnego"
+      />
+      <v-text-field
         id="user-id"
-        class="input-element-standard input-element-addon keyboard-input"
-        type="text"
-        v-bind:name="userIdType"
-        v-bind:placeholder="[userIdType=='pesel' ? 'Pesel...': 'Nr paszportu...']"
         v-model="userId"
-        autocomplete="off"
+        v-bind:label="userIdType=='pesel' ? 'Pesel...': 'Nr paszportu...'"
       />
-    </div>
-    <div class="flex-row-items-start" >
-      <input
-        class="input-element-standard input-element-addon keyboard-input"
-        type="text"
-        name="first-name"
-        placeholder="Pierwsze Imię..."
-        v-model="firstName"
-        autocomplete="off"
+      <v-text-field
+        v-model="first_name"
+        label="Pierwsze Imię"
       />
-      <input
-        class="input-element-standard input-element-addon keyboard-input"
-        type="text"
-        name="second-name"
-        placeholder="Drugie Imię..."
-        v-model="secondName"
-        autocomplete="off"
+      <v-text-field
+        v-model="second_name"
+        label="Drugie Imię"
       />
-      <input
-        class="input-element-standard input-element-addon keyboard-input"
-        type="text"
-        name="surname"
-        placeholder="Nazwisko..."
-        v-model="surname"
-        autocomplete="off"
-      />  
-    </div> 
-    <input
-      class="input-element-standard input-element-addon"
-      type="button"
-      name="button"
-      value="Wyszukaj"
-      @click="searchForUser"
-    />
-    <table v-if="foundUsers">
-      <tr>
-        <th> Pesel/Numer paszportu </th>
-        <th> Imie </th>
-        <th> Nazwisko </th>
-      </tr>
-      <tr 
-        v-bind:key="user.id" 
-        v-for="user in this.userList"
+      <v-text-field
+        v-model="last_name"
+        label="Nazwisko"
+      />
+      <v-btn
+        color="success"
+        class="mr-4"
+        type="submit"
+        style="margin-block-end: 10px"
       >
-        <td>
-          <input 
-            type="button"
-            @click="() => {
-              userList = [];
-              foundUsers = false;
-              searchUser(user);
-            }"
-          />
-          {{ ( user.pesel == null) ? user.passport_num : user.pesel }}
-        </td>
-        <td>{{`${user.first_name} ${user.second_name}`}}</td>
-        <td>{{user.last_name}}</td>
-      </tr>
-    </table>
+        Wyszukaj
+      </v-btn>
+    </v-form>
+    
+    <v-data-table
+      v-if="foundUsers"
+      v-model="selected_user"
+      :headers="headers"
+      :items="userList"
+      :single-select="true"
+      item-key="userID"
+      show-select
+      class="elevation-1"
+    >
+    <template v-slot:top>
+      <v-btn
+        :disabled="!selected_user"
+        color="success"
+        class="mr-4"
+        @click="initSearch"
+      >
+      Wybierz zaznaczonego użytkownika
+      </v-btn>
+    </template>
+    </v-data-table>
   </div>  
 </template>
 
@@ -91,63 +70,84 @@ export default {
     return {
       //TODO: refactor userid useridtype handling 
       userIdType: 'pesel',
+      userIdTypeList: ['pesel', 'nr paszportu'],
       userId: null,
-      id: null,
-      firstName: null,
-      secondName: null,
-      surname: null,
-      email: null,
+      first_name: null,
+      second_name: null,
+      last_name: null,
       userList: [],
       foundUsers: false,
-      chosenUserId: null,
+      selected_user: [],
+      headers: [
+        { text:"Pesel", value: "pesel"},
+        { text:"Pierwsze Imię", value: "first_name"},
+        { text:"Drugie Imię", value: "second_name"},
+        { text:"Nazwisko", align: "start", value: "last_name"},
+      ],
     }
   },
   methods: {
-    changeUserIdType(event) {
-      this.userIdType = event.target.value;
+    createParams() {
+    //TODO: refactor userID maybe? 
+    let params={};
+    if(this.first_name!=null) {
+      params["first_name"]=this.first_name;
+    }
+    if(this.second_name!=null) {
+      params["second_name"]=this.second_name;
+    }
+    if(this.last_name!=null) {
+      params["last_name"]=this.last_name;
+    }
+    if(this.email!=null) {
+      params["email"]=this.email;
+    }
+    if(this.userId!=null) {
+      if(this.userIdType=="pesel") {
+        params["pesel"]=this.userId;
+      } else {
+        params["pass_num"]=this.userId;
+      }
+    }
+    return params;
     },
+    async getUsers(params) {
+        let respone;
+        if(params!={}) {
+          respone=await api.getUsers(this.$store.getters["token"], params);
+        } else {
+          respone=await api.getUsers(this.$store.getters["token"], undefined);
+        }
+        let unfilteredUserList=respone.data;
+        unfilteredUserList.forEach(element => {
+          if(element.role==this.userType)
+            this.userList.push(element);
+        });
+      },
     async searchForUser() {
       this.userList = [];
       //TODO: REFACTOR THIS PLS
       //TODO: unify naming and names last/sur name
-      let params = {}
-      if(this.firstName != null) {
-        params["first_name"] = this.firstName;
-      }
-      if(this.secondName != null) {
-        params["second_name"] = this.secondName;
-      }
-      if(this.surname != null) {
-        params["last_name"] = this.surname;
-      }
-      if(this.email != null) {
-        params["email"] = this.email;
-      }
-      if(this.userId != null) {
-        if(this.userIdType == "pesel") {
-          params["pesel"] = this.userId;
-        } else {
-          params["pass_num"] = this.userId;
-        }
-      }
-      try {
-        let respone ;
-        if (params != {}) {
-          respone = await api.getUsers(this.$store.getters["token"], params);
-        } else {
-          respone = await api.getUsers(this.$store.getters["token"], undefined);
-        }
-        console.log(respone)
-        let unfilteredUserList = respone.data
-        unfilteredUserList.forEach(element => {
-          if (element.role == this.userType) this.userList.push(element);
-        });
 
+      let params=this.createParams();
+
+      try {
+        await this.getUsers(params);
       } catch(error) {
         console.log(error)
+        this.$store.dispatch("actionCheckApiError", error);
+        this.$store.commit("openSnackbar", "Problem with searching");
       }
-      console.log(this.userList)
+
       if (this.userList.length > 0) this.foundUsers = true;
+
+
+    },
+    initSearch() {
+      this.userList = [];
+      this.foundUsers = false;
+      this.searchUser(this.selected_user[0]);
+      this.selected_user = null;
     },
   },
   mounted() {
@@ -158,11 +158,5 @@ export default {
 </script>
 
 <style scoped>
-.input-element-addon {
-  margin-inline-start: 2vw;
-}
-label {
-  font-size: 1.5vw;
-}
 
 </style>
