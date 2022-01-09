@@ -48,22 +48,6 @@
       :multi-sort="true"
       checkbox-color="red"
     >
-      <template #item="{ item }">
-        <tr>
-          <td>
-            <v-checkbox
-              :on-icon="'fa-check-square'"
-              :off-icon="'fa-square'"
-              class="pa-0 ma-0"
-              v-model="selected_user"
-              :value="item"/>
-          </td>
-          <td>{{item.pesel}}</td>
-          <td>{{item.first_name}}</td>
-          <td>{{item.second_name}}</td>
-          <td>{{item.last_name}}</td>
-        </tr>
-      </template>
       <template v-slot:top>
         <v-btn
           :disabled="!selected_user"
@@ -139,7 +123,6 @@ export default {
         unfilteredUserList.forEach(element => {
           if(element.role==this.userType)
             this.user_list.push(element);
-            console.log(this.user_list)
         });
       },
     async searchForUser() {
@@ -172,6 +155,6 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 
 </style>

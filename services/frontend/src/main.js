@@ -29,6 +29,8 @@ import { faUser,
   faList,
   faFileAudio,
   faPlusSquare,
+  faSquare,
+  faCheckSquare,
  } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
@@ -43,7 +45,9 @@ library.add(faUser,
   faPeopleArrows,
   faList,
   faFileAudio,
-  faPlusSquare
+  faPlusSquare,
+  faSquare,
+  faCheckSquare
   )
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
