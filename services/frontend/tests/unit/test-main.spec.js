@@ -5,25 +5,40 @@ import Vuetify from 'vuetify'
 import VueRouter from 'vue-router'
 import s from '@/store'
 import Welcome from '@/views/common/Welcome.vue'
+import { getters } from "@/store/user";
+import Vuex from 'vuex'
+import Router from "@/router"
+
 
 describe('App mount layout', () => {
     const localVue = createLocalVue()
     let vuetify
-    let router
+    let router = Router
+    let state
+    let store
+    
     localVue.use(VueRouter)
 
-    const $store = s;
-    const routes = [
-        {
-            path: '/',
-            name: 'WelcomePage',
-            component: Welcome
-          },
-       ]
+    let actions = {
+      actionCheckLoggedIn: jest.fn()
+    }
 
     beforeEach(() => {
+    state = {
+      isLoggedIn: false,
+      userType: "doctor"
+    }
+
     vuetify = new Vuetify()
-    router = new VueRouter({ routes })
+    store = new Vuex.Store ({
+      modules: {
+        user: {
+          state,
+          actions,
+          getters: getters,
+        }
+      }
+    })
     })
 
     it('mount basic layout', () => {
@@ -31,9 +46,7 @@ describe('App mount layout', () => {
         localVue,
         vuetify,
         router,
-        mocks: {
-          $store,
-        },
+        store
       })
 
       const NavBar = wrapper.findAllComponents({name: 'NavBar'})
@@ -41,44 +54,5 @@ describe('App mount layout', () => {
       expect(NavBar.exists()).toBe(false)
       expect(Welcome.exists()).toBe(true)
     })
-
-})
-
-
-describe('App mount layout', () => {
-  const localVue = createLocalVue()
-  let vuetify
-  let router
-  localVue.use(VueRouter)
-
-  const $store = s;
-  const routes = [
-      {
-          path: '/',
-          name: 'WelcomePage',
-          component: Welcome
-        },
-     ]
-
-  beforeEach(() => {
-    vuetify = new Vuetify()
-    router = new VueRouter({ routes })
-  })
-
-  it('mount basic layout', () => {
-    const wrapper = mount(App, {
-      localVue,
-      vuetify,
-      router,
-      mocks: {
-        $store,
-      },
-    })
-
-    const NavBar = wrapper.findAllComponents({name: 'NavBar'})
-    const Welcome = wrapper.findAllComponents({name: 'Welcome'})
-    expect(NavBar.exists()).toBe(false)
-    expect(Welcome.exists()).toBe(true)
-  })
 
 })
