@@ -1,5 +1,6 @@
 from typing import Any, List
 from uuid import UUID
+from app.models import recording
 from app.schemas.analysis_result import AnalysisResultCreate
 
 from fastapi import status
@@ -267,11 +268,12 @@ def get_results(
     for result in results:
         filtered_results.append(
             dict(
-                id=result.id,
-                status=result.status,
-                patient_id=result.patient_id,
-                created_date=result.created_date,
-                recording_id=result.recording_id,
+                id=result[0].id,
+                status=result[0].status,
+                patient_id=result[0].patient_id,
+                created_date=result[0].created_date,
+                recording_id=result[0].recording_id,
+                recording_name=result[1].filename,
             )
         )
     return filtered_results

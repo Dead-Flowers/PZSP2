@@ -6,6 +6,7 @@ from sqlalchemy.orm import Session
 
 from app.core.security import get_password_hash, verify_password
 from app.crud.base import CRUDBase
+from app.models.recording import Recording
 from app.models.result import AnalysisResult
 from app.schemas.analysis_result import (
     AnalysisResultCreate,
@@ -19,7 +20,8 @@ class CRUDAnalysisResult(
 ):
     def get_by_patient_id(self, db: Session, patient_id: UUID):
         return (
-            db.query(AnalysisResult)
+            db.query(AnalysisResult, Recording)
+            .filter(AnalysisResult.recording_id == Recording.id)
             .filter(AnalysisResult.patient_id == patient_id)
             .all()
         )
