@@ -1,15 +1,18 @@
-FROM node:current-alpine
+FROM node:lts-alpine as base
 
 WORKDIR /app
 
-ENV PATH /app/node_modules/.bin:$PATH
+ENV VUE_APP_ENV=production
 
-RUN npm install @vue/cli@4.5.14 -g
+COPY package.json package-lock.json ./
+RUN npm ci
 
-COPY package.json .
-COPY package-lock.json .
-RUN npm install
+COPY . .
+RUN npm run build
+
+FROM nginx:stable-alpine as final
+
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+COPY --from=base /app/dist /usr/share/nginx/html
 
 EXPOSE 8080
-
-CMD ["npm", "run", "serve"]

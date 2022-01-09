@@ -18,8 +18,10 @@ services:
       start_period: 60s
 
   backend:
-    build: ./services/backend
-    image: backend-deadflowers
+    build:
+      context: ./services/backend
+      dockerfile: Dockerfile.dev
+    image: backend-deadflowers-dev
     env_file:
       - backend.env
       - postgres.env
@@ -27,20 +29,24 @@ services:
       - "postgres:database"
     ports:
       - "5000:5000"
-    container_name: "backend-deadflowers"
+    container_name: "backend-deadflowers-dev"
+    volumes:
+      - ./services/backend:/app
     depends_on:
-      - postgres
       - redis
       - worker
+      - postgres
 
   frontend:
-    build: ./services/frontend
-    image: frontend-deadflowers
-    links:
-      - backend
+    build:
+      context: ./services/frontend
+      dockerfile: Dockerfile.dev
+    image: frontend-deadflowers-dev
+    volumes:
+      - ./services/frontend:/app
     ports:
       - "8080:8080"
-    container_name: "frontend-deadflowers"
+    container_name: "frontend-deadflowers-dev"
 
   redis:
     image: "redis:alpine"
@@ -55,14 +61,16 @@ services:
   worker:
     build:
       context: ./services/backend
-      dockerfile: ./app/worker/Dockerfile
-    image: worker-deadflowers
+      dockerfile: ./app/worker/Dockerfile.dev
+    image: worker-deadflowers-dev
     env_file:
       - backend.env
       - postgres.env
-    container_name: "worker-deadflowers"
+    container_name: "worker-deadflowers-dev"
     links:
       - "postgres:database"
+    volumes:
+      - ./services/backend/app:/app/app
     depends_on:
       - postgres
 
