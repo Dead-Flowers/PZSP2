@@ -1,47 +1,30 @@
 <template>
-  <div>
-    <div style="display:flex">
-      <div style="margin: 0 auto;">
-        <h1>Witaj w BowelLab</h1>
-        <v-btn
-          color="primary"
-          elevation="2"
-          large
-          outlined
-          @click="goToLoginPage()"
-          style="margin-block: 10px"
-        >
-          Zaloguj się
-        </v-btn>
-      </div>
-      <img src="doctor.png" class="welcome-img"/>
-    </div>
-    <v-carousel
-      cycle
-      height="300"
-      hide-delimiter-background
-      show-arrows-on-hover
-    >
-      <v-carousel-item
-        v-for="(slide, i) in slides"
-        :key="i"
+  <div style="display:flex">
+    <div style="width: 40vw">
+      <h1>Witaj w BowelLab</h1>
+      <v-btn
+        color="primary"
+        elevation="2"
+        large
+        outlined
+        @click="goToLoginPage()"
+        style="margin-block: 10px"
       >
-        <v-sheet
-          :color="colors[i]"
-          height="100%"
+        Zaloguj się
+      </v-btn>
+      <v-expansion-panels accordion>
+        <v-expansion-panel
+          v-for="n in news"
+          :key="n.id"
         >
-          <v-row
-            class="fill-height"
-            align="center"
-            justify="center"
-          >
-            <div class="text-h2">
-              {{ slide }}
-            </div>
-          </v-row>
-        </v-sheet>
-      </v-carousel-item>
-    </v-carousel>
+          <v-expansion-panel-header>{{n.title}} </v-expansion-panel-header>
+          <v-expansion-panel-content>
+            {{n.description}}
+          </v-expansion-panel-content>
+        </v-expansion-panel>
+      </v-expansion-panels>
+    </div>
+    <img src="doctor.png" class="welcome-img"/>
   </div>
 </template>
 
@@ -56,19 +39,22 @@ export default {
   },
   data () {
     return {
-      colors: [
-        'indigo',
-        'warning',
-        'pink darken-2',
-        'red lighten-1',
-        'deep-purple accent-4',
-      ],
-      slides: [
-        'Aktualność 1',
-        'Aktualność 2',
-        'Aktualność 3',
-        'Aktualność 4',
-        'Aktualność 5',
+      news: [
+        {
+          id: 1,
+          title: 'Panel Pacjenta',
+          description: 'Stworzono nowy Panel Pacjenta. W tym panelu pacjent ma możliwość przegldania wasnych analiz.',
+        },
+        {
+          id: 2,
+          title: 'Zmiana biblioteki stylów',
+          description: 'Seriws został odświeżony przy użyciu Vuetify.',
+        },
+        {
+          id: 3,
+          title: 'Wesołych Świąt',
+          description: 'Zespół BowelLab chciałby życzyć wszystkim użytkownikom wesołych świąt i szczęśliwego nowego roku.',
+        },
       ],
     }
   },
