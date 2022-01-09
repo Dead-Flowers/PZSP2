@@ -1,9 +1,7 @@
 import io
-import time
 import os
 from app.api import deps
 from app.schemas.analysis_result import (
-    AnalysisResultCreate,
     AnalysisResultStatusUpdate,
     AnalysisResultUpdate,
 )
@@ -26,13 +24,18 @@ def send_file(recording_id: str, analysis_id: str):
     for db in deps.get_db():
         analysis = crud.analysis_result.get(db, id=analysis_id)
         analysis_update_status = AnalysisResultStatusUpdate(status="PENDING")
-        analysis_obj = crud.analysis_result.update_status(
+        crud.analysis_result.update_status(
             db, db_obj=analysis, obj_in=analysis_update_status
         )
+
         recording = crud.recording.get(db, recording_id)
         service = BowelAnalysisService("http://bowelsound.ii.pw.edu.pl")
-        imageBytes = io.BytesIO(recording.blob)
-        service.upload_file(imageBytes.read())
+        image_bytes = io.BytesIO(recording.blob)
+        try:
+            service.upload_file(image_bytes.read())
+        except Exception:
+            pass
+
         bowel_ret_val = service.get_status()
         analysis_res_obj = AnalysisResultUpdate(
             status="COMPLETED", **bowel_ret_val.as_dict()
