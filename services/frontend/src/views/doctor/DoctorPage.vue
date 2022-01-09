@@ -1,8 +1,6 @@
 <template>
-  <div class="max-screen-space-container flex-row-items-start">
-    <div class="navbar-as-adjacent flex-column-items-centered">
-      <ChangePassword />
-    </div>
+  <div>
+    <ChangePassword />
   </div>
 </template>
 

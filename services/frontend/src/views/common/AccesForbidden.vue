@@ -1,7 +1,7 @@
 <template>
-  <div class="page-not-found">
-    Nie znaleziono strony
-    <router-link to="/" class="go-home" > Powróć do strony głównej </router-link>
+  <div class="warning-page">
+    Brak dostępu
+    <router-link to="/" class="go-home"> Powróć do strony głównej </router-link>
   </div>
 </template>
 
@@ -14,8 +14,8 @@ export default {
 </script>
 
 <style>
-.page-not-found {
-  background-color: red;
+.warning-page {
+  background-color: orangered;
   font-size: 2vw;
   color: white;
   width: 100vw;
