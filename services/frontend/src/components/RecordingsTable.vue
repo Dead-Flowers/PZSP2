@@ -43,7 +43,6 @@ export default {
       return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes() < 10 ? '0' + date.getMinutes(): date.getMinutes()}`
     },
     async startAnalysis(id) {
-        console.log("tak"
         let response = await api.startAnalysis(this.$store.getters["token"], id)
         this.$router.push(`/doctor/analysisStarted/${response.data}`)
     }
