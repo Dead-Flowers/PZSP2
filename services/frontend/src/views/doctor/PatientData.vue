@@ -1,15 +1,11 @@
 <template>
   <div>
-    <SearchUser v-if="showSearchBox" v-bind:searchUser="searchUser" v-bind:userType="'patient'" />
-    <div v-else>
-      <PatientTable v-bind:patientData="patientData"/>
-      <AnalysisResultTable v-bind:analyses="analyses" />
-    </div>
+    <PatientTable v-bind:patientData="patientData"/>
+    <AnalysisResultTable v-bind:analyses="analyses" />
   </div>
 </template>
 
 <script>
-import SearchUser from '../../components/SearchUser.vue'
 import PatientTable from '../../components/PatientTable.vue'
 import AnalysisResultTable from '../../components/AnalysisResultTable.vue'
 import { api } from '@/api';
@@ -17,22 +13,16 @@ import { api } from '@/api';
 export default {
   name: 'PatientData',
   components: {
-    SearchUser,
     PatientTable,
     AnalysisResultTable
   },
   data() {
     return {
-      showSearchBox: true,
       patientData: {},
       analyses: []
     }
   },
   methods: {
-    async searchUser(user) {
-      await this.getUserData(user.id);
-      this.showSearchBox = false;
-    },
     async getUserData(id) {
       // pobierz dane pacjetna    
       try {
@@ -70,6 +60,9 @@ export default {
       //const analyses = await api.getAnalysis(this.$store.getters["token"], id)
       //this.analyses = analyses.data
     }
+  },
+  beforeMount() {
+    this.getUserData(this.$route.params.id)
   }
 }
 </script>

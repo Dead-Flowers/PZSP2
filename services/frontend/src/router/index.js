@@ -17,6 +17,7 @@ import DoctorPage from '../views/doctor/DoctorPage'
 import Doctor from '../views/doctor/Doctor'
 import Welcome from '../views/common/Welcome.vue'
 import LoginView from '../views/common/LoginView.vue'
+import SearchForPatient from '../views/doctor/SearchForPatient.vue'
 import store from '@/store'
 
 export default new Router({
@@ -100,12 +101,12 @@ export default new Router({
           component: AnalysisStarted
         },
         {
-          path: 'new-analysis',
+          path: 'new-analysis/:id',
           name: 'doctor_NewAnalysis',
           component: NewAnalysis
         },
         {
-          path: 'patient-data',
+          path: 'patient-data/:id',
           name: 'doctor_PatientData',
           component: PatientData
         },
@@ -115,10 +116,15 @@ export default new Router({
           component: DoctorPage
         },
         {
-          path: 'recordings',
+          path: 'recordings/:id',
           name: 'doctor_Recordings',
           component: RecordingsData
         },
+        {
+          path: 'search/:target',
+          name: "doctor_search",
+          component: SearchForPatient
+        }
       ]
     },
     {

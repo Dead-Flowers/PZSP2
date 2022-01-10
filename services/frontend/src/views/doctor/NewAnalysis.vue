@@ -1,37 +1,49 @@
 <template>
   <div>
-    <SearchUser v-if="showSearchBox" v-bind:searchUser="searchUser" v-bind:userType="'patient'" />
-    <div v-else>
-      <h1 > Wybrany pacjent - {{ `${this.patientInfo["first_name"]} ${this.patientInfo["second_name"]} ${this.patientInfo["last_name"]}`}}</h1>
-      <AnalysisInit v-bind:patientID="chosenUserId"  />
-    </div>
+    <h1 > Wybrany pacjent - {{ `${this.patientData["first_name"]} ${this.patientData["second_name"]} ${this.patientData["last_name"]}`}}</h1>
+    <AnalysisInit v-bind:patientID="chosenUserId"  />
   </div>
 </template>
 
 <script>
 import AnalysisInit from '../../components/AnalysisInit.vue'
-import SearchUser from '../../components/SearchUser.vue'
+import { api } from '@/api';
 
 export default {
   name: 'NewAnalysis',
   components: {
     AnalysisInit,
-    SearchUser,
   },
   data() {
     return {
-      showSearchBox: true,
-      patientInfo: {},
+      patientData: {},
       chosenUserId: null,
     }
   },
   methods: {
-    searchUser(user) {
-      this.showSearchBox = false;
-      this.patientInfo = user;
-      this.chosenUserId = user.id
-      console.log(user.id)
+    async getUserData(id) {
+      // pobierz dane pacjetna    
+      try {
+        const patient = await api.getUser(this.$store.getters["token"], id)
+        this.patientData = patient.data
+      } catch (e) {
+        this.$store.dispatch("actionCheckApiError", e);
+        this.$store.commit("openSnackbar", "Problem with getting patient data");
+      }
+      // pobiearz analizy
+      try {
+        const analyses = await api.getAnalysis(this.$store.getters["token"], id)
+        this.analyses = analyses.data
+        console.log(analyses);
+      } catch (e) {
+        this.$store.dispatch("actionCheckApiError", e);
+        this.$store.commit("openSnackbar", "Problem with getting Analysis data");
+      }
     },
+  },
+  beforeMount() {
+    this.chosenUserId = this.$route.params.id;
+    this.getUserData(this.chosenUserId);
   }
 }
 </script>

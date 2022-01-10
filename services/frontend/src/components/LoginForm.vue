@@ -26,7 +26,7 @@
     >
       Zaloguj się
     </v-btn>
-
+    <!--
     <v-btn
       color="error"
       class="mr-4"
@@ -34,7 +34,7 @@
     >
       Zapomniałeś hasła?
     </v-btn>
-
+    -->
     <v-btn
       color="warning"
       @click="goToFrontpage"
