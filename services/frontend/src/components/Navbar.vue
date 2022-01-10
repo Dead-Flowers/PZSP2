@@ -28,7 +28,7 @@
         </v-list-item-content>
       </v-list-item>
 
-      <v-list-item @click="goToPage('/doctor/new-analysis')">
+      <v-list-item @click="goToPage('/doctor/search/new-analysis')">
         <v-list-item-icon>
           <font-awesome-icon icon="plus-square" />
         </v-list-item-icon>
@@ -39,7 +39,7 @@
         </v-list-item-content>
       </v-list-item>
 
-      <v-list-item @click="goToPage('/doctor/patient-data')">
+      <v-list-item @click="goToPage('/doctor/search/patient-data')">
         <v-list-item-icon>
           <font-awesome-icon icon="list" />
         </v-list-item-icon>
@@ -50,7 +50,7 @@
         </v-list-item-content>
       </v-list-item>
 
-      <v-list-item @click="goToPage('/doctor/recordings')">
+      <v-list-item @click="goToPage('/doctor/search/recordings')">
         <v-list-item-icon>
           <font-awesome-icon icon="file-audio" />
         </v-list-item-icon>
