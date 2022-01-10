@@ -114,6 +114,7 @@ export default {
       first_name: null,
       second_name: null,
       last_name: null,
+      valid: false,
       email: null,
       userId: null,
       password: null,

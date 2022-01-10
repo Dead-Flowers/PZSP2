@@ -35,8 +35,8 @@ export default {
   },
   methods: {
     async startAnalysis() {
-      this.uploadFile(this.analysis_file, this.patientID);
-      router.push('/doctor/analysisStarted');
+      let analysis_id = await this.uploadFile(this.analysis_file, this.patientID);
+      router.push(`/doctor/analysisStarted/${analysis_id}`);
       },
     async uploadFile (file, patientID) {
       try {
@@ -46,7 +46,7 @@ export default {
         let recordingID = response.data
 
         response = await api.startAnalysis(this.$store.getters["token"], recordingID)
-        this.$store.commit("setAnalysisID", response.data)
+        return response.data
       } catch (e) {
         await this.$store.dispatch("actionCheckApiError", e);
         this.$store.commit("openSnackbar", "Problem with uploading file!");

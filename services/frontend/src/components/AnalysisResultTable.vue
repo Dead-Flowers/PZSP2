@@ -5,7 +5,7 @@
         <tr>
           <th>Status</th>
           <th>Data badania</th>
-          <th>Nagranie</th>
+          <th>Nazwa pliku</th>
           <th>Wynik analizy</th>
         </tr>  
       </thead>
@@ -16,14 +16,11 @@
         >
           <td>{{analysis.status}}</td>
           <td>{{ formatDate(analysis.created_date)}}</td>
+          <td>{{ analysis.recording_name }}</td>
           <td>
-            <router-link :to="`/doctor/analysis/${analysis.recording_id}`" >
-              Kliknij by zobaczyć nagranie 🗃️
-            </router-link>
-          <td>
-            <router-link :to="`/doctor/analysis/${analysis.id}`" >
+            <v-btn @click="goToAnalysis(analysis.id)">
               Kliknij by zobaczyć wyniki 🗃️
-            </router-link>
+            </v-btn>
           </td>
         </tr>
       </tbody>
@@ -46,6 +43,9 @@ export default {
       let date = new Date(Date.parse(datestr));
       return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes() < 10 ? '0' + date.getMinutes(): date.getMinutes()}`
     },
+    goToAnalysis(id) {
+      this.$router.push(`/doctor/analysis/${id}`)
+    }
   },
 
 }
