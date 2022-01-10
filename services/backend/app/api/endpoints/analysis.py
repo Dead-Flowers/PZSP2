@@ -2,7 +2,7 @@ from typing import Any, List
 from uuid import UUID
 from app.schemas.analysis_result import AnalysisResultCreate
 
-from fastapi import status
+from fastapi import status, WebSocket
 
 
 from fastapi import (
@@ -20,6 +20,7 @@ from app import crud, models, schemas
 from app.schemas.recording import RecordingCreate
 from app.services.bowel_service import BowelAnalysisService
 from app.worker import app as celery_ref
+from app.services.ws_manager import manager as ws_manager
 
 router = APIRouter()
 from app.api import deps

@@ -227,7 +227,7 @@ const setUserData = (context, data) => {
     context.commit("setUserType", data.role);
 }
 
-const getLocalToken = () => localStorage.getItem('token');
+export const getLocalToken = () => localStorage.getItem('token');
 
 const saveLocalToken = (token) => localStorage.setItem('token', token);
 

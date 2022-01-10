@@ -28,7 +28,10 @@
 
 <script>
 import router from './router'
+import Vue from "vue";
 import Navbar from "./components/Navbar.vue"
+import { getLocalToken }  from "./store/user";
+import WS_URL from "./config";
 export default {
   name: 'App',
   components: {
@@ -47,16 +50,36 @@ export default {
       return this.$store.getters["snackbarText"]
     },
     isLoggedIn() {
-      // porbaly needed to fix, not routing sometimes
-      if(this.$route.name == 'WelcomePage' && this.$store.getters["isLoggedIn"]){
-        router.push(`/${this.$store.getters["userType"]}/home`)
-      }
-
       return this.$store.getters["isLoggedIn"];
     },
   },
+  watch: {
+    isLoggedIn(newValue, oldValue) {
+      const newState = newValue && !oldValue;  
+      if(newState) {
+        if(this.$route.name == 'WelcomePage'){
+          router.push(`/${this.$store.getters["userType"]}/home`)
+        }
+        Vue.prototype.$connect(WS_URL, { format: 'json', reconnection: true });
+      }
+      console.log(Vue.prototype);
+    }
+  },
+  sockets: {
+    onopen() {
+      let socket = Vue.prototype.$socket;
+      const token = getLocalToken();
+      if(!token) {
+        Vue.prototype.$socket.close();
+      }
+      socket.sendObj({type: 'auth', payload: token});
+    },
+    onmessage(event) {
+      console.log(event);
+    }
+  },
   async beforeMount() {
-    // this needs to be here so routing dosen't gets messed up
+    // this needs to be here so routing doesn't get messed up
     await this.$store.dispatch("actionCheckLoggedIn")
   },
   async mounted() {

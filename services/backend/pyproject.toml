@@ -10,7 +10,6 @@ fastapi = "^0.65.2"
 pydantic = {extras = ["email"], version = "^1.8.2"}
 SQLAlchemy = "^1.4.11"
 requests = "^2.25.1"
-uvicorn = "^0.13.4"
 python-jose = {extras = ["cryptography"], version = "^3.3.0"}
 passlib = "^1.7.4"
 alembic = "^1.7.5"
@@ -19,6 +18,8 @@ celery = "4.4.6"
 redis = "3.5.3"
 python-multipart = "^0.0.5"
 sqlalchemy-json = "^0.4.0"
+websockets = "^10.1"
+uvicorn = "^0.16.0"
 
 [tool.poetry.dev-dependencies]
 mypy = "^0.901"

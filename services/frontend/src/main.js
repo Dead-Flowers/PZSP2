@@ -34,6 +34,9 @@ import { faUser,
  } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
+import VueNativeSock from 'vue-native-websocket';
+Vue.use(VueNativeSock, 'ws://localhost:5000/ws', { connectManually: true });
+
 Vue.config.productionTip = false
 Vue.use(VueRouter);
 library.add(faUser, 
@@ -58,13 +61,14 @@ use([
   TooltipComponent
 ]);
 
-axios.defaults.baseURL = 'http://'+ window.location.hostname +':5000/';  // the FastAPI backend
+axios.defaults.baseURL = 'http://' + window.location.hostname + ':5000/';  // the FastAPI backend
 
 Vue.component('v-chart', ECharts)
 
-new Vue({
+export const vue = new Vue({
   render: h => h(App),
   store,
   router: router,
   vuetify: Vuetify
 }).$mount('#app')
+

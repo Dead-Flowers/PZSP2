@@ -1,9 +1,13 @@
 <template>
   <div>
-    Analiza została uruchomiona
-    <v-btn @click="goToAnalisy">
-        Wyniki analizy 
-    </v-btn>
+    <div>
+      Analiza została uruchomiona
+    </div>
+    <div>
+      <v-btn @click="goToAnalysis">
+          Wyniki analizy 
+      </v-btn>
+    </div>
   </div>
 </template>
 
@@ -12,7 +16,7 @@ import router from '../../router'
 export default {
   name: "AnalysisStarted",
   methods: {
-      goToAnalisy(){
+      goToAnalysis(){
           router.push(`/doctor/analysis/${this.$store.getters["getAnalysisID"]}`)
       }
   }
