@@ -17,7 +17,7 @@ export default {
   name: "AnalysisStarted",
   methods: {
       goToAnalysis(){
-          router.push(`/doctor/analysis/${this.$store.getters["getAnalysisID"]}`)
+          router.push(`/doctor/analysis/${this.$route.params.id}`)
       }
   }
 }

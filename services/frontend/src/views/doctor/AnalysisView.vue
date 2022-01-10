@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="analysisVisualization" >
       <AnalysisVisualization v-if="!loading" v-bind:analysisData="analysisData" v-bind:patient="patient"/>
       <div v-else>
           <v-row>
@@ -97,5 +97,9 @@ export default {
 </script>
 
 <style>
+
+.analysisVisualization {
+  width: 60%
+}
 
 </style>

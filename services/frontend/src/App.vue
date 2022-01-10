@@ -31,7 +31,7 @@ import router from './router'
 import Vue from "vue";
 import Navbar from "./components/Navbar.vue"
 import { getLocalToken }  from "./store/user";
-import WS_URL from "./config";
+import { WS_URL } from "./config";
 export default {
   name: 'App',
   components: {
@@ -43,8 +43,9 @@ export default {
     }
   },
   computed: {
-    snackbar() {
-      return this.$store.getters["isSnackbarOpened"]
+    snackbar: {
+      get() {return this.$store.getters["isSnackbarOpened"]},
+      set() { this.$store.commit('closeSnackbar') } 
     },
     text() {
       return this.$store.getters["snackbarText"]
@@ -76,6 +77,15 @@ export default {
     },
     onmessage(event) {
       console.log(event);
+      const obj = JSON.parse(event.data);
+      if (obj.type == "analysis-state-updated") {
+        if (obj.payload.status == "PENDING") {
+            this.$store.commit("openSnackbar", "Analysis has been started ");
+        }
+        else if (obj.payload.status == "COMPLETED") {
+            this.$store.commit("openSnackbar", "Analysis has completed ");
+        }
+      }
     }
   },
   async beforeMount() {

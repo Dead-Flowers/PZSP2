@@ -5,7 +5,6 @@
         <tr>
           <th>Data stworzenia</th>
           <th>Nazwa pliku</th>
-          <th>Analizy dla tego pliku</th>
           <th>Ponowna analiza</th>
         </tr>  
       </thead>
@@ -17,13 +16,9 @@
           <td>{{formatDate(recording.creation_date)}}</td>
           <td>{{ recording.filename }}</td>
           <td>
-            <router-link :to="`/doctor/analysis/${recording.recording_id}`" >
-              Kliknij by zobaczyć analizy dla tego pliki 🗃️ TODO
-            </router-link>
-          <td>
-            <a  @click="startAnalysis(recording.id)" >
-              Zrób ponownie analiza dla tego pliku 🗃️
-            </a>
+            <v-btn @click="startAnalysis(recording.id)">
+              Kliknij by przeprowadzić poniwnie analize 🗃️
+            </v-btn>
           </td>
         </tr>
       </tbody>
@@ -48,10 +43,8 @@ export default {
       return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes() < 10 ? '0' + date.getMinutes(): date.getMinutes()}`
     },
     async startAnalysis(id) {
-        console.log("tak")
-        let response = api.startAnalysis(this.$store.getters["token"], id)
-        this.$store.commit("setAnalysisID", response.data)
-        this.$router.push("/doctor/analysisStarted")
+        let response = await api.startAnalysis(this.$store.getters["token"], id)
+        this.$router.push(`/doctor/analysisStarted/${response.data}`)
     }
   },
 

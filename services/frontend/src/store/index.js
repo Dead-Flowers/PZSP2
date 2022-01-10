@@ -18,9 +18,6 @@ const state = {
     second_name: "wait for fetch",
     last_name: "wait fo fetch",
   },
-  analysis: {
-    analysisID: null,
-  },
   snackbarOpen: false,
   snackbarText: "",
 }
@@ -28,9 +25,6 @@ const state = {
 export const mutations = {
   setPatient(state, patient) {
     state.currentPatient = patient;
-  },
-  setAnalysisID(state, id) {
-    state.analysis.analysisID = id;
   },
   openSnackbar(state, text) {
     state.snackbarOpen = true;

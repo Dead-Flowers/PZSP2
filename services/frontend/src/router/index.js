@@ -42,7 +42,9 @@ export default new Router({
       path: '/admin',
       name: 'admin',
       component: Admin,
-      beforeEnter: (to, from, next) => {
+      beforeEnter: async (to, from, next) => {
+        if(store.getters["isLoggedIn"] == null)
+          await store.dispatch("actionCheckLoggedIn")
         if(!store.getters["isLoggedIn"] || store.getters["userType"] != "admin"){
           next({ name: "WelcomePage"  })
         } else next()
@@ -79,7 +81,9 @@ export default new Router({
       path: '/doctor',
       name: 'doctor',
       component: Doctor,
-      beforeEnter: (to, from, next) => {
+      beforeEnter: async (to, from, next) => {
+        if(store.getters["isLoggedIn"] == null)
+          await store.dispatch("actionCheckLoggedIn")
         if(!store.getters["isLoggedIn"] || store.getters["userType"] != "doctor"){
           next({ name: "WelcomePage"  })
         } else next()
@@ -91,7 +95,7 @@ export default new Router({
           component: AnalysisView
         },
         {
-          path: 'analysisStarted',
+          path: 'analysisStarted/:id',
           name: 'doctor_AnalysisStarter',
           component: AnalysisStarted
         },
@@ -121,7 +125,9 @@ export default new Router({
       path: '/patient',
       name: 'patient',
       component: Patient,
-      beforeEnter: (to, from, next) => {
+      beforeEnter: async (to, from, next) => {
+        if(store.getters["isLoggedIn"] == null)
+          await store.dispatch("actionCheckLoggedIn")
         if(!store.getters["isLoggedIn"] || store.getters["userType"] != "patient"){
           next({ name: "WelcomePage"  })
         } else next()
@@ -134,7 +140,7 @@ export default new Router({
         },
         {
           path: 'analyses',
-          name: 'patient_Page',
+          name: 'patient_Analyses',
           component: PatientAnalyses
         },
       ]
