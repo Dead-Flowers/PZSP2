@@ -18,14 +18,13 @@ export default {
   },
   data() {
     return {
-      showSearchBox: true,
       loading: true,
       patientData: {},
       analyses: []
     }
   },
   async mounted() {
-      // pobierz dane pacjetna    
+      // pobierz dane pacjetna
       try {
         const responeUser = await api.getUser(this.$store.getters["token"], this.$store.getters["id"])
         this.patientData = responeUser.data
