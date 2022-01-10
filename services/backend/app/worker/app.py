@@ -29,33 +29,45 @@ celery = Celery(
 def send_file(self: Task, recording_id: str, analysis_id: str):
     db: Session
 
-    def update_state(new_state, **kwargs):
-        analysis_update_status = AnalysisResultUpdate(status=new_state, **kwargs)
+    def update_state_obj(update_obj):
         analysis = crud.analysis_result.get(db, id=analysis_id)
         result = crud.analysis_result.update(
-            db, db_obj=analysis, obj_in=analysis_update_status
+            db, db_obj=analysis, obj_in=update_obj
         )
-        self.send_event('task-analysis-status', analysis_id=analysis_id, state=new_state)
+        self.send_event('task-analysis-status', analysis_id=analysis_id, state=update_obj.status)
         return result
-        
 
-    for db in  deps.get_db():
+    def update_state(new_state):
+        analysis_update = AnalysisResultStatusUpdate(status=new_state)
+        return update_state_obj(analysis_update)
+    
+    def handle():
         update_state('PENDING')
 
-        recording = crud.recording.get(db, recording_id)
         service = BowelAnalysisService("http://bowelsound.ii.pw.edu.pl")
+        recording = crud.recording.get(db, recording_id)
         image_bytes = io.BytesIO(recording.blob)
-        try:
-            service.upload_file(image_bytes.read())
-        except Exception as e:
-            if self.max_retries == self.request.retries:
-                update_state('FAILED')
 
-            self.retry(exc=e)
+        service.upload_file(image_bytes.read())
 
         bowel_ret_val = service.get_status()
-        result = update_state('COMPLETED', **bowel_ret_val.as_dict())
+        result = update_state_obj(AnalysisResultUpdate(status='COMPLETED', **bowel_ret_val.as_dict()))
+
         return result.id
+
+    for db in deps.get_db():
+        try:
+            return handle()
+        except Exception as e:
+            try:
+                if self.max_retries == self.request.retries:
+                    update_state('FAILED')
+                else:
+                    update_state('RETRYING')
+            except: # updating state can go wrong
+                pass
+            self.retry(exc=e)
+    return None
 
 
 import app.worker.task_handers

@@ -2,6 +2,7 @@ from fastapi import FastAPI, WebSocket, WebSocketDisconnect
 from typing import List, Dict
 
 from app.models.user import User
+from app.schemas.user import UserInDB
 
 class ConnectionManager:
     def __init__(self):
@@ -23,6 +24,7 @@ class ConnectionManager:
         for user_id in user_ids:
             connections = self.connections_by_user.get(user_id, [])
             for connection in connections:
+                print(f"Broadcasting to {user_id}")
                 await connection.send_text(message)
 
     async def broadcast_all(self, message: str):

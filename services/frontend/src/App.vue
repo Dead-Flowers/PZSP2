@@ -30,8 +30,8 @@
 import router from './router'
 import Vue from "vue";
 import Navbar from "./components/Navbar.vue"
+import { getLocalToken }  from "./store/user";
 import WS_URL from "./config";
-import { getLocalToken } from "./store/user";
 export default {
   name: 'App',
   components: {
@@ -54,12 +54,13 @@ export default {
     },
   },
   watch: {
-    isLoggedIn(newValue) {  
-      if(newValue) {
+    isLoggedIn(newValue, oldValue) {
+      const newState = newValue && !oldValue;  
+      if(newState) {
         if(this.$route.name == 'WelcomePage'){
           router.push(`/${this.$store.getters["userType"]}/home`)
         }
-        Vue.prototype.$connect(WS_URL, { format: 'json' });
+        Vue.prototype.$connect(WS_URL, { format: 'json', reconnection: true });
       }
       console.log(Vue.prototype);
     }
@@ -68,12 +69,13 @@ export default {
     onopen() {
       let socket = Vue.prototype.$socket;
       const token = getLocalToken();
+      if(!token) {
+        Vue.prototype.$socket.close();
+      }
       socket.sendObj({type: 'auth', payload: token});
     },
     onmessage(event) {
       console.log(event);
-      const obj = JSON.parse(event.data);
-      console.log(obj);
     }
   },
   async beforeMount() {

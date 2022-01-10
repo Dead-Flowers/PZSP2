@@ -1,8 +1,10 @@
 import json
 
+from app.models.result import AnalysisResult
+
 class WebsocketMessage:
     TYPE = 'unknown'
-    def __init__(self, **kwargs) -> None:
+    def __init__(self, type, **kwargs) -> None:
         self.type = type
         self.payload = kwargs
     
@@ -10,6 +12,6 @@ class WebsocketMessage:
         return json.dumps(dict(type=self.type, payload=self.payload), default=vars)
 
 class AnalysisStateUpdated(WebsocketMessage):
-    TYPE = __name__
-    def __init__(self, analysis_id: str) -> None:
-        super().__init__(self.TYPE, analysis_id=analysis_id)
+    TYPE = 'analysis-state-updated'
+    def __init__(self, id: str, status: str) -> None:
+        super().__init__(self.TYPE, id=id, status=status)

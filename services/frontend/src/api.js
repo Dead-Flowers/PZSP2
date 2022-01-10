@@ -1,4 +1,13 @@
-import axios from 'axios';
+import { default as Axios } from 'axios';
+import { API_URL } from "./config";
+
+const axios = Axios.create({
+  validateStatus: function(status) {
+    return status >= 200 && status < 300;
+  },
+  baseURL: API_URL
+});
+
 
 function authHeaders(token) {
   return {
@@ -60,7 +69,7 @@ export const api = {
   },
 
   async startAnalysis(token, recordingID) {
-      return axios.post(`${APISUFFIX}/api/analysis/recordings/${recordingID}/analyze`, null ,authHeaders(token))
+      return axios.post(`${APISUFFIX}/api/analysis/recordings/${recordingID}/analyze`, null, authHeaders(token))
   },
 
   async getAnalysisResults(token, analysisID) {

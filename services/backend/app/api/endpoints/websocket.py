@@ -15,9 +15,8 @@ async def handle_websocket(
         for db in deps.get_db():
             return deps.get_current_user(db, auth['payload'])
 
-    async def handle_data(data):
+    async def handle_data():
         data = await websocket.receive_json()
-        await websocket.send_json(dict(message="prosze ;)"))
 
     await websocket.accept()
     try:
