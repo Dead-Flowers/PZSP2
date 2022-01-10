@@ -1,11 +1,10 @@
 <template>
   <v-form
     ref="form"
-    v-model="analysis_file"
     @submit="(e) => { e.preventDefault(); startAnalysis(); }"
   >
     <v-btn
-      :disabled="!analysis_file"
+      :disabled="!analysis_file || analysis_file.length == 0"
       color="success"
       class="mr-4"
       type="submit"
@@ -22,8 +21,8 @@
 </template>
 
 <script>
-import router from '../router'
 import { api } from '@/api';
+import router from '../router'
 
 export default {
   name: "AnalysisInit",
