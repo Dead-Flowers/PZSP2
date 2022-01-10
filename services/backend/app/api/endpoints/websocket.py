@@ -5,15 +5,13 @@ from app.api import deps
 from sqlalchemy.orm import Session
 
 
-async def handle_websocket(
-    websocket: WebSocket
-):
+async def handle_websocket(websocket: WebSocket):
     async def handle_auth():
         auth = await websocket.receive_json()
         if not auth or "type" not in auth or "payload" not in auth:
             raise RuntimeError()
         for db in deps.get_db():
-            return deps.get_current_user(db, auth['payload'])
+            return deps.get_current_user(db, auth["payload"])
 
     async def handle_data():
         data = await websocket.receive_json()

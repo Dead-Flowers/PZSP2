@@ -20,7 +20,7 @@ from app import crud, models, schemas
 from app.schemas.recording import RecordingCreate
 from app.services.bowel_service import BowelAnalysisService
 from app.worker import app as celery_ref
-from app.services.ws_manager import manager as ws_manager 
+from app.services.ws_manager import manager as ws_manager
 
 router = APIRouter()
 from app.api import deps

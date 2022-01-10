@@ -24,9 +24,11 @@ if settings.BACKEND_CORS_ORIGINS:
         allow_headers=["*"],
     )
 
-@app.on_event('startup')
+
+@app.on_event("startup")
 def startup():
     monitor.start(celery_app)
+
 
 @app.get("/")
 def home():

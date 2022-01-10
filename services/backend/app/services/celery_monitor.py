@@ -13,6 +13,7 @@ from app.services.notification_service import notificationService
 from app.services.ws_manager import manager
 import asyncio
 
+
 class CeleryMonitor(object):
     def __init__(self):
         self._state = State()
@@ -22,7 +23,7 @@ class CeleryMonitor(object):
         return self._state
 
     def start(self, celery_app):
-        if hasattr(self, 'thread'):
+        if hasattr(self, "thread"):
             return
         self.celery_app = celery_app
         self.thread = threading.Thread(target=self.run, args=())
@@ -30,22 +31,24 @@ class CeleryMonitor(object):
         self.thread.start()
 
     def handle_analysis(self, event):
-        print(event)
-        print("updating analysis")
-        state = event['state']
-        analysis_id = event['analysis_id']
+        state = event["state"]
+        analysis_id = event["analysis_id"]
         recipients = []
         for db in deps.get_db():
-            recipients = notificationService.get_analysis_update_recipients(db, analysis_id)
-        broadcast_task = manager.broadcast(recipients, AnalysisStateUpdated(analysis_id, state).to_json())
+            recipients = notificationService.get_analysis_update_recipients(
+                db, analysis_id
+            )
+        broadcast_task = manager.broadcast(
+            recipients, AnalysisStateUpdated(analysis_id, state).to_json()
+        )
         asyncio.get_event_loop().run_until_complete(broadcast_task)
 
     def catchall(self, event):
         try:
-            event_type = event['type']
-            if event_type == 'worker-heartbeat':
+            event_type = event["type"]
+            if event_type == "worker-heartbeat":
                 return
-            if event_type == 'task-analysis-status':
+            if event_type == "task-analysis-status":
                 return self.handle_analysis(event)
 
             self._state.event(event)
@@ -58,9 +61,9 @@ class CeleryMonitor(object):
         while True:
             try:
                 with self.celery_app.connection() as connection:
-                    recv = self.celery_app.events.Receiver(connection, handlers={
-                        '*': self.catchall
-                    })
+                    recv = self.celery_app.events.Receiver(
+                        connection, handlers={"*": self.catchall}
+                    )
                     recv.capture(limit=None, timeout=None, wakeup=True)
 
             except (InterruptedError, SystemExit):
@@ -68,5 +71,6 @@ class CeleryMonitor(object):
             except Exception:
                 # unable to capture
                 pass
+
 
 monitor = CeleryMonitor()
