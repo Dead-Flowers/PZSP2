@@ -46,6 +46,8 @@ class Settings(BaseSettings):
     FIRST_SUPERUSER_PASSWORD: str
     USERS_OPEN_REGISTRATION: bool = True
 
+    DISABLE_MIGRATIONS: bool = False
+
     class Config:
         case_sensitive = True
 
