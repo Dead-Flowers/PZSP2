@@ -31,4 +31,4 @@ ENV PATH=/venv/bin:$PATH
 EXPOSE 5000
 USER user
 
-CMD ["celery", "worker", "--app=app.worker.app.celery", "--loglevel=info"]
+CMD ["celery", "worker", "-E", "--app=app.worker.app.celery", "--loglevel=info"]

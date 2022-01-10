@@ -1,7 +1,6 @@
 <template>
-  <div>
     <div>
-      <AnalysisVisualization v-if="loading" v-bind:analysisData="analysisData" v-bind:patient="patient"/>
+      <AnalysisVisualization v-if="!loading" v-bind:analysisData="analysisData" v-bind:patient="patient"/>
       <div v-else>
           <v-row>
             <v-progress-circular
@@ -13,9 +12,7 @@
             <div>Trwa ładowanie...</div>
           </v-row>
       </div>
-      
     </div>
-  </div>
 </template>
 
 <script>
@@ -45,14 +42,14 @@ export default {
   },
   computed: {
     loading() {
-      return this.analysisStatus == "COMPLETED" || !this.patientLoaded;
+      return this.analysisStatus != "COMPLETED" || !this.patientLoaded;
     },
     analysisId() {
       return this.$route.params.id;
     }
   },
   async mounted() {
-      await this.updateAnalysis();
+    await this.updateAnalysis();
   },
   methods: {
     async updateAnalysis() {

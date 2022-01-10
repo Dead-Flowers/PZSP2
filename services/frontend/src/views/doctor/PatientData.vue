@@ -55,6 +55,8 @@ export default {
   },
   sockets: {
     onmessage(event) {
+      // listen for changes and update existing analyses
+      // if such an analysis doesn't exist, refetch all
       const obj = JSON.parse(event.data);
       if (obj.type != "analysis-state-updated") return;
       for (let analysis of this.analyses) {
@@ -64,6 +66,7 @@ export default {
         return;
       }
       console.log("analysis not found, refetching");
+      // TODO: REFETCH ALL ANALYSES HERE 
       //const analyses = await api.getAnalysis(this.$store.getters["token"], id)
       //this.analyses = analyses.data
     }
