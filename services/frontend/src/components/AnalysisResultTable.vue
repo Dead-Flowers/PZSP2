@@ -1,6 +1,6 @@
 <template>
   <div class="analysis-table-box">
-    <v-simple-table>
+    <v-simple-table :loading=load >
       <thead>
         <tr>
           <th>Status</th>
@@ -31,7 +31,7 @@
 <script>
 export default {
   name: 'analysisResultTable',
-  props: ['analyses'],
+  props: ['analyses', 'loading'],
   data() {
     console.log(this.analyses)
     return {
@@ -47,6 +47,11 @@ export default {
       this.$router.push(`/doctor/analysis/${id}`)
     }
   },
+  computed: {
+    load() {
+      return this.loading
+    }
+  }
 
 }
 </script>

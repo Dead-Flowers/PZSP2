@@ -1,6 +1,6 @@
 <template>
   <div class="patient-data-table">
-    <v-card class="card" elevation="2">
+    <v-card :loading=load class="card" elevation="2">
             <v-card-title>Dane pacjenta </v-card-title>
             <v-card-text>
               <div>Pesel: {{ patientData.pesel }}</div>
@@ -15,7 +15,12 @@
 <script>
 export default {
   name: 'PatientTable',
-  props: ['patientData'],
+  props: ['patientData', "loading"],
+  computed: {
+    load() {
+      return this.loading
+    }
+  }
 }
 </script>
 
