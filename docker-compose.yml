@@ -1,4 +1,4 @@
-version: "3"
+version: "2"
 
 services:
   postgres:
@@ -25,13 +25,13 @@ services:
       - postgres.env
     links:
       - "postgres:database"
+      - "worker"
     ports:
       - "5000:5000"
     container_name: "backend-deadflowers"
     depends_on:
-      - postgres
-      - redis
-      - worker
+      postgres: { condition: service_healthy }
+      redis: { condition: service_started }
 
   frontend:
     build: ./services/frontend
@@ -64,7 +64,8 @@ services:
     links:
       - "postgres:database"
     depends_on:
-      - postgres
+      postgres: { condition: service_healthy }
+      redis: { condition: service_started }
 
 volumes:
   postgres: null
