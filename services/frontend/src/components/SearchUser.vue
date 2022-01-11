@@ -44,16 +44,6 @@
       :multi-sort="true"
       checkbox-color="red"
     >
-      <template v-slot:top>
-        <!--<v-btn
-          :disabled="!selected_user"
-          color="success"
-          class="mr-4"
-          @click="initSearch"
-        >
-        Wybierz zaznaczonego użytkownika
-        </v-btn>-->
-      </template>
       <template slot="item.data-table-select" slot-scope="{ item }">
         <v-btn @click="selectUser(item)">
           <v-icon>mdi-play</v-icon>
@@ -71,7 +61,6 @@ export default {
   props: ["searchUser", "userType"],
   data() {
     return {
-      //TODO: refactor userid useridtype handling
       userIdType: "pesel",
       userIdTypeList: ["pesel", "nr paszportu"],
       userId: null,
@@ -142,7 +131,7 @@ export default {
         );
       }
 
-      if (this.user_list.length > 0) this.foundUsers = true;
+      this.foundUsers = true;
     },
     async selectUser(user) {
       this.selected_user = null;

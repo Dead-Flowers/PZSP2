@@ -71,14 +71,12 @@ export default {
   methods: {},
   computed: {
     option() {
-      console.log(this.analysisData);
       const numPoints = this.analysisData.length;
       let xAxis = Array.from(
         { length: numPoints },
         (_, i) => (i + 1) / 100.0
       );
       return {
-        //title: "Wynik analizy",
         tooltip: {},
         legend: {},
         xAxis: {
