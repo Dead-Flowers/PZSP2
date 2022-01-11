@@ -1,72 +1,79 @@
 <template>
   <div>
-    <PatientTable v-bind:patientData="patientData"/>
-    <AnalysisResultTable v-bind:analyses="analyses" />
+    <PatientTable :loading="loading" v-bind:patientData="patientData" />
+    <AnalysisResultTable :loading="loading" v-bind:analyses="analyses" />
   </div>
 </template>
 
 <script>
-import PatientTable from '../../components/PatientTable.vue'
-import AnalysisResultTable from '../../components/AnalysisResultTable.vue'
-import { api } from '@/api';
+import PatientTable from "../../components/PatientTable.vue";
+import AnalysisResultTable from "../../components/AnalysisResultTable.vue";
+import { api } from "@/api";
 
 export default {
-  name: 'PatientData',
+  name: "PatientData",
   components: {
     PatientTable,
-    AnalysisResultTable
+    AnalysisResultTable,
   },
   data() {
     return {
       patientData: {},
-      analyses: []
-    }
+      analyses: [],
+      loading: true
+    };
   },
   methods: {
     async getUserData(id) {
-      // pobierz dane pacjetna    
+      // fetch user data
       try {
-        const patient = await api.getUser(this.$store.getters["token"], id)
-        this.patientData = patient.data
+        const patient = await api.getUser(this.$store.getters["token"], id);
+        this.patientData = patient.data;
       } catch (e) {
         this.$store.dispatch("actionCheckApiError", e);
-        this.$store.commit("openSnackbar", "Problem with getting patient data");
+        this.$store.commit("openSnackbar", "Problem z pobieraniem danych pacjneta ");
       }
-      // pobiearz analizy
+      // fetch analysis
       try {
-        const analyses = await api.getAnalysis(this.$store.getters["token"], id)
-        this.analyses = analyses.data
+        const analyses = await api.getAnalysis(
+          this.$store.getters["token"],
+          id
+        );
+        this.analyses = analyses.data;
         console.log(analyses);
       } catch (e) {
         this.$store.dispatch("actionCheckApiError", e);
-        this.$store.commit("openSnackbar", "Problem with getting Analysis data");
+        this.$store.commit(
+          "openSnackbar",
+          "Problem z pobieraniem danych"
+        );
       }
+      this.loading = false;
     },
   },
   sockets: {
     onmessage(event) {
       // listen for changes and update existing analyses
       // if such an analysis doesn't exist, refetch all
+      this.loading = true;
       const obj = JSON.parse(event.data);
       if (obj.type != "analysis-state-updated") return;
       for (let analysis of this.analyses) {
         if (analysis.id != obj.payload.id) continue;
         analysis.status = obj.payload.status;
-        console.log('updated analysis status');
+        console.log("updated analysis status");
+        this.loading = false;
         return;
       }
       console.log("analysis not found, refetching");
-      // TODO: REFETCH ALL ANALYSES HERE 
-      //const analyses = await api.getAnalysis(this.$store.getters["token"], id)
-      //this.analyses = analyses.data
-    }
+      this.getUserData(this.$route.params.id)
+    },
   },
   beforeMount() {
-    this.getUserData(this.$route.params.id)
-  }
-}
+    this.getUserData(this.$route.params.id);
+  },
+};
 </script>
 
 <style>
-
 </style>

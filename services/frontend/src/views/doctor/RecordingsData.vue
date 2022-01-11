@@ -1,53 +1,60 @@
 <template>
   <div>
-    <PatientTable v-bind:patientData="patientData"/>
-    <RecordingsTable v-bind:recordings="recordings" />
+    <PatientTable :loading="loading" v-bind:patientData="patientData" />
+    <RecordingsTable :loading="loading" v-bind:recordings="recordings" />
   </div>
 </template>
 
 <script>
-import PatientTable from '../../components/PatientTable.vue'
-import RecordingsTable from '../../components/RecordingsTable.vue'
-import { api } from '@/api';
+import PatientTable from "../../components/PatientTable.vue";
+import RecordingsTable from "../../components/RecordingsTable.vue";
+import { api } from "@/api";
 
 export default {
-  name: 'PatientData',
+  name: "PatientData",
   components: {
     PatientTable,
-    RecordingsTable
+    RecordingsTable,
   },
   data() {
     return {
       patientData: {},
-      recordings: []
-    }
+      recordings: [],
+      loading: true, 
+    };
   },
   methods: {
     async getUserData(id) {
-      // pobierz dane pacjetna    
+      // fetch user data
       try {
-        const responeUser = await api.getUser(this.$store.getters["token"], id)
-        this.patientData = responeUser.data
+        const responeUser = await api.getUser(this.$store.getters["token"], id);
+        this.patientData = responeUser.data;
       } catch (e) {
         this.$store.dispatch("actionCheckApiError", e);
-        this.$store.commit("openSnackbar", "Problem with getting patient data");
+        this.$store.commit("openSnackbar", "Problem z pobieraniem danych pacjneta ");
       }
-      // pobiearz analizy
+      // fetch recordings
       try {
-        const responeRec = await api.getRecordings(this.$store.getters["token"], id)
-        this.recordings = responeRec.data
+        const responeRec = await api.getRecordings(
+          this.$store.getters["token"],
+          id
+        );
+        this.recordings = responeRec.data;
       } catch (e) {
         this.$store.dispatch("actionCheckApiError", e);
-        this.$store.commit("openSnackbar", "Problem with getting Analysis data");
+        this.$store.commit(
+          "openSnackbar",
+          "Problem z pobieraniem danych"
+        );
       }
+      this.loading = false;
     },
   },
   beforeMount() {
-    this.getUserData(this.$route.params.id)
-  }
-}
+    this.getUserData(this.$route.params.id);
+  },
+};
 </script>
 
 <style>
-
 </style>
