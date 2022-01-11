@@ -232,7 +232,7 @@ def get_results(
     limit: int = 100,
 ):
     if not crud.user.has_roles(
-        current_user, models.UserRole.Admin, models.UserRole.Doctor
+        current_user, models.UserRole.Admin, models.UserRole.Doctor, models.UserRole.Patient
     ):
         raise HTTPException(
             status_code=403, detail="Insufficient privilages to access all results"
@@ -263,10 +263,17 @@ def get_results(
                 )
         return results
 
+    def handle_patient():
+        return crud.analysis_result.get_by_patient_id(db, current_user.id)
+
+
+
     if crud.user.has_roles(current_user, models.UserRole.Admin):
         all_results = handle_admin()
-    else:
+    elif crud.user.has_roles(current_user, models.UserRole.Doctor):
         all_results = handle_doctor()
+    elif crud.user.has_roles(current_user, models.UserRole.Patient):
+        all_results = handle_patient()
 
     filtered_results = []
     for result in all_results:

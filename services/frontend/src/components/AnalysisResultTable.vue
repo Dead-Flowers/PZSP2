@@ -13,8 +13,9 @@
         <tr 
           v-bind:key="analysis.id" 
           v-for="analysis in analyses"
+          :class="analysis.status == 'PENDING'? 'pending': ''"
         >
-          <td>{{analysis.status}}</td>
+          <td :style="analysis.status == 'PENDING'? 'color: red': ''" >{{analysis.status}}</td>
           <td>{{ formatDate(analysis.created_date)}}</td>
           <td>{{ analysis.recording_name }}</td>
           <td>
@@ -29,19 +30,20 @@
 </template>
 
 <script>
+const stringPadding =(value, paddingSize, paddingValue) => {
+  return `${value}`.padStart(paddingSize, paddingValue)
+}
 export default {
   name: 'analysisResultTable',
   props: ['analyses', 'loading'],
   data() {
-    console.log(this.analyses)
     return {
     }
   },
   methods: {
     formatDate (datestr) {
-      
       let date = new Date(Date.parse(datestr));
-      return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes() < 10 ? '0' + date.getMinutes(): date.getMinutes()}`
+      return `${date.getFullYear()}-${stringPadding(date.getMonth()+1, 2, '0')}-${date.getDate()} ${date.getHours()}:${stringPadding(date.getMinutes(), 2, '0')}`
     },
     goToAnalysis(id) {
       this.$router.push(`/${this.$store.getters["userType"]}/analysis/${id}`)
@@ -51,10 +53,19 @@ export default {
     load() {
       return this.loading
     }
-  }
-
+  },
+  
 }
 </script>
 
 <style scoped>
+.pending {
+  animation: color-change 4s infinite;
+}
+
+@keyframes color-change {
+  0% { background-color: #00ccff; }
+  50% { background-color: transparent; }
+  100% { background-color: #00ccff; }
+}
 </style>
