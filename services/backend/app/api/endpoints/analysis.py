@@ -2,29 +2,23 @@ from typing import Optional
 from uuid import UUID
 from app.schemas.analysis_result import AnalysisResultCreate
 
-from fastapi import status, WebSocket
+from fastapi import status
 
 
 from fastapi import (
     APIRouter,
-    Body,
     Depends,
     HTTPException,
     File,
     UploadFile,
-    BackgroundTasks,
 )
 
 from sqlalchemy.orm import Session
-from app import crud, models, schemas
+from app import crud, models
 from app.schemas.recording import RecordingCreate
-from app.services.bowel_service import BowelAnalysisService
 from app.worker import app as celery_ref
-from app.services.ws_manager import manager as ws_manager
-
 from app.api import deps
-from starlette.responses import FileResponse, Response, StreamingResponse
-import io
+from starlette.responses import Response
 
 router = APIRouter()
 
