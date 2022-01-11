@@ -44,7 +44,7 @@ export default {
       return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes() < 10 ? '0' + date.getMinutes(): date.getMinutes()}`
     },
     goToAnalysis(id) {
-      this.$router.push(`/doctor/analysis/${id}`)
+      this.$router.push(`/${this.$store.getters["userType"]}/analysis/${id}`)
     }
   },
   computed: {

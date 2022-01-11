@@ -1,7 +1,7 @@
 import Router from 'vue-router'
 import Admin from '../views/admin/Admin.vue'
 import AdminPage from '../views/admin/AdminPage.vue'
-import AnalysisView from '../views/doctor/AnalysisView.vue'
+import AnalysisView from '../views/common/AnalysisView.vue'
 import AnalysisStarted from '../views/doctor/AnalysisStarted.vue'
 import NewAnalysis from '../views/doctor/NewAnalysis.vue' 
 import NewPatient from '../views/admin/NewPatient.vue'
@@ -148,6 +148,11 @@ export default new Router({
           path: 'analyses',
           name: 'patient_Analyses',
           component: PatientAnalyses
+        },
+        {
+          path: 'analysis/:id',
+          name: 'patient_AnalysisView',
+          component: AnalysisView
         },
       ]
     },
