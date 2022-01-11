@@ -1,29 +1,36 @@
 <template>
-  <div class="page-not-found">
-    Nie znaleziono strony
-    <router-link to="/" class="go-home" > Powróć do strony głównej </router-link>
+  <div @click="goToFrontPage" class="er404">
+    <h1>Błąd 404 Nie znaleziono strony</h1>
+    <hr />
+    <h2>Powrót</h2>
   </div>
 </template>
 
 <script>
+import router from '../../router'
 export default {
   name: 'PageNotFound',
   components: {
   },
+  methods: {
+    goToFrontPage() {
+      if (this.$store.getters["isLoggedIn"]) {
+        router.push(`/${this.$store.getters["userType"]}/home`);
+      }
+      else {
+        router.push("/");
+      }
+    }
+  }
 }
 </script>
 
 <style>
-.page-not-found {
-  background-color: red;
-  font-size: 2vw;
-  color: white;
-  width: 100vw;
-  height: 100vh;
+.er404 {
+  color: red;
 }
 
-.go-home {
-    text-decoration: none;
-    color: white
+.er404:hover {
+  color:maroon;
 }
 </style>
