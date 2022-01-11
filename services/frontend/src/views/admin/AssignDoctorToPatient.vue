@@ -28,47 +28,56 @@
         </v-card>
       </div>
       <!-- Przypisano pacjenta do doktora -->
-      <div 
+      <v-container 
         class="sector flex-column-items-centered"
         v-if="this.stage == 'assigned'"
       >
-        <h1> Sukces! Przyisano pacjenta do doktora. </h1>
-
-
-        <v-card class="card" style="margin-blokc-end: 20px">
-          <v-card-title>Dane Doktora </v-card-title>
-          <v-card-text>
-            <div>Pesel: {{ this.doctorInfo["pesel"] }}</div>
-            <div>Imie: {{ this.doctorInfo["first_name"] }}</div>
-            <div v-if="this.doctorInfo['second_name'] != null">Drugie imie: {{ this.doctorInfo['second_name'] }}</div>
-            <div>Nazwisko: {{ this.doctorInfo['last_name'] }} </div>
-          </v-card-text> 
-        </v-card>
-        <v-card class="card" style="margin-blokc-end: 20px">
-          <v-card-title>Dane Pacjenta </v-card-title>
-          <v-card-text>
-            <div>Pesel: {{ this.patientInfo["pesel"] }}</div>
-            <div>Imie: {{ this.patientInfo["first_name"] }}</div>
-            <div v-if="this.patientInfo['second_name'] != null">Drugie imie: {{ this.patientInfo['second_name'] }}</div>
-            <div>Nazwisko: {{ this.patientInfo['last_name'] }} </div>
-          </v-card-text> 
-        </v-card>
-
-        <v-btn
-          color="success"
-          class="mr-4"
-          @click="newPatientSameDoctor"
-        >
-          Przypisz nowego pacjenta do tego samego doktora
-        </v-btn>
-        <v-btn
-          color="success"
-          class="mr-4"
-          @click="newPatientNewDoctor"
-        >
-          Przypisz nowego pacjenta do innego doktora
-        </v-btn>
-      </div>
+        <v-row>
+          <h1> Sukces! Przypisano pacjenta do doktora. </h1>
+        </v-row>
+        <v-row>
+          <v-col>
+            <v-card class="card">
+              <v-card-title>Dane Doktora </v-card-title>
+              <v-card-text>
+                <div>Pesel: {{ this.doctorInfo["pesel"] }}</div>
+                <div>Imie: {{ this.doctorInfo["first_name"] }}</div>
+                <div v-if="this.doctorInfo['second_name'] != null">Drugie imie: {{ this.doctorInfo['second_name'] }}</div>
+                <div>Nazwisko: {{ this.doctorInfo['last_name'] }} </div>
+              </v-card-text> 
+            </v-card>
+          </v-col>
+          <v-col>
+            <v-card class="card">
+              <v-card-title>Dane Pacjenta </v-card-title>
+              <v-card-text>
+                <div>Pesel: {{ this.patientInfo["pesel"] }}</div>
+                <div>Imie: {{ this.patientInfo["first_name"] }}</div>
+                <div v-if="this.patientInfo['second_name'] != null">Drugie imie: {{ this.patientInfo['second_name'] }}</div>
+                <div>Nazwisko: {{ this.patientInfo['last_name'] }} </div>
+              </v-card-text> 
+            </v-card>
+          </v-col>
+        </v-row>
+        <v-row>
+            <v-btn
+              color="success"
+              class="mr-4"
+              @click="newPatientSameDoctor"
+            >
+              Przypisz nowego pacjenta do tego samego doktora
+            </v-btn>
+        </v-row>
+        <v-row>
+            <v-btn
+              color="success"
+              class="mr-4"
+              @click="newPatientNewDoctor"
+            >
+              Przypisz nowego pacjenta do innego doktora
+            </v-btn>
+        </v-row>
+      </v-container>
   </div>
 </template>
 
@@ -92,6 +101,10 @@ export default {
   },
   methods: {
     searchPatient(patient) {
+      if (patient.doctor_id) {
+        const choice = window.confirm("Wybrany pacjent ma już przypisanego doktora. Czy na pewno chcesz kontynuować?");
+        if (!choice) return;
+      }
       this.patientInfo = patient;
       this.patientId = patient.id;
       this.assignD2P();

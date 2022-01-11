@@ -1,9 +1,14 @@
 <template>
   <div>
-    <h3> Kryteria wyszukiwania (nie wszystkie są wymagane)</h3>
+    <h3>Kryteria wyszukiwania (nie wszystkie są wymagane)</h3>
     <v-form
       ref="form"
-      @submit="(e) => {e.preventDefault(); searchForUser();}"
+      @submit="
+        (e) => {
+          e.preventDefault();
+          searchForUser();
+        }
+      "
     >
       <v-select
         v-model="userIdType"
@@ -13,20 +18,11 @@
       <v-text-field
         id="user-id"
         v-model="userId"
-        v-bind:label="userIdType=='pesel' ? 'Pesel...': 'Nr paszportu...'"
+        v-bind:label="userIdType == 'pesel' ? 'Pesel...' : 'Nr paszportu...'"
       />
-      <v-text-field
-        v-model="first_name"
-        label="Pierwsze Imię"
-      />
-      <v-text-field
-        v-model="second_name"
-        label="Drugie Imię"
-      />
-      <v-text-field
-        v-model="last_name"
-        label="Nazwisko"
-      />
+      <v-text-field v-model="first_name" label="Pierwsze Imię" />
+      <v-text-field v-model="second_name" label="Drugie Imię" />
+      <v-text-field v-model="last_name" label="Nazwisko" />
       <v-btn
         color="success"
         class="mr-4"
@@ -36,42 +32,37 @@
         Wyszukaj
       </v-btn>
     </v-form>
-    
+
     <v-data-table
       v-if="foundUsers"
       v-model="selected_user"
       :headers="headers"
       :items="user_list"
       :single-select="true"
-      item-key="pesel"
+      item-key="id"
       :show-select="true"
       :multi-sort="true"
       checkbox-color="red"
     >
-      <template v-slot:top>
-        <v-btn
-          :disabled="!selected_user"
-          color="success"
-          class="mr-4"
-          @click="initSearch"
-        >
-        Wybierz zaznaczonego użytkownika
+      <template slot="item.data-table-select" slot-scope="{ item }">
+        <v-btn @click="selectUser(item)">
+          <v-icon>mdi-play</v-icon>
+          Wybierz
         </v-btn>
       </template>
     </v-data-table>
-  </div>  
+  </div>
 </template>
 
 <script>
-import { api } from '@/api';
+import { api } from "@/api";
 export default {
-  name: 'SearchUser',
-  props: ['searchUser', 'userType'],
+  name: "SearchUser",
+  props: ["searchUser", "userType"],
   data() {
     return {
-      //TODO: refactor userid useridtype handling 
-      userIdType: 'pesel',
-      userIdTypeList: ['pesel', 'nr paszportu'],
+      userIdType: "pesel",
+      userIdTypeList: ["pesel", "nr paszportu"],
       userId: null,
       first_name: null,
       second_name: null,
@@ -80,81 +71,79 @@ export default {
       foundUsers: false,
       selected_user: [],
       headers: [
-        { text: "Pesel", align: "start", value: "pesel"},
-        { text: "Pierwsze Imię", value: "first_name"},
-        { text: "Drugie Imię", value: "second_name"},
-        { text: "Nazwisko", value: "last_name"},
+        { text: "Pesel", align: "start", value: "pesel" },
+        { text: "Pierwsze Imię", value: "first_name" },
+        { text: "Drugie Imię", value: "second_name" },
+        { text: "Nazwisko", value: "last_name" },
+        { text: "Wybór", value: "data-table-select" },
       ],
-    }
+    };
   },
   methods: {
     createParams() {
-    //TODO: refactor userID maybe? 
-    let params={};
-    if(this.first_name!=null) {
-      params["first_name"]=this.first_name;
-    }
-    if(this.second_name!=null) {
-      params["second_name"]=this.second_name;
-    }
-    if(this.last_name!=null) {
-      params["last_name"]=this.last_name;
-    }
-    if(this.email!=null) {
-      params["email"]=this.email;
-    }
-    if(this.userId!=null) {
-      if(this.userIdType=="pesel") {
-        params["pesel"]=this.userId;
-      } else {
-        params["pass_num"]=this.userId;
+      //TODO: refactor userID maybe?
+      let params = {};
+      if (this.first_name != null) {
+        params["first_name"] = this.first_name;
       }
-    }
-    return params;
+      if (this.second_name != null) {
+        params["second_name"] = this.second_name;
+      }
+      if (this.last_name != null) {
+        params["last_name"] = this.last_name;
+      }
+      if (this.email != null) {
+        params["email"] = this.email;
+      }
+      if (this.userId != null) {
+        if (this.userIdType == "pesel") {
+          params["pesel"] = this.userId;
+        } else {
+          params["pass_num"] = this.userId;
+        }
+      }
+      return params;
     },
     async getUsers(params) {
-        let respone;
-        if(params!={}) {
-          respone=await api.getUsers(this.$store.getters["token"], params);
-        } else {
-          respone=await api.getUsers(this.$store.getters["token"], undefined);
-        }
-        let unfilteredUserList=respone.data;
-        unfilteredUserList.forEach(element => {
-          if(element.role==this.userType)
-            this.user_list.push(element);
-        });
-      },
+      let respone;
+      if (params != {}) {
+        respone = await api.getUsers(this.$store.getters["token"], params);
+      } else {
+        respone = await api.getUsers(this.$store.getters["token"], undefined);
+      }
+      let unfilteredUserList = respone.data;
+      unfilteredUserList.forEach((element) => {
+        if (element.role == this.userType) this.user_list.push(element);
+      });
+    },
     async searchForUser() {
       this.user_list = [];
-      let params=this.createParams();
+      let params = this.createParams();
 
       try {
         await this.getUsers(params);
-      } catch(error) {
-        console.log(error)
+      } catch (error) {
+        console.log(error);
         this.$store.dispatch("actionCheckApiError", error);
-        this.$store.commit("openSnackbar", "Wystąpił błąd podczas wyszukiwania");
+        this.$store.commit(
+          "openSnackbar",
+          "Wystąpił błąd podczas wyszukiwania"
+        );
       }
 
-      if (this.user_list.length > 0) this.foundUsers = true;
-
-
+      this.foundUsers = true;
     },
-    initSearch() {
-      this.user_list = [];
-      this.foundUsers = false;
-      this.searchUser(this.selected_user[0]);
+    async selectUser(user) {
       this.selected_user = null;
+      this.searchUser(user);
     },
   },
   mounted() {
-      this.user_list = [];
-      this.foundUsers = false;
+    this.user_list = [];
+    this.foundUsers = false;
   },
-}
+};
 </script>
 
 <style scoped>
-
 </style>

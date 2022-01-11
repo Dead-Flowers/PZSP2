@@ -108,7 +108,7 @@
         </v-list-item-icon>
         <v-list-item-content>
           <v-list-item-title>
-            Przypisz doktora do pacjenta
+            Przypisz pacjenta
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
