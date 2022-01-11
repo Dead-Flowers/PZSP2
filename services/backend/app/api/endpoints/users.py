@@ -1,8 +1,6 @@
 from typing import Any, List
 from uuid import UUID
 
-from sqlalchemy.sql.sqltypes import String
-
 from fastapi import APIRouter, Body, Depends, HTTPException
 from fastapi.encoders import jsonable_encoder
 from pydantic.networks import EmailStr
