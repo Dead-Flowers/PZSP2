@@ -1,9 +1,10 @@
+from datetime import date
 from typing import Optional
 from uuid import UUID
 
 from pydantic import BaseModel, EmailStr
 
-from app.models.user import UserRole
+from app.models.user import UserRole, Sex
 
 
 # Shared properties
@@ -15,6 +16,8 @@ class UserBase(BaseModel):
     first_name: Optional[str] = None
     second_name: Optional[str] = None
     last_name: Optional[str] = None
+    sex: Optional[Sex] = None
+    birth_date: Optional[date] = None
     doctor_id: Optional[UUID] = None
 
 

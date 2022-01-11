@@ -65,8 +65,10 @@ class CRUDUser(CRUDBase[User, UserCreate, UserUpdate]):
             first_name=obj_in.first_name,
             second_name=obj_in.second_name,
             last_name=obj_in.last_name,
-            doctor_id=obj_in.doctor_id,
             pesel=obj_in.pesel,
+            sex=obj_in.sex,
+            birth_date=obj_in.birth_date,
+            doctor_id=obj_in.doctor_id,
         )
         db.add(db_obj)
         db.commit()
