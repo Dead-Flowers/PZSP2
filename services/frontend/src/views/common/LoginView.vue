@@ -16,9 +16,6 @@ export default {
     if (this.$store.getters["isLoggedIn"]) {
       router.push(`/${this.$store.getters["userType"]}/home`);
     }
-    else {
-      router.push("/");
-    }
   },
 }
 </script>
