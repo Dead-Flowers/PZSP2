@@ -99,7 +99,7 @@ export default {
 <style>
 
 .analysisVisualization {
-  width: 60%
+  min-width: 70vw
 }
 
 </style>

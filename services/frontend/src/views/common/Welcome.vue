@@ -58,6 +58,11 @@ export default {
       ],
     }
   },
+  beforeMount() {
+    if (this.$store.getters["isLoggedIn"]) {
+      router.push(`/${this.$store.getters["userType"]}/home`);
+    }
+  },
 }
 </script>
 
