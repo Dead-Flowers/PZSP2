@@ -1,6 +1,6 @@
 <template>
     <div class="analysisVisualization" >
-      <AnalysisVisualization v-if="!loading" v-bind:analysisData="analysisData" v-bind:patient="patient"/>
+      <AnalysisVisualization v-if="!loading" v-bind:analysisData="analysisData" v-bind:patient="patient" v-bind:recordingId="recordingId"/>
       <div v-else>
           <v-row>
             <v-progress-circular
@@ -37,7 +37,8 @@ export default {
       analysisStatus: null,
       analysisData: [],
       patient: dummy_patient,
-      patientLoaded: false
+      patientLoaded: false,
+      recordingId: null
     }
   },
   computed: {
@@ -57,13 +58,14 @@ export default {
       {
         const analysis = await api.getAnalysisResults(this.$store.getters["token"], this.analysisId)
         this.analysisStatus = analysis.data.status;
+        this.recordingId = analysis.data.recording_id;
         if (!this.patientLoaded) {
           const patient = await api.getUser(this.$store.getters["token"], analysis.data.patient_id)
           this.patient = patient.data;
           this.patientLoaded = true;
         }
         if (analysis.data.status != "COMPLETED") {
-          this.$store.commit("openSnackbar", `Analysis status: ${analysis.data.status}`);
+          this.$store.commit("openSnackbar", `Status analizy: ${analysis.data.status}`);
           return;
         }
 
@@ -78,7 +80,7 @@ export default {
       } catch (error) {
           console.log(error)
           this.$store.dispatch("actionCheckApiError", error);
-          this.$store.commit("openSnackbar", "Problem with getting analysis results");
+          this.$store.commit("openSnackbar", "Wystąpił błąd podczas pobierania wyników analizy");
       }
     }
   },

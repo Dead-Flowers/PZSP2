@@ -23,6 +23,7 @@ class CRUDAnalysisResult(
             db.query(AnalysisResult, Recording)
             .filter(AnalysisResult.recording_id == Recording.id)
             .filter(AnalysisResult.patient_id == patient_id)
+            .order_by(AnalysisResult.created_date.desc())
             .all()
         )
 

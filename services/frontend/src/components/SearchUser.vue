@@ -134,7 +134,7 @@ export default {
       } catch(error) {
         console.log(error)
         this.$store.dispatch("actionCheckApiError", error);
-        this.$store.commit("openSnackbar", "Problem with searching");
+        this.$store.commit("openSnackbar", "Wystąpił błąd podczas wyszukiwania");
       }
 
       if (this.user_list.length > 0) this.foundUsers = true;

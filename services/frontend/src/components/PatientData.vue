@@ -6,12 +6,13 @@
 </template>
 
 <script>
-import PatientTable from "../../components/PatientTable.vue";
-import AnalysisResultTable from "../../components/AnalysisResultTable.vue";
+import PatientTable from "./PatientTable.vue";
+import AnalysisResultTable from "./AnalysisResultTable.vue";
 import { api } from "@/api";
 
 export default {
   name: "PatientData",
+  props: ["patientId"],
   components: {
     PatientTable,
     AnalysisResultTable,
@@ -24,20 +25,20 @@ export default {
     };
   },
   methods: {
-    async getUserData(id) {
+    async getUserData() {
       // fetch user data
       try {
-        const patient = await api.getUser(this.$store.getters["token"], id);
+        const patient = await api.getUser(this.$store.getters["token"], this.patientId);
         this.patientData = patient.data;
       } catch (e) {
         this.$store.dispatch("actionCheckApiError", e);
-        this.$store.commit("openSnackbar", "Problem z pobieraniem danych pacjneta ");
+        this.$store.commit("openSnackbar", "Wystąpił problem z pobieraniem danych pacjenta");
       }
       // fetch analysis
       try {
         const analyses = await api.getAnalysis(
           this.$store.getters["token"],
-          id
+          this.patientId
         );
         this.analyses = analyses.data;
         console.log(analyses);
@@ -66,11 +67,11 @@ export default {
         return;
       }
       console.log("analysis not found, refetching");
-      this.getUserData(this.$route.params.id)
+      this.getUserData();
     },
   },
   beforeMount() {
-    this.getUserData(this.$route.params.id);
+    this.getUserData();
   },
 };
 </script>

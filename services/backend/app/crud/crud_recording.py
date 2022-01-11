@@ -5,14 +5,19 @@ from uuid import UUID
 from sqlalchemy.orm import Session
 
 from app.core.security import get_password_hash, verify_password
-from app.crud.base import CRUDBase
+from app.crud.base import CRUDBase, ModelType
 from app.models.recording import Recording
 from app.schemas.recording import RecordingCreate
 
 
 class CRUDRecording(CRUDBase[Recording, RecordingCreate, None]):
     def get_by_patient_id(self, db: Session, patient_id: UUID) -> List[Recording]:
-        return db.query(Recording).filter(Recording.patient_id == patient_id).all()
+        return (
+            db.query(Recording)
+            .filter(Recording.patient_id == patient_id)
+            .order_by(Recording.creation_date.desc())
+            .all()
+        )
 
     def create(self, db: Session, *, obj_in: RecordingCreate) -> Recording:
         db_obj = Recording(
@@ -25,6 +30,17 @@ class CRUDRecording(CRUDBase[Recording, RecordingCreate, None]):
         db.commit()
         db.refresh(db_obj)
         return db_obj
+
+    def get_multi(
+        self, db: Session, skip: int = 0, limit: int = 100
+    ) -> List[ModelType]:
+        return (
+            db.query(self.model)
+            .offset(skip)
+            .limit(limit)
+            .order_by(Recording.creation_date.desc())
+            .all()
+        )
 
 
 recording = CRUDRecording(Recording)

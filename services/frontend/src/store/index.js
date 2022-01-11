@@ -4,13 +4,8 @@ import { userModule } from './user';
 
 Vue.use(Vuex)
 
-// tutorial for what i know
-// commit is for mutations, mutations are synchronous
-// dispatch is for actions, actions are asynchronous
-// don't know much about modules
 
 const state = {
-  //TODO: think it over 
   currentPatient: {
     patientIdType: 'pesel',
     pesel: "0123456789",

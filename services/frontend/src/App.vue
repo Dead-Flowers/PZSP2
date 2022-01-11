@@ -78,12 +78,16 @@ export default {
     onmessage(event) {
       console.log(event);
       const obj = JSON.parse(event.data);
+
       if (obj.type == "analysis-state-updated") {
         if (obj.payload.status == "PENDING") {
-            this.$store.commit("openSnackbar", "Analysis has been started ");
+            this.$store.commit("openSnackbar", "Analiza została rozpoczęta");
         }
         else if (obj.payload.status == "COMPLETED") {
-            this.$store.commit("openSnackbar", "Analysis has completed ");
+            this.$store.commit("openSnackbar", "Analiza została zakończona");
+        }
+        else if (obj.payload.status == "RETRYING") {
+          this.$store.commit("openSnackbar", "Analiza została ponowiona z powodu błędu");
         }
       }
     }

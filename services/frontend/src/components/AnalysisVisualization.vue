@@ -18,8 +18,9 @@
           <v-card class="card" elevation="2">
             <v-card-title>Dane analizy </v-card-title>
             <v-card-text>
-              <div>Średni % {{ average }}</div>
-              <div>Powyżej 80%: {{ counts.above }}</div>
+              <div>Średni % próbek: {{ average }}</div>
+              <div>Liczba próbek powyżej 80%: {{ counts.above }}</div>
+              <div><AnalysisDownloadButton v-bind:recordingId="recordingId" v-bind:text="'Pobierz nagranie'"/></div>
             </v-card-text> 
           </v-card>
         </v-col>
@@ -44,6 +45,7 @@ import {
   LegendComponent
 } from "echarts/components";
 import VChart, { THEME_KEY } from "vue-echarts";
+import AnalysisDownloadButton from "./AnalysisDownloadButton.vue";
 
 
 use([
@@ -56,15 +58,17 @@ use([
 
 export default {
   name: 'AnalysisVisualization',
-  props: ['analysisData', "patient"],
+  props: ['analysisData', 'patient', 'recordingId'],
   components: {
-    VChart
+    VChart,
+    AnalysisDownloadButton
   },
   provide: {
     [THEME_KEY]: "dark",
 
   },
   methods: {
+
   },
   computed: {
     option() {

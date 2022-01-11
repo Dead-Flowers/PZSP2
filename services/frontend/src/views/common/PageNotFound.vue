@@ -14,8 +14,9 @@ export default {
   },
   methods: {
     goToCorrectPage() {
-      if (this.$store.getters["isLoggedIn"]) {
-        router.push(`/${this.$store.getters["userType"]}/home`);
+      const userType = `${this.$store.getters["userType"]}`;
+      if (this.$store.getters["isLoggedIn"] && userType && userType != 'null') {
+        router.push(`/${userType}/home`);
       }
       else {
         router.push("/");

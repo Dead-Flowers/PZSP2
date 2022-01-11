@@ -2,27 +2,23 @@ from typing import Optional
 from uuid import UUID
 from app.schemas.analysis_result import AnalysisResultCreate
 
-from fastapi import status, WebSocket
+from fastapi import status
 
 
 from fastapi import (
     APIRouter,
-    Body,
     Depends,
     HTTPException,
     File,
     UploadFile,
-    BackgroundTasks,
 )
 
 from sqlalchemy.orm import Session
-from app import crud, models, schemas
+from app import crud, models
 from app.schemas.recording import RecordingCreate
-from app.services.bowel_service import BowelAnalysisService
 from app.worker import app as celery_ref
-from app.services.ws_manager import manager as ws_manager
-
 from app.api import deps
+from starlette.responses import Response
 
 router = APIRouter()
 
@@ -64,7 +60,7 @@ async def upload_audio_file(
 
     if not can_modify_results(db, current_user, patient_id):
         raise HTTPException(
-            status_code=403, detail="Insufficient privilages to access this patient"
+            status_code=403, detail="Insufficient privileges to access this patient"
         )
     data = await file_in.read()
 
@@ -85,7 +81,7 @@ def get_recording(
     recording = crud.recording.get(db, recording_id)
     if not can_access_results(db, current_user, recording.patient_id):
         raise HTTPException(
-            status_code=403, detail="Insufficient privilages to access this patient"
+            status_code=403, detail="Insufficient privileges to access this patient"
         )
     return dict(
         id=recording.id,
@@ -125,6 +121,27 @@ def get_recordings(
     return recs
 
 
+@router.post("/recordings/{recording_id}/download", status_code=status.HTTP_200_OK)
+def perform_analysis(
+    *,
+    db: Session = Depends(deps.get_db),
+    current_user: models.User = Depends(deps.get_current_user),
+    recording_id: UUID,
+):
+    recording = crud.recording.get(db, recording_id)
+    if not can_access_results(db, current_user, recording.patient_id):
+        raise HTTPException(
+            status_code=403,
+            detail="Insufficient privileges to access this recording",
+        )
+    blob = recording.blob
+    return Response(
+        blob,
+        media_type="application/octet-stream",
+        headers={"X-filename": recording.filename},
+    )
+
+
 @router.post("/recordings/{recording_id}/analyze", status_code=status.HTTP_202_ACCEPTED)
 def perform_analysis(
     *,
@@ -132,20 +149,18 @@ def perform_analysis(
     current_user: models.User = Depends(deps.get_current_user),
     recording_id: UUID,
 ):
-    db: Session
-    for db in deps.get_db():
-        recording = crud.recording.get(db, recording_id)
-        if not can_modify_results(db, current_user, recording.patient_id):
-            raise HTTPException(
-                status_code=403,
-                detail="Insufficient privilages to access this recording",
-            )
-        analysis_create = AnalysisResultCreate(
-            status="CREATED", patient_id=recording.patient_id, recording_id=recording_id
+    recording = crud.recording.get(db, recording_id)
+    if not can_modify_results(db, current_user, recording.patient_id):
+        raise HTTPException(
+            status_code=403,
+            detail="Insufficient privileges to access this recording",
         )
-        result = crud.analysis_result.create(db, obj_in=analysis_create)
-        celery_ref.send_file.delay(recording_id, result.id)
-        return result.id
+    analysis_create = AnalysisResultCreate(
+        status="CREATED", patient_id=recording.patient_id, recording_id=recording_id
+    )
+    result = crud.analysis_result.create(db, obj_in=analysis_create)
+    celery_ref.send_file.delay(recording_id, result.id)
+    return result.id
 
 
 @router.get("/results/{analysis_id}")
@@ -161,7 +176,12 @@ def get_result_by_id(
             status_code=403,
             detail="Insufficient privileges to access this analysis result",
         )
-    return dict(id=result.id, status=result.status, patient_id=result.patient_id)
+    return dict(
+        id=result.id,
+        status=result.status,
+        patient_id=result.patient_id,
+        recording_id=result.recording_id,
+    )
 
 
 @router.get("/results/{analysis_id}/frames")
@@ -232,10 +252,13 @@ def get_results(
     limit: int = 100,
 ):
     if not crud.user.has_roles(
-        current_user, models.UserRole.Admin, models.UserRole.Doctor
+        current_user,
+        models.UserRole.Admin,
+        models.UserRole.Doctor,
+        models.UserRole.Patient,
     ):
         raise HTTPException(
-            status_code=403, detail="Insufficient privilages to access all results"
+            status_code=403, detail="Insufficient privileges to access all results"
         )
 
     all_results = []
@@ -259,14 +282,19 @@ def get_results(
             else:
                 raise HTTPException(
                     status_code=403,
-                    detail="Insufficient privilages to access this patient's results",
+                    detail="Insufficient privileges to access this patient's results",
                 )
         return results
 
+    def handle_patient():
+        return crud.analysis_result.get_by_patient_id(db, current_user.id)
+
     if crud.user.has_roles(current_user, models.UserRole.Admin):
         all_results = handle_admin()
-    else:
+    elif crud.user.has_roles(current_user, models.UserRole.Doctor):
         all_results = handle_doctor()
+    elif crud.user.has_roles(current_user, models.UserRole.Patient):
+        all_results = handle_patient()
 
     filtered_results = []
     for result in all_results:

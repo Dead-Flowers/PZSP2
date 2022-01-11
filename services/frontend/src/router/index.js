@@ -8,11 +8,11 @@ import NewPatient from '../views/admin/NewPatient.vue'
 import AssignDoctorToPatient from '../views/admin/AssignDoctorToPatient.vue'
 import NewDoctor from '../views/admin/NewDoctor.vue'
 import PageNotFound from '../views/common/PageNotFound.vue'
-import PatientData from '../views/doctor/PatientData.vue'
+import PatientAnalyses from '../views/doctor/PatientAnalyses.vue'
 import RecordingsData from '../views/doctor/RecordingsData.vue'
 import PatientPage from '../views/patient/PatientPage.vue'
 import Patient from '../views/patient/Patient.vue'
-import PatientAnalyses from '../views/patient/PatientAnalyses.vue'
+import UserOwnData from '../views/patient/UserOwnData.vue'
 import DoctorPage from '../views/doctor/DoctorPage'
 import Doctor from '../views/doctor/Doctor'
 import Welcome from '../views/common/Welcome.vue'
@@ -108,7 +108,7 @@ export default new Router({
         {
           path: 'patient-data/:id',
           name: 'doctor_PatientData',
-          component: PatientData
+          component: PatientAnalyses
         },
         {
           path: 'home',
@@ -147,7 +147,7 @@ export default new Router({
         {
           path: 'analyses',
           name: 'patient_Analyses',
-          component: PatientAnalyses
+          component: UserOwnData
         },
         {
           path: 'analysis/:id',

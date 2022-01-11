@@ -5,7 +5,7 @@
         <tr>
           <th>Status</th>
           <th>Data badania</th>
-          <th>Nazwa pliku</th>
+          <th>Nagranie</th>
           <th>Wynik analizy</th>
         </tr>  
       </thead>
@@ -13,13 +13,18 @@
         <tr 
           v-bind:key="analysis.id" 
           v-for="analysis in analyses"
+          :class="analysis.status == 'PENDING'? 'pending': ''"
         >
           <td>{{analysis.status}}</td>
           <td>{{ formatDate(analysis.created_date)}}</td>
-          <td>{{ analysis.recording_name }}</td>
+          <td>
+            <div>
+              <span>{{ analysis.recording_name }}</span>
+            </div>
+          </td>
           <td>
             <v-btn @click="goToAnalysis(analysis.id)">
-              Kliknij by zobaczyć wyniki 🗃️
+              <v-icon>mdi-note-search</v-icon> Pokaż wyniki
             </v-btn>
           </td>
         </tr>
@@ -29,20 +34,17 @@
 </template>
 
 <script>
+import { formatDate } from "../utils";
+
 export default {
   name: 'analysisResultTable',
   props: ['analyses', 'loading'],
   data() {
-    console.log(this.analyses)
     return {
     }
   },
   methods: {
-    formatDate (datestr) {
-      
-      let date = new Date(Date.parse(datestr));
-      return `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDate()} ${date.getHours()}:${date.getMinutes() < 10 ? '0' + date.getMinutes(): date.getMinutes()}`
-    },
+    formatDate,
     goToAnalysis(id) {
       this.$router.push(`/${this.$store.getters["userType"]}/analysis/${id}`)
     }
@@ -51,10 +53,19 @@ export default {
     load() {
       return this.loading
     }
-  }
-
+  },
+  
 }
 </script>
 
 <style scoped>
+.pending {
+  animation: color-change 4s infinite;
+}
+
+@keyframes color-change {
+  0% { background-color: #00ccff; }
+  50% { background-color: transparent; }
+  100% { background-color: #00ccff; }
+}
 </style>
