@@ -5,7 +5,7 @@
         <tr>
           <th>Status</th>
           <th>Data badania</th>
-          <th>Nazwa pliku</th>
+          <th>Nagranie</th>
           <th>Wynik analizy</th>
         </tr>  
       </thead>
@@ -15,12 +15,16 @@
           v-for="analysis in analyses"
           :class="analysis.status == 'PENDING'? 'pending': ''"
         >
-          <td :style="analysis.status == 'PENDING'? 'color: red': ''" >{{analysis.status}}</td>
+          <td>{{analysis.status}}</td>
           <td>{{ formatDate(analysis.created_date)}}</td>
-          <td>{{ analysis.recording_name }}</td>
+          <td>
+            <div>
+              <span>{{ analysis.recording_name }}</span>
+            </div>
+          </td>
           <td>
             <v-btn @click="goToAnalysis(analysis.id)">
-              Kliknij by zobaczyć wyniki 🗃️
+              <v-icon>mdi-note-search</v-icon> Pokaż wyniki
             </v-btn>
           </td>
         </tr>
@@ -30,9 +34,8 @@
 </template>
 
 <script>
-const stringPadding =(value, paddingSize, paddingValue) => {
-  return `${value}`.padStart(paddingSize, paddingValue)
-}
+import { formatDate } from "../utils";
+
 export default {
   name: 'analysisResultTable',
   props: ['analyses', 'loading'],
@@ -41,10 +44,7 @@ export default {
     }
   },
   methods: {
-    formatDate (datestr) {
-      let date = new Date(Date.parse(datestr));
-      return `${date.getFullYear()}-${stringPadding(date.getMonth()+1, 2, '0')}-${date.getDate()} ${date.getHours()}:${stringPadding(date.getMinutes(), 2, '0')}`
-    },
+    formatDate,
     goToAnalysis(id) {
       this.$router.push(`/${this.$store.getters["userType"]}/analysis/${id}`)
     }

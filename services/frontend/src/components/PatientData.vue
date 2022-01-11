@@ -32,7 +32,7 @@ export default {
         this.patientData = patient.data;
       } catch (e) {
         this.$store.dispatch("actionCheckApiError", e);
-        this.$store.commit("openSnackbar", "Problem z pobieraniem danych pacjneta ");
+        this.$store.commit("openSnackbar", "Wystąpił problem z pobieraniem danych pacjenta");
       }
       // fetch analysis
       try {

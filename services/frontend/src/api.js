@@ -65,33 +65,48 @@ export const api = {
     config.params["patient_id"] = patientID;
     return axios.post(`${APISUFFIX}/api/analysis/recordings/upload`,
     file,
-    config)
+    config);
   },
 
   async startAnalysis(token, recordingID) {
-      return axios.post(`${APISUFFIX}/api/analysis/recordings/${recordingID}/analyze`, null, authHeaders(token))
+      return axios.post(`${APISUFFIX}/api/analysis/recordings/${recordingID}/analyze`, null, authHeaders(token));
   },
 
   async getAnalysisResults(token, analysisID) {
-      return axios.get(`${APISUFFIX}/api/analysis/results/${analysisID}`, authHeaders(token))
+      return axios.get(`${APISUFFIX}/api/analysis/results/${analysisID}`, authHeaders(token));
   },
 
   async getFrames(token, analysisID) {
-    return axios.get(`${APISUFFIX}/api/analysis/results/${analysisID}/frames`, authHeaders(token))
+    return axios.get(`${APISUFFIX}/api/analysis/results/${analysisID}/frames`, authHeaders(token));
   },
 
   async getAnalysis(token, patientID) {
     let config = authHeaders(token);
-    config["params"] = {}
-    config.params["patient_id"] = patientID
-    return axios.get(`${APISUFFIX}/api/analysis/results`, config)
+    config["params"] = {};
+    config.params["patient_id"] = patientID;
+    return axios.get(`${APISUFFIX}/api/analysis/results`, config);
   },
 
   async getRecordings(token, patientID) {
     let config = authHeaders(token);
-    config["params"] = {}
-    config.params["patient_id"] = patientID
-    return axios.get(`${APISUFFIX}/api/analysis/recordings`, config)
+    config["params"] = {};
+    config.params["patient_id"] = patientID;
+    return axios.get(`${APISUFFIX}/api/analysis/recordings`, config);
+  },
+
+  async getRecording(token, recordingID) {
+    let config = authHeaders(token);
+    return axios.get(`${APISUFFIX}/api/analysis/recordings/${recordingID}`, config);
+  },
+
+  downloadRecording(token, recordingID, downloadCallback) {
+    return axios.request({
+      method: 'post',
+      url: `${APISUFFIX}/api/analysis/recordings/${recordingID}/download`,
+      ...authHeaders(token),
+      responseType: 'arraybuffer',
+      onDownloadProgress: downloadCallback
+    });
   }
   
 

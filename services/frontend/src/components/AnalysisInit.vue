@@ -1,7 +1,12 @@
 <template>
   <v-form
     ref="form"
-    @submit="(e) => { e.preventDefault(); startAnalysis(); }"
+    @submit="
+      (e) => {
+        e.preventDefault();
+        startAnalysis();
+      }
+    "
   >
     <v-btn
       :disabled="!analysis_file || analysis_file.length == 0"
@@ -21,8 +26,8 @@
 </template>
 
 <script>
-import { api } from '@/api';
-import router from '../router'
+import { api } from "@/api";
+import router from "../router";
 
 export default {
   name: "AnalysisInit",
@@ -30,31 +35,43 @@ export default {
   data() {
     return {
       analysis_file: [],
-    }
+    };
   },
   methods: {
     async startAnalysis() {
-      let analysis_id = await this.uploadFile(this.analysis_file, this.patientID);
+      let analysis_id = await this.uploadFile(
+        this.analysis_file,
+        this.patientID
+      );
       router.push(`/doctor/analysisStarted/${analysis_id}`);
-      },
-    async uploadFile (file, patientID) {
+    },
+    async uploadFile(file, patientID) {
       try {
         let formData = new FormData();
-        formData.append('file_in', file);
-        let response = await api.uploadFile(this.$store.getters["token"], formData, patientID)
-        let recordingID = response.data
+        formData.append("file_in", file);
+        let response = await api.uploadFile(
+          this.$store.getters["token"],
+          formData,
+          patientID
+        );
+        let recordingID = response.data;
 
-        response = await api.startAnalysis(this.$store.getters["token"], recordingID)
-        return response.data
+        response = await api.startAnalysis(
+          this.$store.getters["token"],
+          recordingID
+        );
+        return response.data;
       } catch (e) {
         await this.$store.dispatch("actionCheckApiError", e);
-        this.$store.commit("openSnackbar", "Problem with uploading file!");
+        this.$store.commit(
+          "openSnackbar",
+          "Wystąpił problem podczas wysyłania nagrania"
+        );
       }
-    } 
+    },
   },
-}
+};
 </script>
 
 <style scoped>
-
 </style>

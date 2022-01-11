@@ -46,10 +46,12 @@ const defaultState = {
             if (response.data) {
                 setUserData(context, response.data)                
             }
+            return true;
         } catch (error) {
             await context.dispatch("actionCheckApiError", error);
             context.commit("openSnackbar", "Problem with getting user data")
         }
+        return false;
     },
 
     async actionCheckLoggedIn(context) {
@@ -64,15 +66,18 @@ const defaultState = {
             }
             if (token) {
                 try {
-                    await context.dispatch("actionGetMe");
-                    context.commit("setLoggedIn", true)
+                    const isLoggedIn = await context.dispatch("actionGetMe");
+                    context.commit("setLoggedIn", isLoggedIn);
+                    if (!isLoggedIn) {
+                        await context.dispatch("actionLogOut");
+                    }
                 } catch (error) {
                     await context.dispatch("actionCheckApiError", error);
-                    context.commit("openSnackbar", "You're not logged in!");
+                    context.commit("openSnackbar", "Nie jesteś zalogowany!");
                 }
             } else {
                 await context.dispatch("actionLogOut");
-                context.commit("openSnackbar", "You're not logged in!");
+                context.commit("openSnackbar", "Nie jesteś zalogowany!");
             }
         }
     },
@@ -81,7 +86,7 @@ const defaultState = {
         removeLocalToken();
         context.commit("setToken", '');
         context.commit("setLoggedIn", false);
-        context.commit("openSnackbar", "You've been logout!");
+        context.commit("openSnackbar", "Zostałeś wylogowany");
     },
 
     async actionCheckApiError(context, payload) {
