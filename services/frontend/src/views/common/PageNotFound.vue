@@ -1,5 +1,5 @@
 <template>
-  <div @click="goToFrontPage" class="er404">
+  <div @click="goToCorrectPage" class="er404">
     <h1>Błąd 404 Nie znaleziono strony</h1>
     <hr />
     <h2>Powrót</h2>
@@ -13,7 +13,7 @@ export default {
   components: {
   },
   methods: {
-    goToFrontPage() {
+    goToCorrectPage() {
       if (this.$store.getters["isLoggedIn"]) {
         router.push(`/${this.$store.getters["userType"]}/home`);
       }
