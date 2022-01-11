@@ -1,4 +1,4 @@
-from typing import Any, List
+from typing import Optional
 from uuid import UUID
 from app.schemas.analysis_result import AnalysisResultCreate
 
@@ -22,18 +22,35 @@ from app.services.bowel_service import BowelAnalysisService
 from app.worker import app as celery_ref
 from app.services.ws_manager import manager as ws_manager
 
-router = APIRouter()
 from app.api import deps
 
+router = APIRouter()
 
-def check_doctor(
-    db: Session = Depends(deps.get_db), doctor_id: UUID = None, patient_id: UUID = None
-) -> bool:
-    patients = crud.user.get_by_doctor_id(db, doctor_id)
-    ids = [patient.id for patient in patients]
-    if patient_id not in ids:
-        return False
-    return True
+
+def can_access_results(db: Session, user: models.User, patient_id: Optional[UUID]):
+    if patient_id is None:
+        return crud.user.has_roles(user, models.UserRole.Admin)
+
+    return (
+        crud.user.has_roles(user, models.UserRole.Admin)
+        or (
+            crud.user.has_roles(user, models.UserRole.Doctor)
+            and crud.user.get(db, patient_id).doctor_id == user.id
+        )
+        or (
+            crud.user.has_roles(user, models.UserRole.Patient) and user.id == patient_id
+        )
+    )
+
+
+def can_modify_results(db: Session, user: models.User, patient_id: Optional[UUID]):
+    if patient_id is None:
+        return crud.user.has_roles(user, models.UserRole.Admin)
+
+    return crud.user.has_roles(user, models.UserRole.Admin) or (
+        crud.user.has_roles(user, models.UserRole.Doctor)
+        and crud.user.get(db, patient_id).doctor_id == user.id
+    )
 
 
 @router.post("/recordings/upload")
@@ -45,9 +62,7 @@ async def upload_audio_file(
     file_in: UploadFile = File(...),
 ):
 
-    if not crud.user.has_roles(
-        current_user, models.UserRole.Admin
-    ) and not check_doctor(db, current_user.id, patient_id):
+    if not can_modify_results(db, current_user, patient_id):
         raise HTTPException(
             status_code=403, detail="Insufficient privilages to access this patient"
         )
@@ -68,10 +83,7 @@ def get_recording(
     recording_id: UUID,
 ):
     recording = crud.recording.get(db, recording_id)
-    patient_id = recording.patient_id
-    if not crud.user.has_roles(
-        current_user, models.UserRole.Admin
-    ) and not check_doctor(db, current_user.id, patient_id):
+    if not can_access_results(db, current_user, recording.patient_id):
         raise HTTPException(
             status_code=403, detail="Insufficient privilages to access this patient"
         )
@@ -88,22 +100,13 @@ def get_recordings(
     *,
     db: Session = Depends(deps.get_db),
     current_user: models.User = Depends(deps.get_current_user),
-    patient_id: UUID = None,
+    patient_id: Optional[UUID] = None,
     skip: int = 0,
     limit: int = 100,
 ):
-    if (
-        not crud.user.has_roles(current_user, models.UserRole.Admin)
-        and patient_id is None
-    ):
+    if not can_access_results(db, current_user, patient_id):
         raise HTTPException(
-            status_code=403, detail="Insufficient privilages to access all recordings"
-        )
-    elif crud.user.has_roles(current_user, models.UserRole.Doctor) and not check_doctor(
-        db, current_user.id, patient_id
-    ):
-        raise HTTPException(
-            status_code=403, detail="Insufficient privilages to access this recording"
+            status_code=403, detail="Insufficient privileges to access these recordings"
         )
     if patient_id is None:
         recordings = crud.recording.get_multi(db, skip, limit)
@@ -132,9 +135,7 @@ def perform_analysis(
     db: Session
     for db in deps.get_db():
         recording = crud.recording.get(db, recording_id)
-        if not crud.user.has_roles(
-            current_user, models.UserRole.Admin
-        ) and not check_doctor(db, current_user.id, recording.patient_id):
+        if not can_modify_results(db, current_user, recording.patient_id):
             raise HTTPException(
                 status_code=403,
                 detail="Insufficient privilages to access this recording",
@@ -148,37 +149,33 @@ def perform_analysis(
 
 
 @router.get("/results/{analysis_id}")
-def get_results(
+def get_result_by_id(
     *,
     db: Session = Depends(deps.get_db),
     current_user: models.User = Depends(deps.get_current_user),
     analysis_id: UUID,
 ):
     result = crud.analysis_result.get(db, analysis_id)
-    if not crud.user.has_roles(
-        current_user, models.UserRole.Admin
-    ) and not check_doctor(db, current_user.id, result.patient_id):
+    if not can_access_results(db, current_user, result.patient_id):
         raise HTTPException(
             status_code=403,
-            detail="Insufficient privilages to access this analysis result",
+            detail="Insufficient privileges to access this analysis result",
         )
     return dict(id=result.id, status=result.status, patient_id=result.patient_id)
 
 
 @router.get("/results/{analysis_id}/frames")
-def get_results(
+def get_result_frames(
     *,
     db: Session = Depends(deps.get_db),
     current_user: models.User = Depends(deps.get_current_user),
     analysis_id: UUID,
 ):
     result = crud.analysis_result.get(db, analysis_id)
-    if not crud.user.has_roles(
-        current_user, models.UserRole.Admin
-    ) and not check_doctor(db, current_user.id, result.patient_id):
+    if not can_access_results(db, current_user, result.patient_id):
         raise HTTPException(
             status_code=403,
-            detail="Insufficient privilages to access this analysis result",
+            detail="Insufficient privileges to access this analysis result",
         )
     if result.status != "COMPLETED":
         raise HTTPException(
@@ -189,19 +186,17 @@ def get_results(
 
 
 @router.get("/results/{analysis_id}/statistics")
-def get_results(
+def get_result_statistics(
     *,
     db: Session = Depends(deps.get_db),
     current_user: models.User = Depends(deps.get_current_user),
     analysis_id: UUID,
 ):
     result = crud.analysis_result.get(db, analysis_id)
-    if not crud.user.has_roles(
-        current_user, models.UserRole.Admin
-    ) and not check_doctor(db, current_user.id, result.patient_id):
+    if not can_access_results(db, current_user, result.patient_id):
         raise HTTPException(
             status_code=403,
-            detail="Insufficient privilages to access this analysis result",
+            detail="Insufficient privileges to access this analysis result",
         )
     if result.status != "COMPLETED":
         raise HTTPException(
@@ -212,19 +207,17 @@ def get_results(
 
 
 @router.get("/results/{analysis_id}/status")
-def get_results(
+def get_result_status(
     *,
     db: Session = Depends(deps.get_db),
     current_user: models.User = Depends(deps.get_current_user),
     analysis_id: UUID,
 ):
     result = crud.analysis_result.get(db, analysis_id)
-    if not crud.user.has_roles(
-        current_user, models.UserRole.Admin
-    ) and not check_doctor(db, current_user.id, result.patient_id):
+    if not can_access_results(db, current_user, result.patient_id):
         raise HTTPException(
             status_code=403,
-            detail="Insufficient privilages to access this analysis result",
+            detail="Insufficient privileges to access this analysis result",
         )
     return result.status
 
@@ -261,7 +254,7 @@ def get_results(
             for pat in patients:
                 results.extend(crud.analysis_result.get_by_patient_id(db, pat.id))
         else:
-            if check_doctor(db, current_user.id, patient_id):
+            if can_modify_results(db, current_user, patient_id):
                 results = crud.analysis_result.get_by_patient_id(db, patient_id)
             else:
                 raise HTTPException(
