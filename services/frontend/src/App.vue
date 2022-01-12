@@ -18,7 +18,7 @@
             v-bind="attrs"
             @click="closeSnackbar"
           >
-          Close
+          Zamknij
           </v-btn>
         </template>
       </v-snackbar>

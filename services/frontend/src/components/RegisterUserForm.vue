@@ -110,7 +110,7 @@ export default {
       userIdType: 'pesel',
       userIdTypeList: ['pesel', 'id paszportu'],
       sex: null,
-      sexList: ['Meżczyzna', 'Kobieta', 'Inna'],
+      sexList: ['Mężczyzna', 'Kobieta', 'Inna'],
       first_name: null,
       second_name: null,
       last_name: null,
