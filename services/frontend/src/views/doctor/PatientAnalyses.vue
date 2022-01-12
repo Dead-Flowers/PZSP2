@@ -1,5 +1,7 @@
 <template>
   <div>
+    <h1>Analizy</h1>
+    <v-divider/>
     <PatientData v-bind:patientId="this.$route.params.id" />
   </div>
 </template>
