@@ -1,11 +1,11 @@
 <template>
   <div>
-    <h1>
-      Wybrany pacjent -
+    <h1>Nowa analiza</h1>
+    <h2>
       {{
         `${this.patientData["first_name"]} ${this.patientData["second_name"]} ${this.patientData["last_name"]}`
       }}
-    </h1>
+    </h2>
     <AnalysisInit v-bind:patientID="chosenUserId" />
   </div>
 </template>

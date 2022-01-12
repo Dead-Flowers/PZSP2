@@ -1,10 +1,12 @@
 <template>
   <div>
+      <h1>Przypisywanie pacjenta</h1>
+      <v-divider/>
       <!-- Wybor doktora -->
       <div
         v-if="this.stage == 'noDoctor'"
       >
-        <h1> Wyszukaj Doktora </h1>
+        <h2> Wyszukaj Doktora </h2>
         <SearchUser v-bind:searchUser="searchDoctor" v-bind:userType="'doctor'" />
       </div>
 
@@ -14,7 +16,7 @@
         v-if="this.stage == 'hasDoctor'"
       >     
         <div>
-          <h1> Wyszukaj Pacjenta </h1>
+          <h2> Wyszukaj Pacjenta </h2>
           <SearchUser v-bind:searchUser="searchPatient" v-bind:userType="'patient'" />
         </div>
         <v-card>
@@ -33,7 +35,7 @@
         v-if="this.stage == 'assigned'"
       >
         <v-row>
-          <h1> Sukces! Przypisano pacjenta do doktora. </h1>
+          <h2> Sukces! Przypisano pacjenta do doktora. </h2>
         </v-row>
         <v-row>
           <v-col>

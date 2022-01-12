@@ -1,5 +1,7 @@
 <template>
   <div>
+    <h1>{{ header }}</h1>
+    <v-divider/>
     <SearchUser v-bind:searchUser="searchUser" v-bind:userType="'patient'" />
   </div>
 </template>
@@ -15,7 +17,17 @@ export default {
   },
   data() {
     return {
-        targetPage: null,
+    }
+  },
+  computed: {
+    header() {
+      return this.targetPage == 'new-analysis' ? 'Nowa analiza'
+             : this.targetPage == 'recordings' ? 'Nagrania'
+             : this.targetPage == 'patient-data' ? 'Dane pacjenta'
+             : null
+    },
+    targetPage() {
+      return this.$route.params.target;
     }
   },
   methods: {
@@ -25,7 +37,7 @@ export default {
     
   },
   beforeMount() {
-    this.targetPage = this.$route.params.target
+    
   },
 }
 </script>

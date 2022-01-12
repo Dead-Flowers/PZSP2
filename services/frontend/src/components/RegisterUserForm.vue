@@ -3,11 +3,14 @@
     ref="form"
     v-model="valid" 
     @submit="(e) => {e.preventDefault(); submitRegistration();}"
-  >
-    <h1 v-if="registationDone"> Rejestracja zakończona  </h1> 
-    <small v-if="registationDone">  Zapisz hasło dla użytkownika: {{ password }} </small>
+  > 
+    <div v-if="registationDone">
+      <h1> Rejestracja zakończona  </h1> 
+      <h3>  Zapisz hasło dla użytkownika: {{ password }} </h3>
+      <v-divider/>
+    </div>
     <h1 v-if="registationError"> Problem z rejestracją </h1>
-    <h1 v-else> Zarejestruj {{this.wording}} </h1> 
+    <h2 v-else> Zarejestruj {{this.wording}} </h2> 
      <v-select
       v-model="userIdType"
       :items="userIdTypeList"
@@ -110,7 +113,7 @@ export default {
       userIdType: 'pesel',
       userIdTypeList: ['pesel', 'id paszportu'],
       sex: null,
-      sexList: ['Meżczyzna', 'Kobieta', 'Inna'],
+      sexList: ['Mężczyzna', 'Kobieta', 'Inna'],
       first_name: null,
       second_name: null,
       last_name: null,

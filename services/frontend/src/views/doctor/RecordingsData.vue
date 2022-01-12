@@ -1,5 +1,7 @@
 <template>
   <div>
+    <h1>Nagrania</h1>
+    <v-divider/>
     <PatientTable :loading="loading" v-bind:patientData="patientData" />
     <RecordingsTable :loading="loading" v-bind:recordings="recordings" />
   </div>
