@@ -8,9 +8,9 @@ from sqlalchemy.orm import Session
 from app.models.news import News
 
 
-class CRUDNews(CRUDBase[News, NewsCreate, NewsUpdate, None]):
+class CRUDNews(CRUDBase[News, NewsCreate, NewsUpdate]):
     def get_last_news(self, db: Session, count: int = 5) -> List[News]:
-        return db.query(News).limit(count).order_by(News.creation_date.desc()).all()
+        return db.query(News).order_by(News.creation_date.desc()).limit(count).all()
 
     def create(self, db: Session, *, obj_in: NewsCreate) -> News:
         db_obj = News(title=obj_in.title, description=obj_in.description)
@@ -25,6 +25,7 @@ class CRUDNews(CRUDBase[News, NewsCreate, NewsUpdate, None]):
 
     def remove(self, db: Session, news_id: UUID) -> None:
         db.query(News).filter(News.id == news_id).delete()
+        db.commit()
 
 
 news = CRUDNews(News)
