@@ -30,6 +30,8 @@
 </template>
 
 <script>
+import { api } from "@/api";
+
 export default {
   name: "AddNewsForm",
   data() {
@@ -53,10 +55,15 @@ export default {
         title: this.title,
         description: this.description,
       };
-      await this.$store.dispatch("actionAddNews", payload);
+      try {
+        await api.addNews(this.$store.getters["token"], payload);
+        this.addingNewsError = false;
+        this.addingNewsDone = true;
+      } catch (e) {
+        this.addingNewsError = true;
+        this.addingNewsDone = false;
+      }
 
-      this.addingNewsDone = this.$store.getters["registrationSuccess"];
-      this.addingNewsError = this.$store.getters["registrationError"];
       this.$router.push(`/admin/news/`);
     },
   },

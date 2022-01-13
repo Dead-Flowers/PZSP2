@@ -63,15 +63,22 @@ export default {
     },
     async updateNews() {
       let payload = {
-        id: this.newsId,
         title: this.title,
         description: this.description,
       };
-      await this.$store.dispatch("actionUpdateNews", payload);
 
-      this.addingNewsDone = this.$store.getters["registrationSuccess"];
-      this.addingNewsError = this.$store.getters["registrationError"];
-
+      try {
+        await api.updateNewsById(
+          this.$store.getters["token"],
+          this.newsId,
+          payload
+        );
+        this.addingNewsDone = true;
+        this.addingNewsError = false;
+      } catch (e) {
+        this.addingNewsDone = false;
+        this.addingNewsError = true;
+      }
       this.$router.push(`/admin/news/`);
     },
   },

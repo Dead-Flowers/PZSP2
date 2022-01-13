@@ -1,7 +1,7 @@
 """added news table
 
 Revision ID: 97b9e398ea57
-Revises: 733754edb92f
+Revises: b976e217e3bb
 Create Date: 2022-01-12 21:30:56.539558
 
 """
@@ -11,7 +11,7 @@ from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
 revision = "97b9e398ea57"
-down_revision = "733754edb92f"
+down_revision = "b976e217e3bb"
 branch_labels = None
 depends_on = None
 

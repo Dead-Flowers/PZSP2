@@ -58,7 +58,12 @@ export default {
         "Na pewno chcesz usunąć wybraną aktualność?"
       );
       if (!choice) return;
-      await this.$store.dispatch("actionRemoveNews", id);
+      try {
+        await api.removeNewsById(this.$store.getters["token"], id);
+      } catch (e) {
+        this.$store.dispatch("actionCheckApiError", e);
+        this.$store.commit("openSnackBar", "Problem z pobieraniem danych");
+      }
       await this.getNewsData();
     },
     createNew() {
