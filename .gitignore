@@ -137,3 +137,4 @@ dmypy.json
 .idea/
 
 *package-lock.json
+services/frontend/package-lock.json
