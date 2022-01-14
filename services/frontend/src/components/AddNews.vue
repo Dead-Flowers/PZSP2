@@ -62,6 +62,11 @@ export default {
       } catch (e) {
         this.addingNewsError = true;
         this.addingNewsDone = false;
+        await this.$store.dispatch("actionCheckApiError", e);
+        this.$store.commit("openSnackBar", "Problem z wysyłaniem danych");
+        if (!this.$store.getters["isLoggedIn"]) {
+          this.$router.push("/login");
+        }
       }
 
       this.$router.push(`/admin/news/`);

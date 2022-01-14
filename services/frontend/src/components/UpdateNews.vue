@@ -57,8 +57,11 @@ export default {
         this.title = news.data.title;
         this.description = news.data.description;
       } catch (e) {
-        this.$store.dispatch("actionCheckApiError", e);
+        await this.$store.dispatch("actionCheckApiError", e);
         this.$store.commit("openSnackBar", "Problem z pobieraniem danych");
+        if (!this.$store.getters["isLoggenIn"]) {
+          this.$router.push("/login");
+        }
       }
     },
     async updateNews() {
@@ -78,6 +81,11 @@ export default {
       } catch (e) {
         this.addingNewsDone = false;
         this.addingNewsError = true;
+        await this.$store.dispatch("actionCheckApiError", e);
+        this.$store.commit("openSnackBar", "Problem z wysyłaniem danych");
+        if (!this.$store.getters["isLoggedIn"]) {
+          this.$router.push("/login");
+        }
       }
       this.$router.push(`/admin/news/`);
     },

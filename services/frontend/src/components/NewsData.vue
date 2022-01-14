@@ -60,8 +60,11 @@ export default {
       try {
         await api.removeNewsById(this.$store.getters["token"], id);
       } catch (e) {
-        this.$store.dispatch("actionCheckApiError", e);
+        await this.$store.dispatch("actionCheckApiError", e);
         this.$store.commit("openSnackBar", "Problem z pobieraniem danych");
+        if (!this.$store.getters["isLoggedIn"]) {
+          this.$router.push("/login");
+        }
       }
       await this.getNewsData();
     },
