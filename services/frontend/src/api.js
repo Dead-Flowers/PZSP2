@@ -2,7 +2,7 @@ import { default as Axios } from 'axios';
 import { API_URL } from "./config";
 
 const axios = Axios.create({
-  validateStatus: function(status) {
+  validateStatus: function (status) {
     return status >= 200 && status < 300;
   },
   baseURL: API_URL
@@ -60,20 +60,20 @@ export const api = {
 
   async uploadFile(token, file, patientID) {
     let config = authHeaders(token);
-    config.headers ['Content-Type'] = 'multipart/form-data';
+    config.headers['Content-Type'] = 'multipart/form-data';
     config["params"] = {};
     config.params["patient_id"] = patientID;
     return axios.post(`${APISUFFIX}/api/analysis/recordings/upload`,
-    file,
-    config);
+      file,
+      config);
   },
 
   async startAnalysis(token, recordingID) {
-      return axios.post(`${APISUFFIX}/api/analysis/recordings/${recordingID}/analyze`, null, authHeaders(token));
+    return axios.post(`${APISUFFIX}/api/analysis/recordings/${recordingID}/analyze`, null, authHeaders(token));
   },
 
   async getAnalysisResults(token, analysisID) {
-      return axios.get(`${APISUFFIX}/api/analysis/results/${analysisID}`, authHeaders(token));
+    return axios.get(`${APISUFFIX}/api/analysis/results/${analysisID}`, authHeaders(token));
   },
 
   async getFrames(token, analysisID) {
@@ -99,6 +99,26 @@ export const api = {
     return axios.get(`${APISUFFIX}/api/analysis/recordings/${recordingID}`, config);
   },
 
+  async addNews(token, data) {
+    return axios.post(`${APISUFFIX}/api/news`, data, authHeaders(token));
+  },
+
+  async getNews(params) {
+    return axios.get(`${APISUFFIX}/api/news`, params);
+  },
+
+  async getNewsById(newsId) {
+    return axios.get(`${APISUFFIX}/api/news/${newsId}`);
+  },
+
+  async removeNewsById(token, newsId) {
+    return axios.delete(`${APISUFFIX}/api/news/${newsId}`, authHeaders(token));
+  },
+
+  async updateNewsById(token, newsId, data) {
+    return axios.put(`${APISUFFIX}/api/news/${newsId}`, data, authHeaders(token));
+  },
+
   downloadRecording(token, recordingID, downloadCallback) {
     return axios.request({
       method: 'post',
@@ -108,6 +128,6 @@ export const api = {
       onDownloadProgress: downloadCallback
     });
   }
-  
+
 
 };

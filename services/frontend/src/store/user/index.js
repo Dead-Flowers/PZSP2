@@ -4,8 +4,8 @@ const defaultState = {
     isLoggedIn: null,
     logInError: false,
     registrationError: false,
-    registrationSuccess: false, 
-    pesel: null, 
+    registrationSuccess: false,
+    pesel: null,
     passport_num: null,
     token: '',
     id: null,
@@ -15,9 +15,9 @@ const defaultState = {
     second_name: null,
     last_name: null,
     userType: null,
-  };
-  
-  export const actions = {
+};
+
+export const actions = {
     async actionLogIn(context, payload) {
         try {
             console.log(payload)
@@ -28,7 +28,7 @@ const defaultState = {
                 context.commit("setToken", token);
                 context.commit("setLoggedIn", true)
                 context.commit("setLogInError", false)
-                await context.dispatch("actionGetMe"); 
+                await context.dispatch("actionGetMe");
             } else {
                 await context.dispatch("actionLogOut");
             }
@@ -44,7 +44,7 @@ const defaultState = {
         try {
             const response = await api.getMe(context.state.token)
             if (response.data) {
-                setUserData(context, response.data)                
+                setUserData(context, response.data)
             }
             return true;
         } catch (error) {
@@ -101,7 +101,7 @@ const defaultState = {
     async actionUpdateMe(context, payload) {
         try {
             const response = await api.updateMe(context.state.token, payload);
-            if(response.data) {
+            if (response.data) {
                 setUserData(context, response.data)
             }
         } catch (error) {
@@ -128,10 +128,10 @@ const defaultState = {
             console.log(err);
             context.commit("openSnackbar", "Problem with registration!");
         }
-      }
-    }
+    },
+}
 
-  export const getters = {
+export const getters = {
     loginError: (state) => state.logInError,
     dashboardMiniDrawer: (state) => state.dashboardMiniDrawer,
     token: (state) => state.token,
@@ -142,21 +142,22 @@ const defaultState = {
     secondName: (state) => state.second_name,
     last_name: (state) => state.last_name,
     userType: (state) => state.userType,
-    id:(state) => state.id,
-    user: (state) => { return {
-        userID: null,
-        username: state.username,
-        first_name: state.first_name,
-        second_name: state.second_name,
-        last_name: state.last_name,
-        userType: state.userType,
+    id: (state) => state.id,
+    user: (state) => {
+        return {
+            userID: null,
+            username: state.username,
+            first_name: state.first_name,
+            second_name: state.second_name,
+            last_name: state.last_name,
+            userType: state.userType,
         }
     },
     registrationError: (state) => state.registrationError,
     registrationSuccess: (state) => state.registrationSuccess,
-    }
- 
-  export const mutations = {
+}
+
+export const mutations = {
     setToken(state, payload) {
         state.token = payload;
     },
@@ -204,14 +205,14 @@ const defaultState = {
         state.passport_num = payload
     }
 
-  }
+}
 
-  export const userModule = {
+export const userModule = {
     state: defaultState,
     mutations,
     actions,
     getters,
-  };
+};
 
 
 const setUserData = (context, data) => {

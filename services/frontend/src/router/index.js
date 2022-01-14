@@ -3,10 +3,13 @@ import Admin from '../views/admin/Admin.vue'
 import AdminPage from '../views/admin/AdminPage.vue'
 import AnalysisView from '../views/common/AnalysisView.vue'
 import AnalysisStarted from '../views/doctor/AnalysisStarted.vue'
-import NewAnalysis from '../views/doctor/NewAnalysis.vue' 
+import NewAnalysis from '../views/doctor/NewAnalysis.vue'
 import NewPatient from '../views/admin/NewPatient.vue'
 import AssignDoctorToPatient from '../views/admin/AssignDoctorToPatient.vue'
 import NewDoctor from '../views/admin/NewDoctor.vue'
+import News from '../views/admin/News.vue'
+import NewNews from '../views/admin/NewNews.vue'
+import UpdateNews from '../views/admin/UpdateNews.vue'
 import PageNotFound from '../views/common/PageNotFound.vue'
 import PatientAnalyses from '../views/doctor/PatientAnalyses.vue'
 import RecordingsData from '../views/doctor/RecordingsData.vue'
@@ -22,16 +25,16 @@ import store from '@/store'
 
 export default new Router({
   mode: 'history',
-  routes : [
+  routes: [
     {
       path: '/',
       name: 'WelcomePage',
       component: Welcome
     },
     {
-      path: "*", 
+      path: "*",
       name: 'PageNotFound',
-      component: PageNotFound 
+      component: PageNotFound
     },
     {
       path: '/login',
@@ -44,10 +47,10 @@ export default new Router({
       name: 'admin',
       component: Admin,
       beforeEnter: async (to, from, next) => {
-        if(store.getters["isLoggedIn"] == null)
+        if (store.getters["isLoggedIn"] == null)
           await store.dispatch("actionCheckLoggedIn")
-        if(!store.getters["isLoggedIn"] || store.getters["userType"] != "admin"){
-          next({ name: "WelcomePage"  })
+        if (!store.getters["isLoggedIn"] || store.getters["userType"] != "admin") {
+          next({ name: "WelcomePage" })
         } else next()
       },
       children: [
@@ -76,6 +79,21 @@ export default new Router({
           name: 'admin_assignD2P',
           component: AssignDoctorToPatient
         },
+        {
+          path: 'news',
+          name: 'admin_news',
+          component: News,
+        },
+        {
+          path: 'news/new',
+          name: 'admin_news_new',
+          component: NewNews
+        },
+        {
+          path: 'news/edit/:id',
+          name: 'admin_news_edit',
+          component: UpdateNews
+        }
       ]
     },
     {
@@ -83,13 +101,13 @@ export default new Router({
       name: 'doctor',
       component: Doctor,
       beforeEnter: async (to, from, next) => {
-        if(store.getters["isLoggedIn"] == null)
+        if (store.getters["isLoggedIn"] == null)
           await store.dispatch("actionCheckLoggedIn")
-        if(!store.getters["isLoggedIn"] || store.getters["userType"] != "doctor"){
-          next({ name: "WelcomePage"  })
+        if (!store.getters["isLoggedIn"] || store.getters["userType"] != "doctor") {
+          next({ name: "WelcomePage" })
         } else next()
       },
-      children: [ 
+      children: [
         {
           path: 'analysis/:id',
           name: 'doctor_AnalysisView',
@@ -132,13 +150,13 @@ export default new Router({
       name: 'patient',
       component: Patient,
       beforeEnter: async (to, from, next) => {
-        if(store.getters["isLoggedIn"] == null)
+        if (store.getters["isLoggedIn"] == null)
           await store.dispatch("actionCheckLoggedIn")
-        if(!store.getters["isLoggedIn"] || store.getters["userType"] != "patient"){
-          next({ name: "WelcomePage"  })
+        if (!store.getters["isLoggedIn"] || store.getters["userType"] != "patient") {
+          next({ name: "WelcomePage" })
         } else next()
       },
-      children: [ 
+      children: [
         {
           path: 'home',
           name: 'patient_Page',
@@ -157,6 +175,6 @@ export default new Router({
       ]
     },
     // patient
-    
+
   ]
 })
