@@ -80,6 +80,17 @@
         </v-list-item-content>
       </v-list-item>
 
+      <v-list-item @click="goToPage('/admin/new-admin')">
+        <v-list-item-icon>
+          <font-awesome-icon icon="user-shield" />
+        </v-list-item-icon>
+        <v-list-item-content>
+          <v-list-item-title>
+            Zarejestruj Admina
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+
       <v-list-item @click="goToPage('/admin/register-patient')">
         <v-list-item-icon>
           <font-awesome-icon icon="user-plus" />
@@ -119,18 +130,7 @@
         </v-list-item-icon>
         <v-list-item-content>
           <v-list-item-title>
-            Zresetuj hasło użytkownikowi
-          </v-list-item-title>
-        </v-list-item-content>
-      </v-list-item>
-
-      <v-list-item @click="goToPage('/admin/new-admin')">
-        <v-list-item-icon>
-          <font-awesome-icon icon="user-shield" />
-        </v-list-item-icon>
-        <v-list-item-content>
-          <v-list-item-title>
-            Dodaj Admina
+            Zresetuj hasło
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
