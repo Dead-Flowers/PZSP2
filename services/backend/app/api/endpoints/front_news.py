@@ -1,18 +1,18 @@
-from typing import Any
+from typing import Any, List
 from uuid import UUID
 
 from sqlalchemy.orm import Session
 from app import crud, models
 from app.api import deps
 from app import crud, models, schemas
-
 from fastapi import APIRouter, Depends, HTTPException
+from app.schemas import News
 
 router = APIRouter()
 
 
-@router.post("/")
-async def add_frontpage_news(
+@router.post("/", response_model=News)
+async def add_news(
     *,
     db: Session = Depends(deps.get_db),
     news_in: schemas.NewsCreate,
@@ -26,7 +26,7 @@ async def add_frontpage_news(
     return news
 
 
-@router.get("/")
+@router.get("/", response_model=List[News])
 async def get_news(*, db: Session = Depends(deps.get_db), count: int = 5) -> Any:
     results = crud.news.get_last_news(db, count)
     final = []
@@ -42,13 +42,13 @@ async def get_news(*, db: Session = Depends(deps.get_db), count: int = 5) -> Any
     return final
 
 
-@router.get("/{news_id}")
+@router.get("/{news_id}", response_model=News)
 async def get_news_by_id(*, db: Session = Depends(deps.get_db), news_id: UUID):
     result = crud.news.get(db, news_id)
     return result
 
 
-@router.put("/{news_id}")
+@router.put("/{news_id}", response_model=News)
 async def update_news(
     *,
     db: Session = Depends(deps.get_db),

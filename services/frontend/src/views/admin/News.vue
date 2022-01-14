@@ -2,7 +2,7 @@
   <div>
     <h1>Aktualności</h1>
     <v-divider />
-    <NewsData v-bind:newsId="this.$route.params.id" />
+    <NewsData />
   </div>
 </template>
 

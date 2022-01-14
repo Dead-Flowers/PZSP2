@@ -23,9 +23,10 @@ class CRUDNews(CRUDBase[News, NewsCreate, NewsUpdate]):
     def update(self, db: Session, *, db_obj: News, obj_in: NewsUpdate) -> News:
         return super().update(db, db_obj=db_obj, obj_in=obj_in)
 
-    def remove(self, db: Session, news_id: UUID) -> None:
-        db.query(News).filter(News.id == news_id).delete()
+    def remove(self, db: Session, news_id: UUID) -> int:
+        deleted_rows = db.query(News).filter(News.id == news_id).delete()
         db.commit()
+        return deleted_rows
 
 
 news = CRUDNews(News)

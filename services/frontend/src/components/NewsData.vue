@@ -1,7 +1,7 @@
 <template>
   <div class="news-table-box">
     <v-btn @click="createNew()"> <v-icon>mdi-plus</v-icon> Dodaj </v-btn>
-    <v-simple-table :loading="load">
+    <v-simple-table>
       <thead>
         <tr>
           <th>Tytuł</th>
@@ -32,7 +32,6 @@ import { api } from "@/api";
 
 export default {
   name: "newsResultTable",
-  props: ["loading"],
   data() {
     return {
       news: [],
@@ -70,11 +69,7 @@ export default {
       this.$router.push("/admin/news/new");
     },
   },
-  computed: {
-    load() {
-      return this.loading;
-    },
-  },
+  computed: {},
   beforeMount() {
     this.getNewsData();
   },
