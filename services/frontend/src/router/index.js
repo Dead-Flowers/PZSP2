@@ -18,6 +18,9 @@ import Doctor from '../views/doctor/Doctor'
 import Welcome from '../views/common/Welcome.vue'
 import LoginView from '../views/common/LoginView.vue'
 import SearchForPatient from '../views/doctor/SearchForPatient.vue'
+import SearchForUser from '../views/admin/SearchForUser.vue'
+import NewAdmin from '../views/admin/NewAdmin.vue'
+import ResetUserPassword from '../views/admin/ResetUserPassword.vue'
 import store from '@/store'
 
 export default new Router({
@@ -76,6 +79,21 @@ export default new Router({
           name: 'admin_assignD2P',
           component: AssignDoctorToPatient
         },
+        {
+          path: 'search/:target',
+          name: "admin_search",
+          component: SearchForUser
+        },
+        {
+          path: 'reset-password/:id',
+          name: "admin_resetPassword",
+          component: ResetUserPassword,
+        },
+        {
+          path: 'new-admin',
+          name: "admin_newAdmin",
+          component: NewAdmin
+        }
       ]
     },
     {

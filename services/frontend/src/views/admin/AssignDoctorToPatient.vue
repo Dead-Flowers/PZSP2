@@ -7,7 +7,7 @@
         v-if="this.stage == 'noDoctor'"
       >
         <h2> Wyszukaj Doktora </h2>
-        <SearchUser v-bind:searchUser="searchDoctor" v-bind:userType="'doctor'" />
+        <SearchUser v-bind:searchUser="searchDoctor" v-bind:userTypes="['doctor']" />
       </div>
 
       <!-- Wybrano doktora, wybor pacjenta -->
@@ -17,7 +17,7 @@
       >     
         <div>
           <h2> Wyszukaj Pacjenta </h2>
-          <SearchUser v-bind:searchUser="searchPatient" v-bind:userType="'patient'" />
+          <SearchUser v-bind:searchUser="searchPatient" v-bind:userTypes="['patient']" />
         </div>
         <v-card>
           <v-card-title>Dane Doktora </v-card-title>
