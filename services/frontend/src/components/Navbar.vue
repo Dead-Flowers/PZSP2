@@ -166,21 +166,14 @@
       </v-list-item>
     
     </v-list>
-    <v-footer 
-      absolute
-    >
-      <div style="display: flex" >
-        <font-awesome-icon 
-          icon="sign-out-alt" 
-          style="font-size: 3vh; margin-inline-end: 25px"
-          @click="logout"/>
-        <v-btn
-          color="primary"
-          elevation="2"
-          large
-          outlined
+    <v-footer absolute>
+      <div style="display: flex">
+        <font-awesome-icon
+          icon="sign-out-alt"
+          style="font-size: 3vh; margin-inline-end: 20px"
           @click="logout"
-        >
+        />
+        <v-btn color="primary" elevation="2" large outlined @click="logout">
           Wyloguj
         </v-btn>
       </div>

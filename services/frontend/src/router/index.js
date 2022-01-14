@@ -80,6 +80,21 @@ export default new Router({
           component: AssignDoctorToPatient
         },
         {
+          path: 'news',
+          name: 'admin_news',
+          component: News,
+        },
+        {
+          path: 'news/new',
+          name: 'admin_news_new',
+          component: NewNews
+        },
+        {
+          path: 'news/edit/:id',
+          name: 'admin_news_edit',
+          component: UpdateNews
+        },
+        {
           path: 'search/:target',
           name: "admin_search",
           component: SearchForUser

@@ -135,6 +135,3 @@ dmypy.json
 .history/
 
 .idea/
-
-*package-lock.json
-services/frontend/package-lock.json
