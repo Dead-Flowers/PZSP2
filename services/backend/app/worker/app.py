@@ -5,6 +5,7 @@ from app.schemas.analysis_result import (
     AnalysisResultStatusUpdate,
     AnalysisResultUpdate,
 )
+from app.schemas.systemexception import SystemExceptionCreate
 from app.services.bowel_service import BowelAnalysisService
 from app import crud
 
@@ -62,6 +63,9 @@ def send_file(self: Task, recording_id: str, analysis_id: str):
             return handle()
         except Exception as e:
             try:
+                crud.system_exception.create(
+                    db, SystemExceptionCreate(source="worker", value=str(e))
+                )
                 if self.max_retries == self.request.retries:
                     update_state("FAILED")
                 else:

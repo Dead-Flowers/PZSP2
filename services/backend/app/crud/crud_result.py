@@ -48,5 +48,17 @@ class CRUDAnalysisResult(
     ) -> AnalysisResult:
         return super().update(db, db_obj=db_obj, obj_in=obj_in)
 
+    def count_success(self, db: Session) -> int:
+        return (
+            db.query(AnalysisResult).filter(AnalysisResult.status == "FAILED").count()
+        )
+
+    def count_failed(self, db: Session) -> int:
+        return (
+            db.query(AnalysisResult)
+            .filter(AnalysisResult.status == "COMPLETED")
+            .count()
+        )
+
 
 analysis_result = CRUDAnalysisResult(AnalysisResult)

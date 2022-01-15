@@ -184,6 +184,23 @@ def get_result_by_id(
     )
 
 
+@router.get("/stats")
+def get_results_stats(
+    *,
+    db: Session = Depends(deps.get_db),
+    current_user: models.User = Depends(deps.get_current_user),
+):
+    if not crud.user.has_roles(current_user, models.UserRole.Admin):
+        raise HTTPException(
+            status_code=403,
+            detail="Insufficient privileges to access this analysis result",
+        )
+    success_count = crud.analysis_result.count_success(db)
+    fail_count = crud.analysis_result.count_failed(db)
+    exceptions = crud.system_exception.get_multi(db)
+    return dict(success=success_count, failure=fail_count, exceptions=exceptions)
+
+
 @router.get("/results/{analysis_id}/frames")
 def get_result_frames(
     *,
