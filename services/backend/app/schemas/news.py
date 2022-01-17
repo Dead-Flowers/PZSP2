@@ -1,4 +1,3 @@
-from sqlite3 import Date
 from typing import Optional
 from uuid import UUID
 from pydantic.main import BaseModel
