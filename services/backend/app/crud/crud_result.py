@@ -27,6 +27,16 @@ class CRUDAnalysisResult(
             .all()
         )
 
+    def get_multi_admin(self, db: Session, skip: int, limit: int):
+        return (
+            db.query(AnalysisResult, Recording)
+            .filter(AnalysisResult.recording_id == Recording.id)
+            .order_by(AnalysisResult.created_date.desc())
+            .offset(skip)
+            .limit(limit)
+            .all()
+        )
+
     def create(self, db: Session, *, obj_in: AnalysisResultCreate) -> AnalysisResult:
         db_obj = AnalysisResult(
             status=obj_in.status,
