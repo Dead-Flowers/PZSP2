@@ -2,7 +2,7 @@
   <div>
     <h1>{{ header }}</h1>
     <v-divider/>
-    <SearchUser v-bind:searchUser="searchUser" v-bind:userTypes="['patient']" />
+    <SearchUser v-bind:searchUser="searchUser" v-bind:userTypes="['patient', 'doctor', 'admin']" />
   </div>
 </template>
 
@@ -11,7 +11,7 @@ import SearchUser from '../../components/SearchUser.vue'
 import router from '../../router';
 
 export default {
-  name: 'SearchForPatient',
+  name: 'SearchForUser',
   components: {
     SearchUser,
   },
@@ -21,10 +21,8 @@ export default {
   },
   computed: {
     header() {
-      return this.targetPage == 'new-analysis' ? 'Nowa analiza'
-             : this.targetPage == 'recordings' ? 'Nagrania'
-             : this.targetPage == 'patient-data' ? 'Dane pacjenta'
-             : null
+      return this.targetPage == 'reset-password' ? 'Reset Hasła Użytkownika'
+             : null;
     },
     targetPage() {
       return this.$route.params.target;
@@ -32,7 +30,7 @@ export default {
   },
   methods: {
     searchUser(user) {
-        router.push(`/doctor/${this.targetPage}/${user.id}`) 
+        router.push(`/admin/${this.targetPage}/${user.id}`) 
     },
     
   },

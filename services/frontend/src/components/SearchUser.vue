@@ -58,7 +58,7 @@
 import { api } from "@/api";
 export default {
   name: "SearchUser",
-  props: ["searchUser", "userType"],
+  props: ["searchUser", "userTypes"],
   data() {
     return {
       userIdType: "pesel",
@@ -113,7 +113,7 @@ export default {
       }
       let unfilteredUserList = respone.data;
       unfilteredUserList.forEach((element) => {
-        if (element.role == this.userType) this.user_list.push(element);
+        if (this.userTypes.includes(element.role)) this.user_list.push(element);
       });
     },
     async searchForUser() {

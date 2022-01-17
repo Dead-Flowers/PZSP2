@@ -61,6 +61,17 @@
         </v-list-item-content>
       </v-list-item>
 
+      <v-list-item @click="goToPage('/admin/new-admin')">
+        <v-list-item-icon>
+          <font-awesome-icon icon="user-shield" />
+        </v-list-item-icon>
+        <v-list-item-content>
+          <v-list-item-title>
+            Zarejestruj Admina
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+
       <v-list-item @click="goToPage('/admin/register-patient')">
         <v-list-item-icon>
           <font-awesome-icon icon="user-plus" />
@@ -96,6 +107,18 @@
           <v-list-item-title> Aktualności </v-list-item-title>
         </v-list-item-content>
       </v-list-item>
+
+      <v-list-item @click="goToPage('/admin/search/reset-password')">
+        <v-list-item-icon>
+          <font-awesome-icon icon="unlock-alt" />
+        </v-list-item-icon>
+        <v-list-item-content>
+          <v-list-item-title>
+            Zresetuj hasło
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+
     </v-list>
 
     <!-- patient tabs -->
@@ -122,7 +145,7 @@
       <div style="display: flex">
         <font-awesome-icon
           icon="sign-out-alt"
-          style="font-size: 4vh; margin-inline-end: 20px"
+          style="font-size: 3vh; margin-inline-end: 20px"
           @click="logout"
         />
         <v-btn color="primary" elevation="2" large outlined @click="logout">
