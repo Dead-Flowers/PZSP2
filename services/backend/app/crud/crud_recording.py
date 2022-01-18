@@ -36,9 +36,9 @@ class CRUDRecording(CRUDBase[Recording, RecordingCreate, None]):
     ) -> List[ModelType]:
         return (
             db.query(self.model)
+            .order_by(Recording.creation_date.desc())
             .offset(skip)
             .limit(limit)
-            .order_by(Recording.creation_date.desc())
             .all()
         )
 

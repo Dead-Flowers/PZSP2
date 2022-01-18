@@ -1,5 +1,13 @@
-from typing import Optional
+from typing import Dict, List, Optional
 from uuid import UUID
+from app.api.endpoints.response_models import (
+    AnalysisResponse,
+    AnalysisResultResponse,
+    AnalysisStatsResponse,
+    RecordingPatientResponse,
+    RecordingResponse,
+)
+from app.models.result import AnalysisResult
 from app.schemas.analysis_result import AnalysisResultCreate
 
 from fastapi import status
@@ -71,7 +79,7 @@ async def upload_audio_file(
     return recording.id
 
 
-@router.get("/recordings/{recording_id}")
+@router.get("/recordings/{recording_id}", response_model=RecordingPatientResponse)
 def get_recording(
     *,
     db: Session = Depends(deps.get_db),
@@ -91,7 +99,7 @@ def get_recording(
     )
 
 
-@router.get("/recordings")
+@router.get("/recordings", response_model=List[RecordingResponse])
 def get_recordings(
     *,
     db: Session = Depends(deps.get_db),
@@ -142,7 +150,11 @@ def perform_analysis(
     )
 
 
-@router.post("/recordings/{recording_id}/analyze", status_code=status.HTTP_202_ACCEPTED)
+@router.post(
+    "/recordings/{recording_id}/analyze",
+    status_code=status.HTTP_202_ACCEPTED,
+    response_model=str,
+)
 def perform_analysis(
     *,
     db: Session = Depends(deps.get_db),
@@ -163,7 +175,7 @@ def perform_analysis(
     return result.id
 
 
-@router.get("/results/{analysis_id}")
+@router.get("/results/{analysis_id}", response_model=AnalysisResponse)
 def get_result_by_id(
     *,
     db: Session = Depends(deps.get_db),
@@ -182,6 +194,23 @@ def get_result_by_id(
         patient_id=result.patient_id,
         recording_id=result.recording_id,
     )
+
+
+@router.get("/stats", response_model=AnalysisStatsResponse)
+def get_results_stats(
+    *,
+    db: Session = Depends(deps.get_db),
+    current_user: models.User = Depends(deps.get_current_user),
+):
+    if not crud.user.has_roles(current_user, models.UserRole.Admin):
+        raise HTTPException(
+            status_code=403,
+            detail="Insufficient privileges to access this analysis result",
+        )
+    success_count = crud.analysis_result.count_success(db)
+    fail_count = crud.analysis_result.count_failed(db)
+    exceptions = crud.system_exception.get_multi(db)
+    return dict(success=success_count, failure=fail_count, exceptions=exceptions)
 
 
 @router.get("/results/{analysis_id}/frames")
@@ -226,7 +255,7 @@ def get_result_statistics(
     return result.statistics
 
 
-@router.get("/results/{analysis_id}/status")
+@router.get("/results/{analysis_id}/status", response_model=str)
 def get_result_status(
     *,
     db: Session = Depends(deps.get_db),
@@ -242,7 +271,7 @@ def get_result_status(
     return result.status
 
 
-@router.get("/results")
+@router.get("/results", response_model=List[AnalysisResultResponse])
 def get_results(
     *,
     db: Session = Depends(deps.get_db),
@@ -265,7 +294,7 @@ def get_results(
 
     def handle_admin():
         if patient_id is None:
-            results = crud.analysis_result.get_multi(db, skip, limit)
+            results = crud.analysis_result.get_multi_admin(db, skip, limit)
         else:
             results = crud.analysis_result.get_by_patient_id(db, patient_id)
         return results
