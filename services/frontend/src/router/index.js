@@ -5,6 +5,7 @@ import AnalysisView from '../views/common/AnalysisView.vue'
 import AnalysisStarted from '../views/doctor/AnalysisStarted.vue'
 import NewAnalysis from '../views/doctor/NewAnalysis.vue'
 import NewPatient from '../views/admin/NewPatient.vue'
+import Stats from '../views/admin/Statistics.vue'
 import AssignDoctorToPatient from '../views/admin/AssignDoctorToPatient.vue'
 import NewDoctor from '../views/admin/NewDoctor.vue'
 import News from '../views/admin/News.vue'
@@ -111,6 +112,11 @@ export default new Router({
           path: 'new-admin',
           name: "admin_newAdmin",
           component: NewAdmin
+        },
+        {
+          path: 'stats',
+          name: "admin_stats",
+          component: Stats
         }
       ]
     },

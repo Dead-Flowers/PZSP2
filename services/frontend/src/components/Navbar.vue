@@ -119,6 +119,17 @@
         </v-list-item-content>
       </v-list-item>
 
+      <v-list-item @click="goToPage('/admin/stats')">
+        <v-list-item-icon>
+          <font-awesome-icon icon="digital-tachograph" />
+        </v-list-item-icon>
+        <v-list-item-content>
+          <v-list-item-title>
+            Statystki
+          </v-list-item-title>
+        </v-list-item-content>
+      </v-list-item>
+
     </v-list>
 
     <!-- patient tabs -->

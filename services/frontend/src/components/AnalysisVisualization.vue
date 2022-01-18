@@ -19,8 +19,6 @@
         <v-card class="card" elevation="2">
           <v-card-title>Dane analizy </v-card-title>
           <v-card-text>
-            <div>Średni % próbek: {{ average }}</div>
-            <div>Liczba próbek powyżej 80%: {{ counts.above }}</div>
             <div>
               <AnalysisDownloadButton
                 v-bind:recordingId="recordingId"
@@ -34,6 +32,34 @@
 
     <v-row>
       <v-chart class="chart" autoresize :option="option" />
+    </v-row>
+    <v-row>
+      <v-col>
+        <v-card class="card" elevation="2" >
+            <v-card-title>Statystki analizy </v-card-title>
+            <v-card-text>
+              <div>Średni % próbek: {{ average }}</div>
+              <div>Liczba próbek powyżej 80%: {{ counts.above }}</div>
+              <div>Percent of bowel sounds followed by another bowel sound within 100 ms: {{ analysisStats.percent_of_bowel_sounds_followed_by_another_bowel_sound_within_100_ms }} </div>
+              <div>Percent of bowel sounds followed by another bowel sound within 200 ms: {{ analysisStats.percent_of_bowel_sounds_followed_by_another_bowel_sound_within_200_ms }} </div>
+              <div>Percent of bowel sounds followed by another bowel sound within 50 ms: {{ analysisStats.percent_of_bowel_sounds_followed_by_another_bowel_sound_within_50_ms }} </div>
+              <div>Bowel sounds identified total count: {{ analysisStats.bowel_sounds_identified_total_count }} </div>
+              <div>Bowel sounds per minute 1st decile: {{ analysisStats.bowel_sounds_per_minute_1st_decile }} </div>
+              <div>Bowel sounds per minute 1st quartile: {{ analysisStats.bowel_sounds_per_minute_1st_quartile }} </div>
+              <div>Bowel sounds per minute 3rd quartile: {{ analysisStats.bowel_sounds_per_minute_3rd_quartile }} </div>
+              <div>Bowel sounds per minute 9th decile: {{ analysisStats.bowel_sounds_per_minute_9th_decile }} </div>
+              <div>Bowel sounds per minute maximum: {{ analysisStats.bowel_sounds_per_minute_maximum }} </div>
+              <div>Bowel sounds per minute mean: {{ analysisStats.bowel_sounds_per_minute_mean }} </div>
+              <div>Bowel sounds per minute median: {{ analysisStats.bowel_sounds_per_minute_median }} </div>
+              <div>Bowel sounds per minute minimum: {{ analysisStats.bowel_sounds_per_minute_minimum }} </div>
+              <div>Bowel sounds per minute standard deviation: {{ analysisStats.bowel_sounds_per_minute_standard_deviation }} </div>
+              <div>Bowel sounds per minute total: {{ analysisStats.bowel_sounds_per_minute_total }} </div>
+              <div>Frequency analysis in three minute periods: {{ analysisStats.frequency_analysis_in_three_minute_periods }} </div>
+              <div>Recording length hours minutes seconds: {{ analysisStats.recording_length_hours_minutes_seconds }} </div>
+              <div>Recording length minutes: {{ analysisStats.recording_length_minutes }} </div>
+            </v-card-text>
+        </v-card>
+      </v-col>
     </v-row>
   </div>
 </template>
@@ -60,7 +86,7 @@ use([
 
 export default {
   name: "AnalysisVisualization",
-  props: ["analysisData", "patient", "recordingId"],
+  props: ["analysisStats", "analysisData", "patient", "recordingId"],
   components: {
     VChart,
     AnalysisDownloadButton,

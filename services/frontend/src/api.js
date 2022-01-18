@@ -76,6 +76,14 @@ export const api = {
     return axios.get(`${APISUFFIX}/api/analysis/results/${analysisID}`, authHeaders(token));
   },
 
+  async getAnalysisStatistics(token, analysisID) {
+    return axios.get(`${APISUFFIX}/api/analysis/results/${analysisID}/statistics`, authHeaders(token));
+  },
+
+  async getStatistics(token) {
+    return axios.get(`${APISUFFIX}/api/analysis/stats/`, authHeaders(token));
+  },
+
   async getFrames(token, analysisID) {
     return axios.get(`${APISUFFIX}/api/analysis/results/${analysisID}/frames`, authHeaders(token));
   },

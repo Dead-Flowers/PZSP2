@@ -33,6 +33,7 @@ import { faUser,
   faCheckSquare,
   faUserShield,
   faUnlockAlt,
+  faDigitalTachograph,
  } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
@@ -55,6 +56,7 @@ library.add(faUser,
   faCheckSquare,
   faUserShield,
   faUnlockAlt,
+  faDigitalTachograph
   )
 Vue.component('font-awesome-icon', FontAwesomeIcon)
 
