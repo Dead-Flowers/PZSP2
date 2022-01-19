@@ -153,7 +153,7 @@ def perform_analysis(
 @router.post(
     "/recordings/{recording_id}/analyze",
     status_code=status.HTTP_202_ACCEPTED,
-    response_model=str,
+    response_model=UUID,
 )
 def perform_analysis(
     *,
