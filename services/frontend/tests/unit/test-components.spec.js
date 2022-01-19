@@ -11,7 +11,7 @@ import AnalysisInit from '@/components/AnalysisInit.vue'
 import AnalysisResultTable from '@/components/AnalysisResultTable.vue'
 import LoginForm from '@/components/LoginForm.vue'
 import Navbar from '@/components/Navbar.vue'
-import PatientTable from '@/components/PatientTable.vue'n
+import PatientTable from '@/components/PatientTable.vue'
 import RegisterUserForm from '@/components/RegisterUserForm.vue'
 import SearchUser from '@/components/SearchUser.vue'
  import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
