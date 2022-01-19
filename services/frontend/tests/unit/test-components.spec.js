@@ -19,15 +19,70 @@ import PatientTable from '@/components/PatientTable.vue'
 import RecordingsTable from '@/components/RecordingsTable.vue'
 import RegisterUserForm from '@/components/RegisterUserForm.vue'
 import SearchUser from '@/components/SearchUser.vue'
+ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
+ import { library } from '@fortawesome/fontawesome-svg-core'
+ import { faUser, 
+  faFlask, 
+  faSignOutAlt,
+  faUserNurse,
+  faUserCircle,
+  faUserPlus,
+  faPeopleArrows,
+  faList,
+  faFileAudio,
+  faPlusSquare,
+  faSquare,
+  faCheckSquare,
+  faUserShield,
+  faUnlockAlt,
+  faDigitalTachograph,
+ } from '@fortawesome/free-solid-svg-icons'
+ import {
+  CanvasRenderer
+} from 'echarts/renderers';
+import {
+  BarChart
+} from 'echarts/charts';
+import {
+  GridComponent,
+  TooltipComponent
+} from 'echarts/components';
+import ECharts from 'vue-echarts';
+import { use } from 'echarts/core';
 
-
-describe('components tests', () => {
+describe('doctor tests', () => {
     const localVue = createLocalVue()
     let vuetify
     let router = Router
     let state
     let store
+    library.add(faUser, 
+      faFlask,
+      faSignOutAlt,
+      faUserNurse,
+      faUserCircle,
+      faUserPlus,
+      faPeopleArrows,
+      faList,
+      faFileAudio,
+      faPlusSquare,
+      faSquare,
+      faCheckSquare,
+      faUserShield,
+      faUnlockAlt,
+      faDigitalTachograph
+      )
+    localVue.component('font-awesome-icon', FontAwesomeIcon)
     
+    use([
+      CanvasRenderer,
+      BarChart,
+      GridComponent,
+      TooltipComponent
+    ]);
+
+    localVue.component('v-chart', ECharts)
+
     localVue.use(VueRouter)
 
     let actions = {
@@ -105,15 +160,14 @@ describe('components tests', () => {
           </tr>
         </thead>
         <tbody>
-          <tr>
+          <tr class="">
             <td>DONE</td>
-            <td>1995-12-17 3:24</td>
-            <td><a href="/doctor/analysis/525252afdsfafaf-faffa" class="">
-                Kliknij by zobaczyć nagranie 🗃️
-              </a></td>
-            <td><a href="/doctor/analysis/fafa-4141-daada" class="">
-                Kliknij by zobaczyć wyniki 🗃️
-              </a></td>
+            <td>1995-12-17 03:24</td>
+            <td>
+              <div><span></span></div>
+            </td>
+            <td><button type="button" class="v-btn v-btn--is-elevated v-btn--has-bg theme--light v-size--default"><span class="v-btn__content"><i aria-hidden="true" class="v-icon notranslate mdi mdi-note-search theme--light"></i> Pokaż wyniki
+          </span></button></td>
           </tr>
         </tbody>
       </table>
@@ -138,45 +192,6 @@ describe('components tests', () => {
     })
 
 
-    // it('AnalysisVisualization component', () => {
-    //   let patient = {
-    //     pesel: "212121",
-    //     first_name: "dad",
-    //     last_name: "dan",
-    //   }
-      
-    //   let analysis = [
-    //     0.1212,
-    //     0.1414,
-    //     0.41414,
-    //     0.1212,
-    //     0.1414,
-    //     0.41414,
-    //     0.1212,
-    //     0.1414,
-    //     0.41414,
-    //     0.1212,
-    //     0.1414,
-    //     0.41414,
-    //   ]
-
-    //   const wrapper = mount(AnalysisVisualization, {
-    //     localVue,
-    //     vuetify,
-    //     router,
-    //     store,
-    //     propsData: {
-    //       patient: patient,
-    //       analysisData: analysis
-    //     }
-    //   })
-
-    //   const chart = wrapper.find(".v-chart")
-    //   const cards = wrapper.findAll(".v-card")
-    //   expect(chart.exists()).toBe(true)
-    //   expect(cards.length).toBe(2)
-    // })
-
     it('LoginForm component', () => {
       const wrapper = mount(LoginForm, {
         localVue,
@@ -188,22 +203,22 @@ describe('components tests', () => {
       const textInputs = wrapper.findAll(".v-text-field")
       const buttons = wrapper.findAll(".v-btn")
       expect(textInputs.length).toBe(2)
-      expect(buttons.length).toBe(3)
+      expect(buttons.length).toBe(2)
     })
 
-    // it('Navbar component', () => {
-    //   const wrapper = mount(Navbar, {
-    //     localVue,
-    //     vuetify,
-    //     router,
-    //     store
-    //   })
+    it('Navbar component', () => {
+      const wrapper = mount(Navbar, {
+        localVue,
+        vuetify,
+        router,
+        store
+      })
 
-    //   const textInputs = wrapper.findAll(".v-text-field")
-    //   const buttons = wrapper.findAll(".v-btn")
-    //   expect(textInputs.length).toBe(2)
-    //   expect(buttons.length).toBe(3)
-    // })
+      const textInputs = wrapper.findAll(".v-list-item")
+      const buttons = wrapper.findAll(".v-btn")
+      expect(textInputs.length).toBe(5)
+      expect(buttons.length).toBe(1)
+    })
 
     it('PatientTable component', () => {
       let patients = {
@@ -285,5 +300,154 @@ describe('components tests', () => {
       expect(selects.length).toBe(1)
       expect(buttons.length).toBe(1)
     })
+
+})
+
+
+describe('patient tests', () => {
+  const localVue = createLocalVue()
+  let vuetify
+  let router = Router
+  let state
+  let store
+  library.add(faUser, 
+    faFlask,
+    faSignOutAlt,
+    faUserNurse,
+    faUserCircle,
+    faUserPlus,
+    faPeopleArrows,
+    faList,
+    faFileAudio,
+    faPlusSquare,
+    faSquare,
+    faCheckSquare,
+    faUserShield,
+    faUnlockAlt,
+    faDigitalTachograph
+    )
+  localVue.component('font-awesome-icon', FontAwesomeIcon)
+  
+  use([
+    CanvasRenderer,
+    BarChart,
+    GridComponent,
+    TooltipComponent
+  ]);
+
+  localVue.component('v-chart', ECharts)
+
+  localVue.use(VueRouter)
+
+  let actions = {
+    actionCheckLoggedIn: jest.fn()
+  }
+
+  beforeEach(() => {
+  state = {
+    isLoggedIn: false,
+    userType: "patient"
+  }
+
+  vuetify = new Vuetify()
+  store = new Vuex.Store ({
+    modules: {
+      user: {
+        state,
+        actions,
+        getters: getters,
+      }
+    }
+  })
+  })
+
+
+  it('Navbar component', () => {
+    const wrapper = mount(Navbar, {
+      localVue,
+      vuetify,
+      router,
+      store
+    })
+
+    const textInputs = wrapper.findAll(".v-list-item")
+    const buttons = wrapper.findAll(".v-btn")
+    expect(textInputs.length).toBe(3)
+    expect(buttons.length).toBe(1)
+  })
+
+})
+
+describe('admin tests', () => {
+  const localVue = createLocalVue()
+  let vuetify
+  let router = Router
+  let state
+  let store
+  library.add(faUser, 
+    faFlask,
+    faSignOutAlt,
+    faUserNurse,
+    faUserCircle,
+    faUserPlus,
+    faPeopleArrows,
+    faList,
+    faFileAudio,
+    faPlusSquare,
+    faSquare,
+    faCheckSquare,
+    faUserShield,
+    faUnlockAlt,
+    faDigitalTachograph
+    )
+  localVue.component('font-awesome-icon', FontAwesomeIcon)
+  
+  use([
+    CanvasRenderer,
+    BarChart,
+    GridComponent,
+    TooltipComponent
+  ]);
+
+  localVue.component('v-chart', ECharts)
+
+  localVue.use(VueRouter)
+
+  let actions = {
+    actionCheckLoggedIn: jest.fn()
+  }
+
+  beforeEach(() => {
+  state = {
+    isLoggedIn: false,
+    userType: "admin"
+  }
+
+  vuetify = new Vuetify()
+  store = new Vuex.Store ({
+    modules: {
+      user: {
+        state,
+        actions,
+        getters: getters,
+      }
+    }
+  })
+  })
+
+
+  it('Navbar component', () => {
+    const wrapper = mount(Navbar, {
+      localVue,
+      vuetify,
+      router,
+      store
+    })
+
+    const textInputs = wrapper.findAll(".v-list-item")
+    const buttons = wrapper.findAll(".v-btn")
+    expect(textInputs.length).toBe(9)
+    expect(buttons.length).toBe(1)
+  })
 
 })
