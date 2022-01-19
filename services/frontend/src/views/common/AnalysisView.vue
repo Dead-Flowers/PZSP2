@@ -2,15 +2,8 @@
     <div class="analysisVisualization" >
       <AnalysisVisualization v-if="!loading" v-bind:analysisData="analysisData" v-bind:patient="patient" v-bind:analysisStats="analysisStats" v-bind:recordingId="recordingId"/>
       <div v-else>
-          <v-row>
-            <v-progress-circular
-            :size="200"
-            :width="20"
-            color="purple"
-            indeterminate
-            ></v-progress-circular>
-            <div>Trwa ładowanie...</div>
-          </v-row>
+          <img src="https://i.imgur.com/0wii1FM.gif" />
+          <div>Trwa ładowanie...</div>
       </div>
     </div>
 </template>

@@ -21,7 +21,7 @@
         </v-expansion-panel>
       </v-expansion-panels>
     </div>
-    <img src="doctor.png" class="welcome-img" />
+    <img src="https://i.imgur.com/tKErCF2.gif" class="welcome-img" />
   </div>
 </template>
 
