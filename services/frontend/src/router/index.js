@@ -20,6 +20,7 @@ import UserOwnData from '../views/patient/UserOwnData.vue'
 import DoctorPage from '../views/doctor/DoctorPage'
 import Doctor from '../views/doctor/Doctor'
 import Welcome from '../views/common/Welcome.vue'
+import Goodbye from '../views/common/Goodbye.vue'
 import LoginView from '../views/common/LoginView.vue'
 import SearchForPatient from '../views/doctor/SearchForPatient.vue'
 import SearchForUser from '../views/admin/SearchForUser.vue'
@@ -34,6 +35,11 @@ export default new Router({
       path: '/',
       name: 'WelcomePage',
       component: Welcome
+    },
+    {
+      path: '/goodbye',
+      name: 'GoodbyePage',
+      component: Goodbye
     },
     {
       path: "*",

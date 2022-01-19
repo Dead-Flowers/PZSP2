@@ -176,7 +176,7 @@ export default {
     logout: function (event) {
       this.$store.dispatch("actionLogOut");
       console.log("Logged out", event);
-      router.push(`/`);
+      router.push(`/goodbye`);
     },
     getUserType() {
       return this.$store.getters["userType"];
