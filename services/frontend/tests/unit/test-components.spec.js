@@ -1,10 +1,7 @@
 
 import { createLocalVue, mount } from '@vue/test-utils'
-import App from '@/App.vue'
 import Vuetify from 'vuetify'
 import VueRouter from 'vue-router'
-import s from '@/store'
-import Welcome from '@/views/common/Welcome.vue'
 import { getters } from "@/store/user";
 import Vuex from 'vuex'
 import Router from "@/router"
@@ -12,11 +9,9 @@ import Router from "@/router"
 import ChangePassword from '@/components/ChangePassword.vue'
 import AnalysisInit from '@/components/AnalysisInit.vue'
 import AnalysisResultTable from '@/components/AnalysisResultTable.vue'
-import AnalysisVisualization from '@/components/AnalysisVisualization.vue'
 import LoginForm from '@/components/LoginForm.vue'
 import Navbar from '@/components/Navbar.vue'
-import PatientTable from '@/components/PatientTable.vue'
-import RecordingsTable from '@/components/RecordingsTable.vue'
+import PatientTable from '@/components/PatientTable.vue'n
 import RegisterUserForm from '@/components/RegisterUserForm.vue'
 import SearchUser from '@/components/SearchUser.vue'
  import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
