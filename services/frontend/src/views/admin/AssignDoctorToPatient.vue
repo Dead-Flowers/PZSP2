@@ -64,7 +64,7 @@
         <v-row>
             <v-btn
               color="success"
-              class="mr-4"
+              class="mr-4 mb-2"
               @click="newPatientSameDoctor"
             >
               Przypisz nowego pacjenta do tego samego doktora
@@ -72,7 +72,7 @@
         </v-row>
         <v-row>
             <v-btn
-              color="success"
+              color="primary"
               class="mr-4"
               @click="newPatientNewDoctor"
             >
