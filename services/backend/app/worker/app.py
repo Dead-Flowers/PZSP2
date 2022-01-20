@@ -70,7 +70,8 @@ def send_file(self: Task, recording_id: str, analysis_id: str):
                     update_state("FAILED")
                 else:
                     update_state("RETRYING")
-            except:  # updating state can go wrong
+            except Exception:
+                # updating state can go wrong
                 pass
             self.retry(exc=e)
     return None

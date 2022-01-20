@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 
 
 class CRUDSystemException(CRUDBase[SystemException, SystemExceptionCreate, None]):
-    def create(self, db: Session, *, obj_in: SystemExceptionCreate) -> SystemException:
+    def create(self, db: Session, obj_in: SystemExceptionCreate) -> SystemException:
         db_obj = SystemException(source=obj_in.source, value=obj_in.value)
         db.add(db_obj)
         db.commit()
