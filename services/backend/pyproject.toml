@@ -6,7 +6,7 @@ authors = ["noFrostoo <nofrost1a@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-fastapi = "^0.65.2"
+fastapi = "^0.72.0"
 pydantic = {extras = ["email"], version = "^1.8.2"}
 SQLAlchemy = "^1.4.11"
 requests = "^2.25.1"
@@ -19,12 +19,12 @@ redis = "3.5.3"
 python-multipart = "^0.0.5"
 sqlalchemy-json = "^0.4.0"
 websockets = "^10.1"
-uvicorn = "^0.16.0"
+uvicorn = "^0.17.0"
 aiofiles = "^0.8.0"
 
 [tool.poetry.dev-dependencies]
 mypy = "^0.901"
-pytest = "^5.2"
+pytest = "^6.2.5"
 black = "^21.11b1"
 
 [tool.poetry.scripts]
