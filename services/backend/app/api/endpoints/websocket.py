@@ -24,4 +24,4 @@ async def handle_websocket(websocket: WebSocket):
         while True:
             await handle_data()
     finally:
-        ws_manager.disconnect(websocket)
+        await ws_manager.disconnect(websocket)

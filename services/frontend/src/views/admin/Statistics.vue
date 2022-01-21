@@ -47,7 +47,7 @@ export default {
           if (!this.$store.getters["isLoggedIn"]) {
             this.$router.push("/login");
           }
-          this.$store.commit("openSnackbar", "Wystąpił błąd podczas pobierania statystk");
+          this.$store.commit("openSnackbar", "Wystąpił błąd podczas pobierania statystyk");
         }
       },
   }
