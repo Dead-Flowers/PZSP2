@@ -23,7 +23,6 @@ class ConnectionManager:
         for user_id in user_ids:
             connections = self.connections_by_user.get(user_id, [])
             for connection in connections:
-                print(f"Broadcasting to {user_id}")
                 await connection.send_text(message)
 
     async def broadcast_all(self, message: str):
