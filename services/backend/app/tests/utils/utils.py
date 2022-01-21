@@ -1,5 +1,6 @@
 import random
 import string
+import os
 from typing import Dict
 
 from fastapi.testclient import TestClient
@@ -30,3 +31,7 @@ def get_superuser_token_headers(client: TestClient) -> Dict[str, str]:
     a_token = tokens["access_token"]
     headers = {"Authorization": f"Bearer {a_token}"}
     return headers
+
+
+def random_bytes(size: int) -> bytes:
+    return os.urandom(size)
