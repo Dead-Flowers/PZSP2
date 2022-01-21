@@ -1,4 +1,4 @@
-from typing import Dict
+from typing import Dict, Tuple
 
 from fastapi.testclient import TestClient
 from sqlalchemy.orm import Session
@@ -22,14 +22,24 @@ def user_authentication_headers(
     return headers
 
 
-def create_random_user(db: Session) -> User:
+def create_random_user(db: Session) -> Tuple[User, str, str]:
     email = random_email()
     password = random_lower_string()
     user_in = UserCreate(
         email=email, password=password, role=UserRole.Doctor, pesel=random_pesel()
     )
     user = crud.user.create(db=db, obj_in=user_in)
-    return user
+    return user, email, password
+
+
+def create_random_patient(db: Session) -> User:
+    email = random_email()
+    password = random_lower_string()
+    user_in = UserCreate(
+        email=email, password=password, role=UserRole.Patient, pesel=random_pesel()
+    )
+    user = crud.user.create(db=db, obj_in=user_in)
+    return user, email, password
 
 
 def authentication_token_from_email(
