@@ -125,7 +125,7 @@
         </v-list-item-icon>
         <v-list-item-content>
           <v-list-item-title>
-            Statystki
+            Statystyki
           </v-list-item-title>
         </v-list-item-content>
       </v-list-item>

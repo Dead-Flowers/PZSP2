@@ -13,17 +13,16 @@ class ConnectionManager:
         self.connections_by_user.setdefault(user.id, []).append(websocket)
         websocket.state.user_id = user.id
 
-    def disconnect(self, websocket: WebSocket):
+    async def disconnect(self, websocket: WebSocket):
         state = websocket.state
         if hasattr(state, "user_id"):
             self.connections_by_user[state.user_id].remove(websocket)
-        websocket.close()
+        await websocket.close()
 
     async def broadcast(self, user_ids: List[str], message: str):
         for user_id in user_ids:
             connections = self.connections_by_user.get(user_id, [])
             for connection in connections:
-                print(f"Broadcasting to {user_id}")
                 await connection.send_text(message)
 
     async def broadcast_all(self, message: str):

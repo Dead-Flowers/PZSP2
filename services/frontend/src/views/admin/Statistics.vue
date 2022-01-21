@@ -3,11 +3,11 @@
       <v-row>
           <v-col>
             <v-card :loading="loading" class="card" elevation="2" >
-                <v-card-title>Statystki analiz </v-card-title>
+                <v-card-title>Statystyki analiz </v-card-title>
                 <v-card-text>
-                    <div> Ilość analizy zakończonych sukcesem: {{ stats.success }} </div>
-                    <div> Ilość analizy zakończonych nie powodzeniem: {{ stats.failure }} </div>
-                    <div v-if="stats.exceptions.length != 0"> Błedy w analizach:  </div>
+                    <div> Liczba analiz zakończonych sukcesem: {{ stats.success }} </div>
+                    <div> Liczba analiz zakończonych niepowodzeniem: {{ stats.failure }} </div>
+                    <div v-if="stats.exceptions.length != 0"> Błędy w analizach:  </div>
                     <div  v-bind:key="err" v-for="err in stats.exceptions"> * {{ err }} </div>
                 </v-card-text>
             </v-card>
@@ -47,7 +47,7 @@ export default {
           if (!this.$store.getters["isLoggedIn"]) {
             this.$router.push("/login");
           }
-          this.$store.commit("openSnackbar", "Wystąpił błąd podczas pobierania statystk");
+          this.$store.commit("openSnackbar", "Wystąpił błąd podczas pobierania statystyk");
         }
       },
   }

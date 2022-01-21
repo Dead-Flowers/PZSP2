@@ -16,6 +16,7 @@ services:
       timeout: 10s
       retries: 20
       start_period: 60s
+    restart: unless-stopped
 
   backend:
     build:
@@ -36,6 +37,7 @@ services:
       - redis
       - worker
       - postgres
+    restart: unless-stopped
 
   frontend:
     build:
@@ -47,16 +49,16 @@ services:
     ports:
       - "8080:8080"
     container_name: "frontend-deadflowers-dev"
+    restart: unless-stopped
 
   redis:
     image: "redis:alpine"
-    environment:
-      - REDIS_PASSWORD=test123
     ports:
       - "6379:6379"
     volumes:
       - "redis:/var/lib/redis/data"
     container_name: "redis-deadflowers"
+    restart: unless-stopped
 
   worker:
     build:
@@ -73,6 +75,7 @@ services:
       - ./services/backend/app:/app/app
     depends_on:
       - postgres
+    restart: unless-stopped
 
 volumes:
   postgres: null

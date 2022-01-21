@@ -53,7 +53,7 @@ class CeleryMonitor(object):
 
             self._state.event(event)
         except Exception as e:
-            print(e)
+            pass
 
     def run(self):
         loop = asyncio.new_event_loop()
