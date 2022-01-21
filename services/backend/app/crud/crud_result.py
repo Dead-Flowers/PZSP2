@@ -60,14 +60,14 @@ class CRUDAnalysisResult(
 
     def count_success(self, db: Session) -> int:
         return (
-            db.query(AnalysisResult).filter(AnalysisResult.status == "FAILED").count()
+            db.query(AnalysisResult)
+            .filter(AnalysisResult.status == "COMPLETED")
+            .count()
         )
 
     def count_failed(self, db: Session) -> int:
         return (
-            db.query(AnalysisResult)
-            .filter(AnalysisResult.status == "COMPLETED")
-            .count()
+            db.query(AnalysisResult).filter(AnalysisResult.status == "FAILED").count()
         )
 
 
