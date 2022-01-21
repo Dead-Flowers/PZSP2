@@ -36,7 +36,7 @@
     <v-row>
       <v-col>
         <v-card class="card" elevation="2" >
-            <v-card-title>Statystki analizy </v-card-title>
+            <v-card-title>Statystyki analizy </v-card-title>
             <v-card-text>
               <div>Średni % próbek: {{ average }}</div>
               <div>Procent odgłosów perystaltyki jelit, po których następuje kolejny dźwięk w czasie 50 ms: {{ analysisStats.percent_of_bowel_sounds_followed_by_another_bowel_sound_within_50_ms }} </div>

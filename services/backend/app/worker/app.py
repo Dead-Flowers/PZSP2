@@ -1,6 +1,7 @@
 import io
 import os
 from app.api import deps
+from app.core.config import settings
 from app.schemas.analysis_result import (
     AnalysisResultStatusUpdate,
     AnalysisResultUpdate,
@@ -45,7 +46,7 @@ def send_file(self: Task, recording_id: str, analysis_id: str):
     def handle():
         update_state("PENDING")
 
-        service = BowelAnalysisService("http://bowelsound.ii.pw.edu.pl")
+        service = BowelAnalysisService(settings.BOWEL_SERVICE_URL)
         recording = crud.recording.get(db, recording_id)
         image_bytes = io.BytesIO(recording.blob)
 
