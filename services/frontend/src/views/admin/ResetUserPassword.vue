@@ -1,57 +1,77 @@
 <template>
-	<div>
-		<v-card>
-			<v-card-title>Dane Użytkownika </v-card-title>
-			<v-card-text>
-				<div>Rola: {{ this.getUserRole(this.userInfo["role"]) }}</div>
-				<div v-if="this.userInfo['pesel'] != null">Pesel: {{ this.userInfo["pesel"] }}</div>
-				<div>Imie: {{ this.userInfo["first_name"] }}</div>
-				<div v-if="this.userInfo['second_name'] != null">Drugie imie: {{ this.userInfo['second_name'] }}</div>
-				<div>Nazwisko: {{ this.userInfo['last_name'] }} </div>
-			</v-card-text> 
-		</v-card>
+  <div>
+    <v-card>
+      <v-card-title>Dane Użytkownika </v-card-title>
+      <v-card-text>
+        <div>Rola: {{ this.getUserRole(this.userInfo["role"]) }}</div>
+        <div v-if="this.userInfo['pesel'] != null">
+          Pesel: {{ this.userInfo["pesel"] }}
+        </div>
+        <div>Imie: {{ this.userInfo["first_name"] }}</div>
+        <div v-if="this.userInfo['second_name'] != null">
+          Drugie imie: {{ this.userInfo["second_name"] }}
+        </div>
+        <div>Nazwisko: {{ this.userInfo["last_name"] }}</div>
+      </v-card-text>
+    </v-card>
 
-		<div v-if="passwordReset">
-      <h1> Rejestracja zakończona  </h1> 
-      <h3>  Zapisz nowe hasło: {{ this.password }} </h3>
-      <v-divider/>
+    <div v-if="passwordReset">
+      <h1>Aktualizacja zakończona pomyślnie</h1>
+      <h3>Zapisz nowe hasło: {{ this.password }}</h3>
+      <v-divider />
     </div>
-		<v-btn
-			color="success"
-			class="mr-4"
-			@click="resetPassword()"
-			style="marginBlockStart: 20px"
-		>
+    <v-btn
+      color="success"
+      class="mr-4"
+      @click="resetPassword()"
+      style="marginblockstart: 20px"
+    >
       Zresetuj Hasło
     </v-btn>
-	</div>	
+  </div>
 </template>
 
 <script>
-import { generatePassword } from "@/utils.js"
+import { generatePassword } from "@/utils.js";
 import { api } from "@/api";
 
 export default {
   name: "ResetUserPassword",
-	data() {
-		return {
-			userInfo: null,
-			passwordReset: false,
-			password: null,
-		}
-	},
+  data() {
+    return {
+      userInfo: null,
+      passwordReset: false,
+      password: null,
+    };
+  },
   methods: {
-		resetPassword() {
-			this.password = generatePassword()
-			this.passwordReset = true
-			console.log(this.password) // backend connection
-		},
-		getUserRole(role) {
-			return role == 'admin' ? "Admin" 
-			: role == 'doctor' ? "Doktor"
-			: role == 'patient' ? "Pacjent"
-			: null;
-		},
+    async resetPassword() {
+      this.password = generatePassword();
+      this.passwordReset = true;
+      console.log(this.password);
+      try {
+        const user = await api.updateUser(
+          this.$store.getters["token"],
+          this.userInfo.id,
+          { "password": this.password }
+        );
+        this.userInfo = user.data;
+      } catch (e) {
+        this.$store.commit(
+          "openSnackbar",
+          "Problem z aktualizacją danych pacjneta "
+        );
+      }
+    },
+    getUserRole(role) {
+      return role == "admin"
+        ? "Admin"
+        : role == "doctor"
+        ? "Doktor"
+        : role == "patient"
+        ? "Pacjent"
+        : null;
+    },
     async getUserData(id) {
       // fetch user data
       try {
@@ -59,7 +79,10 @@ export default {
         this.userInfo = responeUser.data;
       } catch (e) {
         this.$store.dispatch("actionCheckApiError", e);
-        this.$store.commit("openSnackbar", "Problem z pobieraniem danych pacjneta ");
+        this.$store.commit(
+          "openSnackbar",
+          "Problem z pobieraniem danych pacjneta "
+        );
       }
     },
   },
@@ -70,5 +93,4 @@ export default {
 </script>
 
 <style>
-
 </style>
