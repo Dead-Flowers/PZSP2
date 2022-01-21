@@ -43,6 +43,7 @@ jobs:
           POSTGRES_USER: user
           POSTGRES_PASSWORD: pass
           POSTGRES_DB: test
+          BOWEL_SERVICE_URL: http://bowelsound.ii.pw.edu.pl
         run: |
           cd services/backend/
 
